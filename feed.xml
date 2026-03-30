@@ -17,6 +17,7 @@
     <itunes:summary>The AIGS podcast tackling AI in earth system modeling and more.</itunes:summary>
     <itunes:owner>
       <itunes:name>The AIGS</itunes:name>
+      <itunes:email>aigroupe3sm@gmail.com</itunes:email>
     </itunes:owner>
     <itunes:explicit>no</itunes:explicit>
     <itunes:image href="https://aigspod.github.io/images/cover.png"/>
