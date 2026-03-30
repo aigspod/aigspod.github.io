@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:podcast="https://podcastindex.org/namespace/1.0">
+
+  <channel>
+    <title>The AIGS Pod</title>
+    <link>https://aigspod.github.io</link>
+    <description>The AIGS podcast tackling AI in earth system modeling and more.</description>
+    <language>en</language>
+    <atom:link href="https://aigspod.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+
+    <!-- iTunes / Apple Podcasts metadata -->
+    <itunes:author>The AIGS</itunes:author>
+    <itunes:summary>The AIGS podcast tackling AI in earth system modeling and more.</itunes:summary>
+    <itunes:owner>
+      <itunes:name>The AIGS</itunes:name>
+    </itunes:owner>
+    <itunes:explicit>no</itunes:explicit>
+    <itunes:image href="https://aigspod.github.io/images/cover.png"/>
+    <itunes:category text="Science">
+      <itunes:category text="Natural Sciences"/>
+    </itunes:category>
+    <itunes:category text="Technology"/>
+    <itunes:category text="Leisure"/>
+    <itunes:type>episodic</itunes:type>
+
+    <image>
+      <url>https://aigspod.github.io/images/cover.png</url>
+      <title>The AIGS Pod</title>
+      <link>https://aigspod.github.io</link>
+    </image>
+
+    <!-- Episode 1 -->
+    <item>
+      <title>AI weather models are stuck in 1998</title>
+      <description>This research investigates a significant cold bias in modern AI weather and climate models, such as FourCastNet, Pangu, and ACE2, which stems from their reliance on historical training data. By evaluating these models on recent time periods outside of their training sets, the authors discovered that the predicted temperatures often reflect climatic conditions from 15 to 30 years ago rather than current warming trends. The study highlights a "pull" toward the past: weather models struggle to predict extreme heat events due to a lack of modern examples, while the climate model shows the greatest inaccuracies in regions where global warming has been most rapid. Ultimately, the paper argues that even with the inclusion of CO2 data, these data-driven models remain anchored to their training-set history, necessitating new strategies to ensure they can accurately forecast an increasingly hot and unprecedented future.</description>
+      <enclosure url="https://aigspod.github.io/episodes/ai-weather-models-stuck-in-1998.mp3"
+                 length="11342535"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep001-ai-weather-models-stuck-in-1998</guid>
+      <pubDate>Sat, 29 Mar 2025 00:00:00 +0000</pubDate>
+      <itunes:duration>20:08</itunes:duration>
+      <itunes:summary>This research investigates a significant cold bias in modern AI weather and climate models, such as FourCastNet, Pangu, and ACE2, which stems from their reliance on historical training data.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>1</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
+  </channel>
+</rss>
