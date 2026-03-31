@@ -34,6 +34,22 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 2 -->
+    <item>
+      <title>Why Tunnel Vision Fixes Climate AI</title>
+      <description>This research introduces a modified machine-learning (ML) weather emulator designed to accurately predict fast radiative feedbacks in response to varying CO2 levels. While traditional emulators often struggle with global perturbations, the authors developed a column-local architecture for the Allen Institute for Artificial Intelligence Climate Emulator (ACE) to better represent atmospheric physics. By coupling this ML model with a physics-based radiative transfer scheme (RRTMG), the researchers successfully replicated the hydrological and thermal responses found in complex Earth System Models (ESMs). The study demonstrates that emulators trained only on historical climate data can still simulate unprecedented greenhouse gas scenarios by focusing on rapid atmospheric processes. These findings suggest that hybrid ML-physics models can significantly reduce the computational cost of climate projections while maintaining physical reliability. Consequently, this framework offers a powerful new tool for sampling internal atmospheric variability and conducting extensive climate sensitivity experiments.</description>
+      <enclosure url="https://aigspod.github.io/episodes/why-tunnel-vision-fixes-climate-ai.mp3"
+                 length="20640632"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep002-why-tunnel-vision-fixes-climate-ai</guid>
+      <pubDate>Mon, 31 Mar 2025 00:00:00 +0000</pubDate>
+      <itunes:duration>21:30</itunes:duration>
+      <itunes:summary>This research introduces a modified machine-learning weather emulator designed to accurately predict fast radiative feedbacks in response to varying CO2 levels, using a column-local architecture coupled with physics-based radiative transfer.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>2</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 1 -->
     <item>
       <title>AI weather models are stuck in 1998</title>
