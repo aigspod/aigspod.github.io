@@ -35,6 +35,22 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 4 -->
+    <item>
+      <title>AI fixes climate model blind spots</title>
+      <description>Climate simulations, at all grid resolutions, rely on approximations that encapsulate the forcing due to unresolved processes on resolved variables, known as parameterizations. Parameterizations often lead to inaccuracies in climate models, with significant biases in the physics of key climate phenomena. Advances in artificial intelligence (AI) are now directly enabling the learning of unresolved processes from data to improve the physics of climate simulations. This research introduces a flexible framework for developing and implementing physics- and scale-aware machine learning parameterizations within climate models, focusing on the ocean and sea-ice components of a state-of-the-art climate model by implementing a spectrum of data-driven parameterizations, ranging from complex deep learning models to more interpretable equation-based models. The results showcase the viability of AI-driven parameterizations in operational models, advancing the capabilities of a new generation of hybrid simulations, and include prototypes of fully coupled atmosphere-ocean-sea-ice hybrid simulations. The tools developed are open source, accessible, and available to all. Paper: https://arxiv.org/abs/2510.22676</description>
+      <enclosure url="https://archive.org/download/ai-fixes-climate-model-blind-spots/ai-fixes-climate-model-blind-spots.mp3"
+                 length="59546780"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep004-ai-fixes-climate-model-blind-spots</guid>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 +0000</pubDate>
+      <itunes:duration>1:02:01</itunes:duration>
+      <itunes:summary>A flexible framework for physics- and scale-aware machine learning parameterizations in climate models, demonstrating AI-driven approaches for ocean and sea-ice components in fully coupled hybrid climate simulations.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>4</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 3 -->
     <item>
       <title>AI fixes systematic climate model bias</title>
