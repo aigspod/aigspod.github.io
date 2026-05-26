@@ -35,6 +35,22 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 5 -->
+    <item>
+      <title>Why AI weather models fail climate emulation</title>
+      <description>A look at the growing body of work questioning where AI weather and climate models fall short, and why physics-based simulation remains essential. Papers discussed: Zhang et al. (2026), Physics-based models outperform AI weather forecasts of record-breaking extremes, Science Advances, https://www.science.org/doi/full/10.1126/sciadv.aec1433 — Smith &amp; Thorpe (2026), The Primacy of Physical Simulation in the Age of AI: A Critique of ML for Weather Forecasting, Bulletin of the American Meteorological Society, https://journals.ametsoc.org/view/journals/bams/aop/BAMS-D-25-0214.1/BAMS-D-25-0214.1.xml — Scaife (2026), Successes and failures of current AI climate models, Geophysical Research Letters, https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2026GL122615 — Shaw &amp; Stevens (2025), The other climate crisis, Nature, https://www.nature.com/articles/s41586-025-08680-1</description>
+      <enclosure url="https://archive.org/download/why-ai-weather-models-fail-climate-emulation/why-ai-weather-models-fail-climate-emulation.mp3"
+                 length="18739755"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep005-why-ai-weather-models-fail-climate-emulation</guid>
+      <pubDate>Tue, 26 May 2026 00:00:00 +0000</pubDate>
+      <itunes:duration>19:31</itunes:duration>
+      <itunes:summary>A look at the growing body of work questioning where AI weather and climate models fall short, and why physics-based simulation remains essential. Discusses recent critiques from Zhang et al. (2026), Smith &amp; Thorpe (2026), Scaife (2026), and Shaw &amp; Stevens (2025).</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>5</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 4 -->
     <item>
       <title>AI fixes climate model blind spots</title>
