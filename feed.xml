@@ -44,6 +44,7 @@
                  type="audio/mpeg"/>
       <guid isPermaLink="false">aigspod-ep007-solving-climate-emulator-physics-with-random-co2</guid>
       <pubDate>Tue, 30 Jun 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep007.png"/>
       <itunes:duration>21:24</itunes:duration>
       <itunes:summary>How "random-CO2" reference simulations, where sea surface temperature and CO2 vary independently, teach the Ai2 Climate Emulator the separate effects of each, so ML weather-climate emulators stay physical under unprecedented warming and abrupt CO2 forcing.</itunes:summary>
       <itunes:episodeType>full</itunes:episodeType>
@@ -60,6 +61,7 @@
                  type="audio/mpeg"/>
       <guid isPermaLink="false">aigspod-ep006-ai-learns-physics-from-frankenstein-climates</guid>
       <pubDate>Tue, 30 Jun 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep006.png"/>
       <itunes:duration>1:00:16</itunes:duration>
       <itunes:summary>By training the Ai2 Climate Emulator on "random-CO2" simulations where sea surface temperature and CO2 vary independently, this research lets ML weather-climate emulators learn the separate effects of each and stay physical under unprecedented warming and abrupt CO2 forcing.</itunes:summary>
       <itunes:episodeType>full</itunes:episodeType>
