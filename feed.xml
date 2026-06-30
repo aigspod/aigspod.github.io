@@ -35,6 +35,22 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 7 -->
+    <item>
+      <title>Solving climate emulator physics with random CO2</title>
+      <description>Machine-learning weather-climate emulators like the Ai2 Climate Emulator (ACE) can reproduce the climate of recent decades, but they break down in unfamiliar conditions, producing unphysical results when asked to simulate a world with sea surface temperatures warmed by +4 K or an abrupt quadrupling of CO2. This research traces the problem to training data in which sea surface temperature (SST) and CO2 are tightly correlated, leaving the models unable to learn their separate effects. To fix this, the authors introduce a new class of "random-CO2" reference simulations: deliberately stitched-together climates in which SST and CO2 are prescribed to vary independently. By training on a balance of AMIP, equilibrium-climate, and random-CO2 data, and adding a total energy conservation constraint for improved interpretability, they build a more data-efficient emulator that not only matches earlier models where they already excelled, but also handles previously failing scenarios like AMIP +4 K and slab-ocean-coupled abrupt 4xCO2. The model still relies on simplified or prescribed ocean, land, and sea-ice components and inherits biases from its physics-based training data, each pointing to clear avenues for future work. Paper: https://arxiv.org/abs/2606.07928</description>
+      <enclosure url="https://archive.org/download/solving-climate-emulator-physics-with-random-co-2/Solving_Climate_Emulator_Physics_With_Random_CO2.mp3"
+                 length="18703877"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep007-solving-climate-emulator-physics-with-random-co2</guid>
+      <pubDate>Tue, 30 Jun 2026 00:00:00 +0000</pubDate>
+      <itunes:duration>21:24</itunes:duration>
+      <itunes:summary>How "random-CO2" reference simulations, where sea surface temperature and CO2 vary independently, teach the Ai2 Climate Emulator the separate effects of each, so ML weather-climate emulators stay physical under unprecedented warming and abrupt CO2 forcing.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>7</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 6 -->
     <item>
       <title>AI learns physics from Frankenstein climates</title>
