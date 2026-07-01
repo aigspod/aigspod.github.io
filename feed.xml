@@ -78,6 +78,7 @@
                  type="audio/mpeg"/>
       <guid isPermaLink="false">aigspod-ep005-why-ai-weather-models-fail-climate-emulation</guid>
       <pubDate>Tue, 26 May 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep005.png"/>
       <itunes:duration>19:31</itunes:duration>
       <itunes:summary>A look at the growing body of work questioning where AI weather and climate models fall short, and why physics-based simulation remains essential. Discusses recent critiques from Zhang et al. (2026), Smith &amp; Thorpe (2026), Scaife (2026), and Shaw &amp; Stevens (2025).</itunes:summary>
       <itunes:episodeType>full</itunes:episodeType>
@@ -94,6 +95,7 @@
                  type="audio/mpeg"/>
       <guid isPermaLink="false">aigspod-ep004-ai-fixes-climate-model-blind-spots</guid>
       <pubDate>Tue, 28 Apr 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep004.png"/>
       <itunes:duration>1:02:01</itunes:duration>
       <itunes:summary>A flexible framework for physics- and scale-aware machine learning parameterizations in climate models, demonstrating AI-driven approaches for ocean and sea-ice components in fully coupled hybrid climate simulations.</itunes:summary>
       <itunes:episodeType>full</itunes:episodeType>
@@ -110,6 +112,7 @@
                  type="audio/mpeg"/>
       <guid isPermaLink="false">aigspod-ep003-ai-fixes-systematic-climate-model-bias</guid>
       <pubDate>Sat, 05 Apr 2025 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep003.png"/>
       <itunes:duration>22:33</itunes:duration>
       <itunes:summary>This research introduces an operator-learning framework that maps instantaneous model states to bias-correction tendencies, applying them online during E3SM integration using expressive multi-scale ML architectures to reduce systematic climate model bias.</itunes:summary>
       <itunes:episodeType>full</itunes:episodeType>
@@ -126,6 +129,7 @@
                  type="audio/mpeg"/>
       <guid isPermaLink="false">aigspod-ep002-why-tunnel-vision-fixes-climate-ai</guid>
       <pubDate>Mon, 31 Mar 2025 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep002.png"/>
       <itunes:duration>21:30</itunes:duration>
       <itunes:summary>This research introduces a modified machine-learning weather emulator designed to accurately predict fast radiative feedbacks in response to varying CO2 levels, using a column-local architecture coupled with physics-based radiative transfer.</itunes:summary>
       <itunes:episodeType>full</itunes:episodeType>
@@ -142,6 +146,7 @@
                  type="audio/mpeg"/>
       <guid isPermaLink="false">aigspod-ep001-ai-weather-models-stuck-in-1998</guid>
       <pubDate>Sat, 29 Mar 2025 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep001.png"/>
       <itunes:duration>20:08</itunes:duration>
       <itunes:summary>This research investigates a significant cold bias in modern AI weather and climate models, such as FourCastNet, Pangu, and ACE2, which stems from their reliance on historical training data.</itunes:summary>
       <itunes:episodeType>full</itunes:episodeType>
