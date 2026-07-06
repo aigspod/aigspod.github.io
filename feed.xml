@@ -35,6 +35,23 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 8 -->
+    <item>
+      <title>The Tebaldi Test For Climate Emulators</title>
+      <description>A comprehensive review of climate model emulation methods and their validation. This episode discusses the latest survey from Claudia Tebaldi, Noelle E. Selin, Rafael Ferrari, and Glenn Flierl, published in the Annual Review of Environment and Resources (2025). The paper surveys modern approaches to climate model emulation—surrogate models that replicate Earth System Model behavior at a fraction of the computational cost. Key topics include: statistical and machine learning emulation methods; trade-offs between model simplicity and accuracy; handling climate system internal variability; applications to anthropogenic climate forcing scenarios; and validation approaches for high-dimensional climate outputs. The Tebaldi Test represents a critical benchmark for evaluating whether emulators can generalize beyond their training data and maintain physical consistency under extreme climate scenarios. Paper: https://www.annualreviews.org/content/journals/10.1146/annurev-environ-012125-085838</description>
+      <enclosure url="https://archive.org/download/the-tebaldi-test-for-climate-emulators/The_Tebaldi_Test_For_Climate_Emulators.mp3"
+                 length="23664640"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep008-the-tebaldi-test-for-climate-emulators</guid>
+      <pubDate>Sun, 06 Jul 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep008.png"/>
+      <itunes:duration>20:41</itunes:duration>
+      <itunes:summary>A comprehensive review of climate model emulation methods and their validation, discussing statistical and ML approaches, handling variability, and the Tebaldi Test as a critical benchmark for evaluating emulator generalization under extreme climate scenarios.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>8</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 7 -->
     <item>
       <title>Solving climate emulator physics with random CO2</title>
