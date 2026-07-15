@@ -35,6 +35,23 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 9 -->
+    <item>
+      <title>Why climate AI needs synthetic data</title>
+      <description>As deep learning for physical systems continues to grow in popularity, efforts to improve generalizability have primarily focused on designing architectures that embed physical constraints. However, for machine-learning surrogate climate models (emulators), research shows that the low structural diversity in existing scenarios commonly used to generate training data places a ceiling on predictive skill. This work examines whether training datasets themselves can be optimized to improve generalization. The authors introduce a method to create datasets that produce emulators capable of generalizing to new, structurally different scenarios absent from the training data. They use a differentiable Simple Climate Model (SCM) to calculate the sensitivity of emulator loss to perturbations in the training data, iteratively updating the training data to maximize emulator skill. Training on one scenario optimized in this fashion outperforms an emulator trained on six standard ScenarioMIP pathways while using a smaller dataset. The emulator successfully isolates distinct physical behaviors of different climate forcing agents (e.g., greenhouse gases vs. aerosols) without single-forcing runs. Results suggest that generating a small number of dynamically rich scenarios provides greater marginal value for emulation and characterizing system responses than expanding the suite of traditional emissions pathways. Paper: https://arxiv.org/abs/2606.19302v1</description>
+      <enclosure url="https://archive.org/download/why-climate-ai-needs-synthetic-data/Why_climate_AI_needs_synthetic_data.mp3"
+                 length="24121280"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep009-why-climate-ai-needs-synthetic-data</guid>
+      <pubDate>Tue, 15 Jul 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep009.png"/>
+      <itunes:duration>21:15</itunes:duration>
+      <itunes:summary>Why optimizing training datasets with dynamically rich scenarios produces more skillful climate emulators than expanding traditional emissions pathways.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>9</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 8 -->
     <item>
       <title>The Tebaldi Test For Climate Emulators</title>
