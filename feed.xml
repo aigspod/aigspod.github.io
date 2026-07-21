@@ -60,7 +60,7 @@
                  length="19913698"
                  type="audio/mpeg"/>
       <guid isPermaLink="false">aigspod-ep011-nvidia-atlas-beats-supercomputers-on-one-gpu</guid>
-      <pubDate>Tue, 28 Jul 2026 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 +0000</pubDate>
       <itunes:image href="https://aigspod.github.io/images/ep011.png"/>
       <itunes:duration>22:55</itunes:duration>
       <itunes:summary>A tighter cut on how NVIDIA's ATLAS framework combines a downsampled latent space with a history-conditioned local projector to match state-of-the-art probabilistic weather forecasting skill, no specialized training tricks required.</itunes:summary>
