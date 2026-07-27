@@ -35,6 +35,57 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 14 -->
+    <item>
+      <title>Aurora AI beats traditional weather models</title>
+      <description>Aurora is a pioneering AI foundation model created by Microsoft to revolutionize Earth system forecasting by delivering high-resolution predictions with unprecedented speed and efficiency. Developed using a 3D Swin Transformer architecture, the model was pretrained on over one million hours of diverse geophysical data to learn the complex dynamics of the atmosphere. Through a process of fine-tuning, Aurora can be specialized for diverse tasks, including weather forecasting, air pollution tracking, ocean wave modeling, and tropical cyclone tracking. Research indicates that it consistently matches or outperforms state-of-the-art numerical models, such as those from the ECMWF, while operating at a computational cost orders of magnitude lower than traditional simulations. The most recent iteration, Aurora 1.5, introduces expanded variables and probabilistic ensemble forecasting to better quantify atmospheric uncertainty. By providing an open-source framework via GitHub, Microsoft aims to democratize access to accurate environmental data and support global efforts in disaster mitigation and climate science. Link: https://www.microsoft.com/en-us/research/project/aurora-forecasting/</description>
+      <enclosure url="https://archive.org/download/aurora-ai-beats-traditional-weather-models/Aurora_AI_Beats_Traditional_Weather_Models.mp3"
+                 length="16736230"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep014-aurora-ai-beats-traditional-weather-models</guid>
+      <pubDate>Sun, 26 Jul 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep014.png"/>
+      <itunes:duration>19:11</itunes:duration>
+      <itunes:summary>The short cut: how Microsoft's Aurora foundation model delivers forecasts in seconds that traditional numerical weather prediction needs hours of supercomputer time to produce.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>14</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
+    <!-- Episode 13 -->
+    <item>
+      <title>Microsoft Aurora outperforms traditional weather models</title>
+      <description>Aurora is a pioneering AI foundation model created by Microsoft to revolutionize Earth system forecasting by delivering high-resolution predictions with unprecedented speed and efficiency. Developed using a 3D Swin Transformer architecture, the model was pretrained on over one million hours of diverse geophysical data to learn the complex dynamics of the atmosphere. Through a process of fine-tuning, Aurora can be specialized for diverse tasks, including weather forecasting, air pollution tracking, ocean wave modeling, and tropical cyclone tracking. Research indicates that it consistently matches or outperforms state-of-the-art numerical models, such as those from the ECMWF, while operating at a computational cost orders of magnitude lower than traditional simulations. The most recent iteration, Aurora 1.5, introduces expanded variables and probabilistic ensemble forecasting to better quantify atmospheric uncertainty. By providing an open-source framework via GitHub, Microsoft aims to democratize access to accurate environmental data and support global efforts in disaster mitigation and climate science. Link: https://www.microsoft.com/en-us/research/project/aurora-forecasting/</description>
+      <enclosure url="https://archive.org/download/microsoft-aurora-outperforms-traditional-weather-models/Microsoft_Aurora_outperforms_traditional_weather_models.mp3"
+                 length="20648655"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep013-microsoft-aurora-outperforms-traditional-weather-models</guid>
+      <pubDate>Sun, 26 Jul 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep013.png"/>
+      <itunes:duration>23:48</itunes:duration>
+      <itunes:summary>One pretrained model, four jobs: we walk through how Aurora fine-tunes a single 3D Swin Transformer backbone into weather forecasting, air pollution tracking, ocean wave modeling, and tropical cyclone tracking.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>13</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
+    <!-- Episode 12 -->
+    <item>
+      <title>Aurora AI beats multi-billion dollar supercomputers</title>
+      <description>Aurora is a pioneering AI foundation model created by Microsoft to revolutionize Earth system forecasting by delivering high-resolution predictions with unprecedented speed and efficiency. Developed using a 3D Swin Transformer architecture, the model was pretrained on over one million hours of diverse geophysical data to learn the complex dynamics of the atmosphere. Through a process of fine-tuning, Aurora can be specialized for diverse tasks, including weather forecasting, air pollution tracking, ocean wave modeling, and tropical cyclone tracking. Research indicates that it consistently matches or outperforms state-of-the-art numerical models, such as those from the ECMWF, while operating at a computational cost orders of magnitude lower than traditional simulations. The most recent iteration, Aurora 1.5, introduces expanded variables and probabilistic ensemble forecasting to better quantify atmospheric uncertainty. By providing an open-source framework via GitHub, Microsoft aims to democratize access to accurate environmental data and support global efforts in disaster mitigation and climate science. Link: https://www.microsoft.com/en-us/research/project/aurora-forecasting/</description>
+      <enclosure url="https://archive.org/download/aurora-ai-beats-multi-billion-dollar-supercomputers/Aurora_AI_beats_multi-billion_dollar_supercomputers.mp3"
+                 length="39433913"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep012-aurora-ai-beats-multi-billion-dollar-supercomputers</guid>
+      <pubDate>Sun, 26 Jul 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep012.png"/>
+      <itunes:duration>45:29</itunes:duration>
+      <itunes:summary>The long form: Microsoft's Aurora foundation model, pretrained on over a million hours of geophysical data, matches or beats ECMWF-class numerical forecasts at a computational cost orders of magnitude lower.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>12</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 10 -->
     <item>
       <title>NVIDIA ATLAS beats global weather supercomputers</title>
