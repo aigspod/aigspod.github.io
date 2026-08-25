@@ -35,6 +35,57 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 17 -->
+    <item>
+      <title>Walrus masters physics from stars to oceans</title>
+      <description>Foundation models have reshaped language and vision, but physical simulation has resisted the same playbook: heterogeneous data, unstable long-term rollouts, and mismatched resolutions and dimensionalities make it hard to train one model across many kinds of physics. This paper introduces Walrus, a transformer-based foundation model for fluid-like continuum dynamics, built around a harmonic-analysis-based stabilization method, load-balanced distributed 2D and 3D training strategies, and compute-adaptive tokenization. Walrus is pretrained on nineteen diverse scenarios spanning astrophysics, geoscience, rheology, plasma physics, acoustics, and classical fluids, treating Earth's atmosphere and oceans as just one flavor of continuum dynamics among many. Across short- and long-horizon forecasts on downstream tasks, and across the full breadth of pretraining domains, Walrus outperforms prior foundation models, while ablation studies confirm that the stabilization, distributed training, and tokenization choices each meaningfully improve forecast stability, training throughput, and transfer performance. Code and weights are released for community use. Paper: https://arxiv.org/abs/2511.15684</description>
+      <enclosure url="https://archive.org/download/walrus-ai-unifies-nineteen-physics-scenarios/walrus-masters-physics-from-stars-to-oceans.mp3"
+                 length="15185363"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep017-walrus-masters-physics-from-stars-to-oceans</guid>
+      <pubDate>Sun, 16 Aug 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep017.png"/>
+      <itunes:duration>17:25</itunes:duration>
+      <itunes:summary>From stellar plasmas to ocean currents, Walrus treats fluid dynamics as one continuous problem rather than nineteen separate ones, beating prior foundation models on both near-term and long-horizon predictions.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>17</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
+    <!-- Episode 16 -->
+    <item>
+      <title>Walrus AI unifies nineteen physics scenarios</title>
+      <description>Foundation models have reshaped language and vision, but physical simulation has resisted the same playbook: heterogeneous data, unstable long-term rollouts, and mismatched resolutions and dimensionalities make it hard to train one model across many kinds of physics. This paper introduces Walrus, a transformer-based foundation model for fluid-like continuum dynamics, built around a harmonic-analysis-based stabilization method, load-balanced distributed 2D and 3D training strategies, and compute-adaptive tokenization. Walrus is pretrained on nineteen diverse scenarios spanning astrophysics, geoscience, rheology, plasma physics, acoustics, and classical fluids, treating Earth's atmosphere and oceans as just one flavor of continuum dynamics among many. Across short- and long-horizon forecasts on downstream tasks, and across the full breadth of pretraining domains, Walrus outperforms prior foundation models, while ablation studies confirm that the stabilization, distributed training, and tokenization choices each meaningfully improve forecast stability, training throughput, and transfer performance. Code and weights are released for community use. Paper: https://arxiv.org/abs/2511.15684</description>
+      <enclosure url="https://archive.org/download/walrus-ai-unifies-nineteen-physics-scenarios/walrus-ai-unifies-nineteen-physics-scenarios.mp3"
+                 length="18897856"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep016-walrus-ai-unifies-nineteen-physics-scenarios</guid>
+      <pubDate>Sun, 09 Aug 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep016.png"/>
+      <itunes:duration>21:49</itunes:duration>
+      <itunes:summary>Astrophysics, geoscience, rheology, plasma physics, acoustics, classical fluids: nineteen scenarios walk into a transformer. Walrus pretrains across all of them, then outperforms prior foundation models on short- and long-term forecasts alike.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>16</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
+    <!-- Episode 15 -->
+    <item>
+      <title>Teaching AI the laws of physics</title>
+      <description>Foundation models have reshaped language and vision, but physical simulation has resisted the same playbook: heterogeneous data, unstable long-term rollouts, and mismatched resolutions and dimensionalities make it hard to train one model across many kinds of physics. This paper introduces Walrus, a transformer-based foundation model for fluid-like continuum dynamics, built around a harmonic-analysis-based stabilization method, load-balanced distributed 2D and 3D training strategies, and compute-adaptive tokenization. Walrus is pretrained on nineteen diverse scenarios spanning astrophysics, geoscience, rheology, plasma physics, acoustics, and classical fluids, treating Earth's atmosphere and oceans as just one flavor of continuum dynamics among many. Across short- and long-horizon forecasts on downstream tasks, and across the full breadth of pretraining domains, Walrus outperforms prior foundation models, while ablation studies confirm that the stabilization, distributed training, and tokenization choices each meaningfully improve forecast stability, training throughput, and transfer performance. Code and weights are released for community use. Paper: https://arxiv.org/abs/2511.15684</description>
+      <enclosure url="https://archive.org/download/walrus-ai-unifies-nineteen-physics-scenarios/teaching-ai-the-laws-of-physics.mp3"
+                 length="16601195"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep015-teaching-ai-the-laws-of-physics</guid>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep015.png"/>
+      <itunes:duration>18:57</itunes:duration>
+      <itunes:summary>Maybe the mistake was ever treating Earth as physics-special. Walrus is a transformer trained on nineteen scenarios, from astrophysics to oceans, testing whether one foundation model can learn the laws of physics wherever they show up.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>15</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 14 -->
     <item>
       <title>Aurora AI beats traditional weather models</title>
