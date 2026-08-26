@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIGS POD // CHAOS LAB</title>
+<meta name="description" content="Severe weather mode for The AIGS Pod — every episode loose in a wind tunnel.">
+<link rel="icon" href="../images/thumbs/funcover.jpg">
+<link rel="apple-touch-icon" href="../images/thumbs/funcover.jpg">
+<meta property="og:title" content="The AIGS Pod — Severe Weather Mode">
+<meta property="og:description" content="Every episode loose in a wind tunnel. Turn the chaos dial at your own risk.">
+<meta property="og:image" content="https://aigspod.github.io/images/funcover.png">
+<meta property="og:url" content="https://aigspod.github.io/fun/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b0714; --paper:#f5efe6;
+  --lime:#c6ff2e; --hot:#ff2e88; --cyan:#25f4ee; --amber:#ffb300; --violet:#7b3dff;
+  --chaos:0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink); color:var(--paper); overflow-x:hidden;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;
+}
+#field{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.9}
+.wrap{position:relative;z-index:2}
+
+/* --- noise + vignette --- */
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* --- ticker --- */
+/* rolls down over the ticker once the dial goes past SEVERE */
+.alert{position:fixed;top:0;left:0;right:0;z-index:9;background:var(--amber);color:var(--ink);
+  font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.14em;
+  text-align:center;padding:.55rem .8rem;border-bottom:3px solid var(--ink);
+  transform:translateY(-140%);transition:transform .4s cubic-bezier(.34,1.4,.64,1);
+  text-transform:uppercase;pointer-events:none}
+.alert.on{transform:none;animation:alertflash .55s steps(2) infinite}
+@keyframes alertflash{50%{background:var(--hot);color:var(--paper)}}
+.ticker{position:relative;z-index:3;background:var(--tickbg,var(--lime));color:var(--ink);
+  font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.06em;
+  padding:.5rem 0;overflow:hidden;white-space:nowrap;border-bottom:3px solid var(--ink)}
+.ticker div{display:inline-block;animation:slide 42s linear infinite}
+.ticker span{padding:0 1.6rem}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* --- hero --- */
+/* The wind tunnel is the hero, so the masthead above it stays compact and the
+   whole thing is sized to one viewport. */
+.hero{min-height:calc(100dvh - 34px);display:flex;flex-direction:column;padding-bottom:1.1rem}
+header{padding:1.5rem 1.5rem .4rem;text-align:center;position:relative;flex:0 0 auto}
+.kicker{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.3em;
+  color:var(--cyan);text-transform:uppercase;margin-bottom:.7rem}
+h1{font-size:clamp(2.7rem,10.5vw,7.5rem);font-weight:800;line-height:.84;letter-spacing:-.045em;
+  text-transform:uppercase}
+h1 .w{will-change:transform}
+h1 .w{display:inline-block;transition:transform .12s linear}
+h1 .a{color:var(--lime)}h1 .b{color:var(--hot)}h1 .c{color:var(--cyan)}
+.slogan{max-width:36ch;margin:.9rem auto 0;font-size:clamp(.95rem,1.6vw,1.1rem);line-height:1.45;opacity:.85}
+.slogan b{background:var(--hot);color:var(--ink);padding:0 .25em;font-weight:800;
+  display:inline-block;transform:rotate(-1.5deg)}
+
+/* --- chaos control --- */
+.listen{display:flex;align-items:center;justify-content:center;gap:.45rem;flex-wrap:wrap;margin-top:1rem}
+.listen .lab{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.22em;opacity:.5;margin-right:.2rem}
+.listen a{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;color:var(--paper);
+  border:2px solid rgba(245,239,230,.35);border-radius:999px;padding:.34rem .8rem;
+  font-size:.82rem;font-weight:800;transition:background .15s,color .15s,border-color .15s,transform .15s}
+.listen a svg{width:15px;height:15px;fill:currentColor}
+.listen a:hover{transform:translateY(-2px);border-color:transparent;color:var(--ink)}
+.listen a.apple:hover{background:var(--cyan)}
+.listen a.spotify:hover{background:var(--lime)}
+.listen a.youtube:hover{background:var(--hot);color:var(--paper)}
+.listen a.more{border-style:dashed;font-weight:400;font-family:'Space Mono',monospace;font-size:.72rem;
+  letter-spacing:.1em;opacity:.7}
+.listen a.more:hover{background:var(--amber);opacity:1}
+/* Instrument panel, not a flex row: the track always gets its own full-width
+   row, so nothing squeezes or wraps as the window narrows. */
+.chaosbar{display:grid;grid-template-columns:auto 1fr auto;align-items:center;
+  gap:.6rem .9rem;width:min(620px,100%);margin:1rem auto 0;padding:.8rem 1.05rem;
+  border:3px solid var(--paper);border-radius:20px;background:rgba(255,255,255,.05)}
+.chaosbar .ck{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;
+  opacity:.7;white-space:nowrap}
+.chaosbar .readout{display:flex;align-items:baseline;justify-content:flex-end;
+  gap:.55rem;min-width:0;overflow:hidden}
+.chaosbar output{font-family:'Space Mono',monospace;font-weight:700;font-size:1.15rem;
+  color:var(--lime);font-variant-numeric:tabular-nums;line-height:1}
+.chaosstate{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;
+  opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chaosbar .track{grid-column:1/-1;display:grid;gap:.35rem}
+.chaosbar input[type=range]{-webkit-appearance:none;appearance:none;width:100%;margin:0;
+  height:8px;border-radius:9px;cursor:grab;
+  background:linear-gradient(90deg,var(--cyan) 0%,var(--lime) 32%,var(--amber) 66%,var(--hot) 100%)}
+.chaosbar input[type=range]:active{cursor:grabbing}
+.chaosbar input[type=range]:focus-visible{outline:3px solid var(--paper);outline-offset:4px}
+.chaosbar input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;
+  border-radius:50%;background:var(--paper);border:3px solid var(--ink);
+  box-shadow:0 0 0 3px var(--paper)}
+.chaosbar input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;
+  background:var(--paper);border:3px solid var(--ink)}
+.ticks{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;
+  font-size:8px;letter-spacing:.14em;opacity:.38;text-transform:uppercase}
+.shake{font:inherit;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--hot);color:var(--paper);border:3px solid var(--ink);border-radius:999px;
+  padding:.45rem .95rem;cursor:pointer;box-shadow:4px 4px 0 var(--paper);white-space:nowrap}
+.shake:active{transform:translate(4px,4px);box-shadow:none}
+
+/* --- tank --- */
+.tank-note .short{display:none}
+@media(max-width:560px){.tank-note .long{display:none}.tank-note .short{display:inline}}
+.tank-note{text-align:center;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;
+  opacity:.55;margin:1rem 0 .5rem;text-transform:uppercase}
+#tank{position:relative;flex:1 1 auto;min-height:230px;margin:0 1rem;
+  border:3px solid var(--paper);border-radius:26px;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 0%,rgba(123,61,255,.28),transparent 60%),rgba(255,255,255,.025);
+  touch-action:none;cursor:grab}
+#tank.grabbing{cursor:grabbing}
+.body{position:absolute;width:96px;height:96px;border-radius:14px;overflow:hidden;
+  border:3px solid var(--paper);box-shadow:0 10px 30px rgba(0,0,0,.55);
+  will-change:transform;user-select:none;-webkit-user-drag:none}
+.body img{width:100%;height:100%;object-fit:cover;pointer-events:none;display:block}
+.body .n{position:absolute;left:0;bottom:0;background:var(--lime);color:var(--ink);
+  font-family:'Space Mono',monospace;font-weight:700;font-size:10px;padding:1px 5px}
+.body:hover{border-color:var(--lime)}
+.tankmsg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:1.5rem;
+  font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;opacity:.5}
+.tankmsg a{color:var(--lime)}
+@media(max-width:640px){
+  .body{width:68px;height:68px;border-width:2px}
+  .body .n{font-size:9px}
+  #tank{margin:0 .6rem;border-radius:18px}
+}
+
+/* --- episode grid --- */
+section{max-width:1180px;margin:0 auto;padding:5rem 1.5rem}
+.sechead{display:flex;align-items:end;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.sechead h2{font-size:clamp(2rem,6vw,4rem);font-weight:800;line-height:.9;letter-spacing:-.04em;text-transform:uppercase}
+.sechead h2 em{font-style:normal;color:var(--amber)}
+.sechead p{font-family:'Space Mono',monospace;font-size:12px;opacity:.6;margin-left:auto;letter-spacing:.1em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.4rem}
+.card{position:relative;border:3px solid var(--paper);border-radius:18px;overflow:hidden;
+  background:#140d21;cursor:pointer;text-align:left;color:inherit;font:inherit;
+  transform-style:preserve-3d;transition:box-shadow .2s}
+.card:hover{box-shadow:0 0 0 3px var(--lime),12px 12px 0 rgba(198,255,46,.25)}
+.card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;transition:transform .35s}
+.card:hover img{transform:scale(1.05)}
+.card .meta{padding:.9rem 1rem 1.1rem}
+.card .num{font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:.16em}
+.card h3{font-size:1.05rem;font-weight:800;line-height:1.18;margin:.35rem 0 .5rem;letter-spacing:-.01em}
+.card .sm{font-family:'Space Mono',monospace;font-size:11px;opacity:.5}
+.card .badge{position:absolute;top:.7rem;right:.7rem;background:var(--hot);color:var(--paper);
+  font-family:'Space Mono',monospace;font-size:10px;font-weight:700;padding:.2rem .5rem;
+  border:2px solid var(--ink);letter-spacing:.1em;transform:rotate(6deg)}
+
+/* --- modal --- */
+/* the * reset zeroes margin, which also kills <dialog>'s auto-centring;
+   and <dialog> defaults to color:CanvasText (black), not the page's ink. */
+dialog{border:none;padding:0;background:transparent;color:var(--paper);
+  margin:auto;max-width:min(680px,92vw);max-height:88vh}
+dialog::backdrop{background:rgba(11,7,20,.86);backdrop-filter:blur(6px)}
+.sheet{position:relative;background:#171029;border:3px solid var(--paper);border-radius:22px;overflow:hidden}
+.sheet .top{display:flex;gap:1rem;padding:1.2rem;align-items:center;border-bottom:3px solid var(--paper);
+  background:linear-gradient(90deg,rgba(198,255,46,.14),transparent)}
+.sheet .top img{width:92px;height:92px;object-fit:cover;border-radius:12px;border:2px solid var(--paper)}
+.sheet h3{font-size:1.25rem;font-weight:800;line-height:1.15;color:#fff}
+.sheet .sm{font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);margin-top:.3rem;letter-spacing:.1em}
+.sheet .bd{padding:1.2rem;max-height:34vh;overflow:auto;font-size:.92rem;line-height:1.75;color:#d8d2e6}
+.sheet audio{width:calc(100% - 2.4rem);display:block;margin:1rem 1.2rem;border-radius:999px}
+.sheet .x{position:absolute;top:1.2rem;right:1.2rem;background:var(--hot);color:var(--paper);
+  border:3px solid var(--ink);border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;font-weight:800}
+
+/* --- subscribe --- */
+.funcover{display:block;width:min(330px,72vw);aspect-ratio:1;margin:0 auto 1.6rem;
+  border:4px solid var(--paper);border-radius:20px;object-fit:cover;
+  box-shadow:0 0 0 3px var(--ink),0 18px 60px rgba(198,255,46,.22),0 8px 30px rgba(255,46,136,.18);
+  transform:rotate(-2.5deg);transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+.funcover:hover{transform:rotate(0deg) scale(1.04);
+  box-shadow:0 0 0 3px var(--ink),0 24px 80px rgba(198,255,46,.4),0 10px 40px rgba(37,244,238,.3)}
+.subs{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center}
+.subs a{border:3px solid var(--paper);border-radius:999px;padding:.75rem 1.3rem;
+  text-decoration:none;color:var(--paper);font-weight:800;font-size:.95rem;
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1),background .16s,color .16s;
+  display:inline-block}
+.subs a:nth-child(3n+1):hover{background:var(--lime)}
+.subs a:nth-child(3n+2):hover{background:var(--hot)}
+.subs a:nth-child(3n):hover{background:var(--cyan)}
+.subs a:hover{color:var(--ink);transform:rotate(-3deg) scale(1.09)}
+
+footer{text-align:center;padding:4rem 1.5rem 6rem;font-family:'Space Mono',monospace;
+  font-size:11px;letter-spacing:.15em;opacity:.5}
+footer a{color:var(--lime)}
+@media(max-width:560px){
+  .chaosbar{gap:.5rem .6rem;padding:.65rem .8rem}
+  .chaosbar output{font-size:1rem}
+  .ticks span:nth-child(2),.ticks span:nth-child(4){display:none}
+  .listen{gap:.35rem}
+  .listen a{padding:.3rem .6rem;font-size:.76rem}
+  .tank-note{font-size:9px;letter-spacing:.1em}
+  .sechead h2{font-size:2rem}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<canvas id="field"></canvas>
+
+<div class="alert" id="alert" role="status">⚠ Severe weather advisory · secure loose episodes · ⚠</div>
+<div class="ticker"><div id="tick"></div></div>
+
+<div class="wrap">
+<div class="hero">
+<header>
+  <div class="kicker">◉ Live from the boundary layer</div>
+  <h1 id="title"></h1>
+  <p class="slogan">A podcast about AI, weather, and climate that is <b>normal about it</b>. Mostly.</p>
+
+  <nav class="listen" aria-label="Listen on">
+    <span class="lab">LISTEN ON</span>
+    <a class="apple" href="https://podcasts.apple.com/us/podcast/the-aigs-pod/id1889040734" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.34 0A5.328 5.328 0 000 5.34v13.32A5.328 5.328 0 005.34 24h13.32A5.328 5.328 0 0024 18.66V5.34A5.328 5.328 0 0018.66 0zm6.525 2.568c2.336 0 4.448.902 6.056 2.587 1.224 1.272 1.912 2.619 2.264 4.392.12.59.12 2.2.007 2.864a8.506 8.506 0 01-3.24 5.296c-.608.46-2.096 1.261-2.336 1.261-.088 0-.096-.091-.056-.46.072-.592.144-.715.48-.856.536-.224 1.448-.874 2.008-1.435a7.644 7.644 0 002.008-3.536c.208-.824.184-2.656-.048-3.504-.728-2.696-2.928-4.792-5.624-5.352-.784-.16-2.208-.16-3 0-2.728.56-4.984 2.76-5.672 5.528-.184.752-.184 2.584 0 3.336.456 1.832 1.64 3.512 3.192 4.512.304.2.672.408.824.472.336.144.408.264.472.856.04.36.03.464-.056.464-.056 0-.464-.176-.896-.384l-.04-.03c-2.472-1.216-4.056-3.274-4.632-6.012-.144-.706-.168-2.392-.03-3.04.36-1.74 1.048-3.1 2.192-4.304 1.648-1.737 3.768-2.656 6.128-2.656zm.134 2.81c.409.004.803.04 1.106.106 2.784.62 4.76 3.408 4.376 6.174-.152 1.114-.536 2.03-1.216 2.88-.336.43-1.152 1.15-1.296 1.15-.023 0-.048-.272-.048-.603v-.605l.416-.496c1.568-1.878 1.456-4.502-.256-6.224-.664-.67-1.432-1.064-2.424-1.246-.64-.118-.776-.118-1.448-.008-1.02.167-1.81.562-2.512 1.256-1.72 1.704-1.832 4.342-.264 6.222l.413.496v.608c0 .336-.027.608-.06.608-.03 0-.264-.16-.512-.36l-.034-.011c-.832-.664-1.568-1.842-1.872-2.997-.184-.698-.184-2.024.008-2.72.504-1.878 1.888-3.335 3.808-4.019.41-.145 1.133-.22 1.814-.211zm-.13 2.99c.31 0 .62.06.844.178.488.253.888.745 1.04 1.259.464 1.578-1.208 2.96-2.72 2.254h-.015c-.712-.331-1.096-.956-1.104-1.77 0-.733.408-1.371 1.112-1.745.224-.117.534-.176.844-.176zm-.011 4.728c.988-.004 1.706.349 1.97.97.198.464.124 1.932-.218 4.302-.232 1.656-.36 2.074-.68 2.356-.44.39-1.064.498-1.656.288h-.003c-.716-.257-.87-.605-1.164-2.644-.341-2.37-.416-3.838-.218-4.302.262-.616.974-.966 1.97-.97z"/></svg>Apple</a>
+    <a class="spotify" href="https://open.spotify.com/show/31CkWW6MrZ2c6EX4pNOLLe" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>Spotify</a>
+    <a class="youtube" href="https://www.youtube.com/@aigspod" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</a>
+    <a class="more" href="#everywhere">+ 7 more apps</a>
+  </nav>
+
+  <div class="chaosbar">
+    <span class="ck">CHAOS</span>
+    <div class="readout">
+      <output id="chaosv" for="chaos">0.18</output>
+      <span id="chaosstate" class="chaosstate">BREEZY</span>
+    </div>
+    <button class="shake" id="shake">Perturb ⚡</button>
+    <div class="track">
+      <input id="chaos" type="range" min="0" max="100" value="18" aria-label="Chaos level">
+      <div class="ticks" aria-hidden="true"><span>calm</span><span>breezy</span><span>gale</span><span>severe</span><span>max</span></div>
+    </div>
+  </div>
+</header>
+
+<p class="tank-note"><span class="long">↓ 17 episodes loose in a wind tunnel · move your mouse to steer · grab one, throw it, or click it to listen ↓</span><span class="short">↓ 17 episodes loose in a wind tunnel · tap one to listen ↓</span></p>
+<div id="tank"><p class="tankmsg" id="tankmsg">LOADING THE FORECAST…</p></div>
+</div><!-- /.hero -->
+
+<section>
+  <div class="sechead">
+    <h2>The <em>whole</em><br>archive</h2>
+    <p id="cnt"></p>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="everywhere" style="text-align:center">
+  <img class="funcover" src="../images/thumbs/funcover.jpg" data-full="../images/funcover.png"
+       onerror="this.onerror=null;this.src=this.dataset.full"
+       alt="The AIGS Pod cover art: neon lightning, rain and waves" loading="lazy" width="330" height="330">
+  <div class="sechead" style="justify-content:center"><h2>Get it <em>everywhere</em></h2></div>
+  <div class="subs" id="subs"></div>
+</section>
+
+<footer><a href="../">← BACK TO THE NORMAL VERSION</a> · <a href="../feed.xml">RSS</a> · TYPE “STORM” IF YOU DARE · “CALM” TO REPENT</footer>
+</div>
+
+<dialog id="modal"><div class="sheet" id="sheet"></div></dialog>
+
+<script>
+let EPS = [];
+
+/* ---------- episodes come straight from feed.xml, so they can never go stale ----------
+   (tools/make_preview.py inlines window.AIGS_EPISODES for the offline Artifact build) */
+const ITUNES='http://www.itunes.com/dtds/podcast-1.0.dtd';
+async function loadEpisodes(){
+  if(window.AIGS_EPISODES) return window.AIGS_EPISODES;
+  const xml=await fetch('../feed.xml',{cache:'no-cache'}).then(r=>{
+    if(!r.ok) throw new Error('feed.xml '+r.status); return r.text();
+  });
+  const doc=new DOMParser().parseFromString(xml,'application/xml');
+  if(doc.querySelector('parsererror')) throw new Error('feed.xml is not valid XML');
+  return [...doc.querySelectorAll('item')].map(it=>{
+    const txt=t=>(it.querySelector(t)?.textContent||'').trim();
+    const itu=t=>it.getElementsByTagNameNS(ITUNES,t)[0];
+    const n=parseInt(itu('episode')?.textContent||'0',10);
+    const dur=(itu('duration')?.textContent||'').trim();
+    const d=new Date(txt('pubDate'));
+    // itunes:image is an absolute URL in the feed; the site wants it site-relative
+    const img=(itu('image')?.getAttribute('href')||'').replace(/^https?:\/\/[^/]+\//,'')
+              || 'images/ep'+String(n).padStart(3,'0')+'.png';
+    return {
+      n, title:txt('title'), dur,
+      // format in UTC: the feed stamps midnight UTC, which is the previous day west of Greenwich
+      dateLabel:isNaN(d)?'':d.toLocaleDateString('en-US',
+        {month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}),
+      secs:dur?dur.split(':').reduce((a,x)=>a*60+ +x,0):0,
+      img,
+      thumb:img.replace(/^images\//,'images/thumbs/').replace(/\.png$/i,'.jpg'),
+      audio:it.querySelector('enclosure')?.getAttribute('url')||'',
+      desc:(txt('description')||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim()
+    };
+  }).filter(e=>e.n).sort((a,b)=>b.n-a.n);
+}
+
+// a missing thumbnail falls back to the full-res artwork instead of a broken image
+const FB = 'onerror="this.onerror=null;this.src=this.dataset.full"';
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let CHAOS = 0.18;
+
+/* ---------- kinetic title ---------- */
+const title = document.getElementById('title');
+title.innerHTML = [...'THE AIGS POD'].map((ch,i)=>
+  ch===' ' ? '<span class="w">&nbsp;</span>'
+  : `<span class="w ${['a','b','c'][i%3]}">${ch}</span>`).join('');
+const letters=[...title.querySelectorAll('.w')];
+const headerEl=document.querySelector('header');
+function jitter(t){
+  // scale displacement to the viewport so letters don't fly off a narrow screen
+  const vp=Math.min(1,innerWidth/900);
+  const k=CHAOS*vp, k2=CHAOS*CHAOS*vp;      // k2 makes the top of the dial disproportionately wild
+  letters.forEach((l,i)=>{
+    const x=Math.sin(t*0.0016+i*1.7)*20*k + Math.sin(t*0.0062+i*3.1)*9*k2;
+    const y=Math.cos(t*0.0021+i*2.3)*19*k + Math.cos(t*0.0071+i*1.3)*11*k2;
+    const r=Math.sin(t*0.0012+i*1.1)*19*k + Math.sin(t*0.009+i)*6*k2;
+    const sk=Math.sin(t*0.0018+i*2.7)*16*k2;
+    const s=1+Math.sin(t*0.0026+i*.7)*0.22*k;
+    l.style.transform=
+      `translate(${x}px,${y}px) rotate(${r}deg) skewX(${sk}deg) scale(${s})`;
+  });
+  // the masthead itself starts shaking once the wind gets serious
+  if(headerEl){
+    const sh=Math.max(0,k-0.45)*14;
+    headerEl.style.transform = sh
+      ? `translate(${(Math.random()-.5)*sh}px,${(Math.random()-.5)*sh}px)` : '';
+  }
+}
+
+/* ---------- ticker ---------- */
+const FACTS=['424.7 PPM AND CLIMBING','A 10-DAY FORECAST USED TO BE SCIENCE FICTION',
+ 'YOUR GPU IS A TINY WEATHER STATION','THE ATMOSPHERE DOES NOT CARE ABOUT YOUR LOSS FUNCTION',
+ 'EMULATORS DRIFT. SO DO WE.','SPECTRAL BIAS IS REAL AND IT IS COMING FOR YOUR SMALL SCALES',
+ 'ERA5 IS NOT THE TRUTH, IT IS A VERY GOOD GUESS','NEW EPISODE MOST SUNDAYS','⚡','◉','☁'];
+document.getElementById('tick').innerHTML =
+  (FACTS.map(f=>`<span>${f}</span>`).join('')).repeat(2);
+
+/* ---------- wind field ---------- */
+(function(){
+  const cv=document.getElementById('field'), x=cv.getContext('2d');
+  let W,H,parts=[];
+  const mouse={x:.5,y:.5};
+  function size(){ W=cv.width=innerWidth; H=cv.height=innerHeight;
+    parts=Array.from({length:Math.min(420,Math.round(W*H/4200))},()=>({
+      x:Math.random()*W,y:Math.random()*H,vx:0,vy:0,l:Math.random()*100
+    })); }
+  size(); addEventListener('resize',()=>{size();seedWeather()});
+  addEventListener('pointermove',e=>{mouse.x=e.clientX/innerWidth;mouse.y=e.clientY/innerHeight});
+  function flow(px,py,t){
+    // curl-ish noise steered by cursor = "the butterfly"
+    const a = Math.sin(px*0.004+t*0.0004)*2 + Math.cos(py*0.005-t*0.0003)*2
+            + Math.atan2(py/H-mouse.y, px/W-mouse.x)*(0.8+CHAOS*2.5);
+    return a;
+  }
+  // ---- weather that scales with CHAOS: rain, swell, lightning ----
+  let drops=[], bolts=[], flash=0;
+  function seedWeather(){
+    drops=Array.from({length:520},()=>({
+      x:Math.random()*W, y:Math.random()*H,
+      sp:5+Math.random()*11, o:.25+Math.random()*.6
+    }));
+  }
+  seedWeather();
+
+  function drawRain(t){
+    const a=CHAOS; if(a<.03) return;
+    const n=Math.floor(drops.length*Math.min(1,a*1.15));
+    // rain leans with the wind: cursor position sets the direction, chaos sets the force
+    const slant=((mouse.x-.5)*2.6+Math.sin(t*0.0004)*.55)*(0.5+a);
+    x.lineCap='round';
+    for(let i=0;i<n;i++){
+      const d=drops[i];
+      const vx=slant*d.sp*.6, vy=d.sp*(0.55+a*1.7);
+      d.x+=vx; d.y+=vy;
+      if(d.y>H){ d.y=-24; d.x=Math.random()*W; }
+      if(d.x<-40) d.x=W+24; else if(d.x>W+40) d.x=-24;
+      x.beginPath(); x.moveTo(d.x,d.y); x.lineTo(d.x-vx*1.7,d.y-vy*1.7);
+      x.strokeStyle=`hsla(${186+a*40},92%,74%,${d.o*(.20+a*.55)})`;
+      x.lineWidth=1+a*.7; x.stroke();
+    }
+    x.lineCap='butt';
+  }
+
+  function drawSwell(t){
+    const a=CHAOS; if(a<.03) return;
+    for(let k=0;k<3;k++){
+      const amp=(9+k*11)*(0.4+a*2.4), base=H-(k*26)-8, sp=t*(0.00035+k*0.00016);
+      x.beginPath(); x.moveTo(0,H);
+      for(let px=0;px<=W;px+=14){
+        const y=base-Math.sin(px*0.0055+sp*6+k)*amp-Math.sin(px*0.017+sp*11)*amp*0.35;
+        x.lineTo(px,y);
+      }
+      x.lineTo(W,H); x.closePath();
+      x.fillStyle=`hsla(${188+k*26},92%,${52-k*8}%,${(0.05+a*0.13)})`;
+      x.fill();
+    }
+  }
+
+  function makeBolt(){
+    const sx=Math.random()*W; let y=0, cx2=sx; const pts=[[sx,0]];
+    const depth=H*(0.35+Math.random()*0.5);
+    while(y<depth){ y+=14+Math.random()*30; cx2+=(Math.random()-.5)*54; pts.push([cx2,y]); }
+    bolts.push({pts,life:1,branch:Math.random()<.5});
+  }
+  function drawBolts(){
+    for(let i=bolts.length-1;i>=0;i--){
+      const b=bolts[i]; b.life-=0.075; if(b.life<=0){bolts.splice(i,1);continue}
+      x.beginPath(); b.pts.forEach((p,j)=>j?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));
+      x.strokeStyle=`rgba(198,255,46,${b.life})`; x.lineWidth=2.4;
+      x.shadowColor='rgba(198,255,46,.9)'; x.shadowBlur=18; x.stroke();
+      x.strokeStyle=`rgba(255,255,255,${b.life*.9})`; x.lineWidth=1; x.stroke();
+      x.shadowBlur=0;
+    }
+  }
+
+  // let the rest of the page throw lightning too
+  window.__strike=(n=1)=>{ for(let i=0;i<n;i++) makeBolt(); flash=Math.max(flash,.13); };
+
+  function loop(t){
+    x.fillStyle='rgba(11,7,20,.10)'; x.fillRect(0,0,W,H);
+    drawSwell(t);
+    drawRain(t);
+    if(CHAOS>.08 && Math.random()<CHAOS*0.03){ makeBolt(); flash=CHAOS*0.085; }
+    drawBolts();
+    if(flash>0){ x.fillStyle=`rgba(214,255,190,${flash})`; x.fillRect(0,0,W,H); flash-=0.035; }
+    parts.forEach(p=>{
+      const a=flow(p.x,p.y,t), sp=0.7+CHAOS*3.2;
+      p.vx=p.vx*0.92+Math.cos(a)*sp*0.4; p.vy=p.vy*0.92+Math.sin(a)*sp*0.4;
+      const ox=p.x,oy=p.y; p.x+=p.vx; p.y+=p.vy; p.l--;
+      if(p.l<0||p.x<0||p.x>W||p.y<0||p.y>H){p.x=Math.random()*W;p.y=Math.random()*H;p.l=100;return}
+      const hue = 170+CHAOS*160+Math.sin(p.y*0.01)*40;
+      x.strokeStyle=`hsla(${hue},95%,64%,${.30+CHAOS*.5})`; x.lineWidth=1.2;
+      x.beginPath(); x.moveTo(ox,oy); x.lineTo(p.x,p.y); x.stroke();
+    });
+    jitter(t);
+    requestAnimationFrame(loop);
+  }
+  if(!reduce) requestAnimationFrame(loop);
+})();
+
+/* ---------- physics tank ---------- */
+const tank=document.getElementById('tank');
+let bodies=[];
+function buildBodies(){
+  bodies=EPS.map(e=>{
+    const el=document.createElement('div'); el.className='body';
+    el.innerHTML=`<img src="../${e.thumb}" data-full="../${e.img}" ${FB}
+      alt="${e.title}"><span class="n">EP${String(e.n).padStart(2,'0')}</span>`;
+    el.title=e.title; tank.appendChild(el);
+    return {el,ep:e,x:0,y:0,vx:0,vy:0,r:48,ph:Math.random()*6.28,
+            rot:(Math.random()-.5)*20,vr:(Math.random()-.5)*2};
+  });
+}
+function layout(){
+  const w=tank.clientWidth,h=tank.clientHeight;
+  const r=(bodies[0]?.el.offsetWidth||96)/2;
+  bodies.forEach(b=>{
+    b.r=r;
+    b.x=r+Math.random()*Math.max(1,w-r*2); b.y=r+Math.random()*Math.max(1,h-r*2);
+    b.vx=(Math.random()-.5)*4; b.vy=(Math.random()-.5)*2;
+  });
+}
+addEventListener('resize',layout);
+
+let held=null, hp={x:0,y:0}, moved=0, mouseIn={x:-999,y:-999};
+tank.addEventListener('pointerdown',e=>{
+  const r=tank.getBoundingClientRect(), px=e.clientX-r.left, py=e.clientY-r.top;
+  let best=null,bd=1e9;
+  bodies.forEach(b=>{const d=Math.hypot(b.x-px,b.y-py); if(d<b.r+6&&d<bd){bd=d;best=b}});
+  if(best){held=best;moved=0;hp={x:px,y:py};tank.classList.add('grabbing');tank.setPointerCapture(e.pointerId)}
+});
+tank.addEventListener('pointermove',e=>{
+  const r=tank.getBoundingClientRect();
+  mouseIn={x:e.clientX-r.left,y:e.clientY-r.top};
+  if(!held)return;
+  const px=mouseIn.x,py=mouseIn.y;
+  moved+=Math.hypot(px-hp.x,py-hp.y);
+  held.vx=(px-held.x)*.35; held.vy=(py-held.y)*.35;
+  held.x=px; held.y=py; hp={x:px,y:py};
+});
+addEventListener('pointerup',()=>{
+  if(held&&moved<6) openEp(held.ep);
+  held=null; tank.classList.remove('grabbing');
+});
+tank.addEventListener('pointerleave',()=>mouseIn={x:-999,y:-999});
+
+function physics(now){
+  const w=tank.clientWidth,h=tank.clientHeight;
+  // Every ambient force scales with CHAOS, so chaos 0 is a genuine dead calm:
+  // nothing pushes the covers, and heavy damping brings them to a complete stop.
+  const g=CHAOS*0.62;
+  const damp=0.99-(1-Math.min(1,CHAOS*5))*0.08;
+  bodies.forEach(b=>{
+    if(b!==held){
+      b.vy+=g;
+      const lift=0.24*CHAOS;                 // ambient swirl
+      b.vx+=Math.cos(now*0.0006+b.ph)*lift;
+      b.vy+=Math.sin(now*0.0007+b.ph*1.7)*lift;
+      // an updraught that fights gravity in the low-chaos range so they hover mid-tank
+      b.vy+=(h*0.45-b.y)*0.0034*Math.min(1,CHAOS*5)*(1-Math.min(1,CHAOS*1.6));
+      // the cursor is the only wind at chaos 0, and the covers settle again once it leaves
+      const dx=b.x-mouseIn.x, dy=b.y-mouseIn.y, d=Math.hypot(dx,dy);
+      if(d<150&&d>0.1){ const f=(150-d)/150*(0.9+CHAOS*4.5); b.vx+=dx/d*f; b.vy+=dy/d*f; }
+      b.vx+=(Math.random()-.5)*CHAOS*1.6; b.vy+=(Math.random()-.5)*CHAOS*1.6;
+      if(CHAOS<0.02){                        // snap tiny residual drift to a true stop
+        if(Math.abs(b.vx)<0.05) b.vx=0;
+        if(Math.abs(b.vy)<0.05) b.vy=0;
+        if(Math.abs(b.vr)<0.05) b.vr=0;
+      }
+      b.x+=b.vx; b.y+=b.vy; b.vx*=damp; b.vy*=damp;
+      b.vr=b.vr*0.98+b.vx*0.06; b.rot+=b.vr;
+      if(b.x<b.r){b.x=b.r;b.vx*=-0.62} if(b.x>w-b.r){b.x=w-b.r;b.vx*=-0.62}
+      if(b.y<b.r){b.y=b.r;b.vy*=-0.62} if(b.y>h-b.r){b.y=h-b.r;b.vy*=-0.62;b.vx*=0.985}
+    }
+  });
+  // pairwise separation
+  for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
+    const a=bodies[i],b=bodies[j],dx=b.x-a.x,dy=b.y-a.y;
+    let d=Math.hypot(dx,dy); if(d===0)d=.01;
+    const ov=a.r+b.r-d;
+    if(ov>0){
+      const nx=dx/d,ny=dy/d,push=ov/2;
+      if(a!==held){a.x-=nx*push;a.y-=ny*push;a.vx-=nx*.5;a.vy-=ny*.5}
+      if(b!==held){b.x+=nx*push;b.y+=ny*push;b.vx+=nx*.5;b.vy+=ny*.5}
+    }
+  }
+  bodies.forEach(b=>{
+    b.el.style.transform=`translate(${b.x-b.r}px,${b.y-b.r}px) rotate(${b.rot}deg)`;
+  });
+  requestAnimationFrame(physics);
+}
+if(!reduce){ requestAnimationFrame(physics); }
+function applyReducedMotion(){
+  // No wind tunnel without motion — fall back to a plain, still shelf of covers.
+  tank.style.height='auto';
+  tank.style.display='flex'; tank.style.flexWrap='wrap';
+  tank.style.gap='.7rem'; tank.style.padding='1.1rem'; tank.style.justifyContent='center';
+  bodies.forEach(b=>{ b.el.style.position='static'; b.el.style.transform='none'; });
+  document.querySelector('.tank-note').textContent='↓ '+EPS.length+' episodes · click one to listen ↓';
+}
+
+/* ---------- chaos control ---------- */
+const slider=document.getElementById('chaos'), out=document.getElementById('chaosv');
+function setChaos(v){
+  CHAOS=v/100; out.textContent=CHAOS.toFixed(2);
+  document.documentElement.style.setProperty('--chaos',CHAOS);
+  out.style.color = CHAOS>.75?'var(--hot)':CHAOS>.4?'var(--amber)':'var(--lime)';
+  const st=document.getElementById('chaosstate');
+  if(st) st.textContent = CHAOS<.02?'DEAD CALM' : CHAOS<.3?'BREEZY' :
+    CHAOS<.6?'GALE' : CHAOS<.85?'SEVERE' : 'UNSURVIVABLE';
+  // the ticker runs faster and turns hotter as the storm builds
+  const td=document.getElementById('tick');
+  if(td) td.style.animationDuration = (42/(1+CHAOS*4)).toFixed(1)+'s';
+  document.documentElement.style.setProperty('--tickbg',
+    CHAOS>.85?'var(--hot)':CHAOS>.6?'var(--amber)':'var(--lime)');
+  const al=document.getElementById('alert');
+  if(al) al.classList.toggle('on', CHAOS>=.85);
+}
+slider.addEventListener('input',e=>setChaos(+e.target.value)); setChaos(18);
+document.getElementById('shake').addEventListener('click',()=>{
+  bodies.forEach(b=>{b.vx+=(Math.random()-.5)*62;b.vy-=Math.random()*38;b.vr+=(Math.random()-.5)*26});
+  if(window.__strike) window.__strike(3);
+  document.body.animate(
+    [{transform:'translate(0,0)'},{transform:'translate(-9px,5px) rotate(-.4deg)'},
+     {transform:'translate(7px,-4px) rotate(.4deg)'},{transform:'translate(0,0)'}],
+    {duration:420,iterations:2});
+});
+
+/* ---------- grid ---------- */
+function buildGrid(){
+document.getElementById('grid').innerHTML = EPS.map((e,i)=>`
+  <button class="card" data-i="${i}">
+    ${i===0?'<span class="badge">NEWEST</span>':''}
+    <img src="../${e.thumb}" data-full="../${e.img}" ${FB} alt="" loading="lazy">
+    <div class="meta">
+      <div class="num">EPISODE ${String(e.n).padStart(3,'0')}</div>
+      <h3>${e.title}</h3>
+      <div class="sm">${e.dateLabel} · ${e.dur}</div>
+    </div>
+  </button>`).join('');
+document.getElementById('cnt').textContent = EPS.length+' EPISODES // ~'+
+  Math.round(EPS.reduce((s,e)=>s+e.secs,0)/3600)+' HOURS OF SHOUTING ABOUT TRANSFORMERS';
+}
+
+// 3D tilt on hover
+document.getElementById('grid').addEventListener('pointermove',e=>{
+  const c=e.target.closest('.card'); if(!c)return;
+  const r=c.getBoundingClientRect();
+  const rx=((e.clientY-r.top)/r.height-.5)*-14, ry=((e.clientX-r.left)/r.width-.5)*14;
+  c.style.transform=`perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+});
+document.getElementById('grid').addEventListener('pointerleave',e=>{
+  document.querySelectorAll('.card').forEach(c=>c.style.transform='');
+},true);
+document.getElementById('grid').addEventListener('click',e=>{
+  const c=e.target.closest('.card'); if(c) openEp(EPS[+c.dataset.i]);
+});
+
+/* ---------- modal ---------- */
+const modal=document.getElementById('modal'), sheet=document.getElementById('sheet');
+function openEp(e){
+  sheet.innerHTML=`
+    <button class="x" onclick="document.getElementById('modal').close()" aria-label="Close">✕</button>
+    <div class="top">
+      <img src="../${e.thumb}" data-full="../${e.img}" ${FB} alt="">
+      <div><h3>${e.title}</h3><div class="sm">EP ${String(e.n).padStart(3,'0')} · ${e.dateLabel} · ${e.dur}</div></div>
+    </div>
+    <audio controls preload="none" src="${e.audio}"></audio>
+    <div class="bd">${e.desc}</div>`;
+  modal.showModal();
+}
+modal.addEventListener('click',e=>{ if(e.target===modal) modal.close(); });
+modal.addEventListener('close',()=>{ const a=sheet.querySelector('audio'); if(a)a.pause(); });
+
+/* ---------- subscribe ---------- */
+const LINKS=[['Apple','https://podcasts.apple.com/us/podcast/the-aigs-pod/id1889040734'],
+['Spotify','https://open.spotify.com/show/31CkWW6MrZ2c6EX4pNOLLe'],
+['YouTube','https://www.youtube.com/@aigspod'],['Overcast','https://overcast.fm/p5667866-pLSxDi'],
+['Pocket Casts','https://pca.st/nd87z4rq'],
+['Podcast Addict','https://podcastaddict.com/podcast/the-aigs-pod/6899043'],
+['Podcast Index','https://podcastindex.org/podcast/7789674'],
+['AntennaPod','antennapod-subscribe://aigspod.github.io/feed.xml'],
+['iHeart','https://iheart.com/podcast/328627475/'],['RSS','../feed.xml']];
+document.getElementById('subs').innerHTML=LINKS.map(([n,u])=>
+  `<a href="${u}" target="_blank" rel="noopener">${n}</a>`).join('');
+
+/* ---------- boot ---------- */
+(async function init(){
+  const msg=document.getElementById('tankmsg');
+  try{
+    EPS=await loadEpisodes();
+    if(!EPS.length) throw new Error('no episodes in feed');
+  }catch(err){
+    console.error('[AIGS]',err);
+    msg.innerHTML='COULDN\u2019T LOAD THE FEED.<br><a href="../">Head back to the normal version →</a>';
+    return;
+  }
+  msg.remove();
+  buildBodies();
+  buildGrid();
+  const cnt=EPS.length;
+  document.querySelectorAll('.tank-note .long,.tank-note .short')
+    .forEach(el=>el.textContent=el.textContent.replace('17 episodes',cnt+' episodes'));
+  if(reduce){ applyReducedMotion(); } else { layout(); requestAnimationFrame(()=>layout()); }
+})();
+
+/* ---------- easter egg: type STORM ---------- */
+let buf='';
+addEventListener('keydown',e=>{
+  if(e.target.matches('input,textarea'))return;
+  buf=(buf+e.key.toLowerCase()).slice(-5);
+  if(buf.endsWith('calm')){ slider.value=0; setChaos(0); }
+  if(buf==='storm'){ slider.value=100; setChaos(100);
+    if(window.__strike) window.__strike(6);
+    document.getElementById('shake').click();
+    document.body.animate([{filter:'hue-rotate(0)'},{filter:'hue-rotate(360deg)'}],{duration:1600,iterations:2});
+  }
+});
+</script>
+</body>
+</html>

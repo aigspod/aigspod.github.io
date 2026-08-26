@@ -1,0 +1,44 @@
+#!/bin/sh
+# Keep images/thumbs in sync with the full-res artwork.
+#
+# Episode data is no longer generated — fun/index.html reads feed.xml at runtime,
+# so titles, dates and durations can never go stale. Thumbnails are the one thing
+# that still needs a build step, so that is all this hook checks.
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+missing=0
+stale=0
+for f in images/ep*.png images/cover.png images/funcover.png; do
+  [ -e "$f" ] || continue
+  t="images/thumbs/$(basename "$f" .png).jpg"
+  if [ ! -e "$t" ]; then
+    missing=$((missing + 1))
+  elif [ "$f" -nt "$t" ]; then
+    stale=$((stale + 1))
+  fi
+done
+
+[ "$missing" -eq 0 ] && [ "$stale" -eq 0 ] && exit 0
+
+echo "pre-commit: $missing missing / $stale stale thumbnail(s) — regenerating…"
+sh tools/make_thumbs.sh
+git add images/thumbs
+echo "pre-commit: thumbnails updated and staged."
+
+# Apple Podcasts silently drops artwork under 1400x1400, so fail loudly instead.
+bad=""
+for f in images/ep*.png images/cover.png images/funcover.png; do
+  [ -e "$f" ] || continue
+  w=$(sips -g pixelWidth "$f" 2>/dev/null | awk '/pixelWidth/{print $2}')
+  h=$(sips -g pixelHeight "$f" 2>/dev/null | awk '/pixelHeight/{print $2}')
+  [ -n "$w" ] || continue
+  if [ "$w" -lt 1400 ] || [ "$h" -lt 1400 ]; then
+    bad="$bad\n  $f (${w}x${h})"
+  fi
+done
+if [ -n "$bad" ]; then
+  printf "pre-commit: artwork below 1400x1400 — Apple Podcasts will ignore it:%b\n" "$bad"
+  echo "Fix with: sips -z 1400 1400 <file>   (then re-commit)"
+  exit 1
+fi

@@ -29,7 +29,7 @@
     main {
       max-width: 420px;
       width: 100%;
-      padding: 3rem 1.5rem 2.5rem;
+      padding: 4.5rem 1.5rem 2.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -170,10 +170,102 @@
       background: rgba(90, 158, 111, 0.08);
     }
 
+    /* Quiet second doorway to /fun — findable if you look, invisible if you don't */
+    .storm-door {
+      margin-top: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2e3d4a;
+      text-decoration: none;
+      transition: color 0.25s, text-shadow 0.25s;
+    }
+    .storm-door:hover, .storm-door:focus-visible {
+      color: #c6ff2e;
+      text-shadow: 0 0 14px rgba(198, 255, 46, 0.6);
+      outline: none;
+    }
+    .storm-door span { font-size: 0.95rem; }
+
+    /* Emergency broadcast bar — the loud doorway to /fun.
+       Restrained until you touch it, then it goes full alert. */
+    .eas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem 0.6rem;
+      padding: 0.6rem 1rem;
+      background: #140d02;
+      border-bottom: 1px solid rgba(255, 179, 0, 0.35);
+      box-shadow: 0 1px 0 rgba(255, 179, 0, 0.12), 0 8px 30px rgba(0, 0, 0, 0.6);
+      color: #ffb300;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      overflow: hidden;
+      transition: background 0.22s, color 0.22s, border-color 0.22s;
+    }
+    .eas::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, transparent 35%, rgba(255, 179, 0, 0.16) 50%, transparent 65%);
+      transform: translateX(-100%);
+      animation: eas-sweep 5.5s ease-in-out infinite;
+    }
+    @keyframes eas-sweep { 0%, 55% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+    /* Drawn rather than emoji, so they take the amber type colour
+       and flip to dark along with the text on hover. */
+    .eas .emo {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+      color: inherit;
+      animation: eas-blink 0.85s steps(2) infinite;
+    }
+    @keyframes eas-blink { 50% { opacity: 0.12; } }
+
+    .eas:hover, .eas:focus-visible {
+      background: #ffb300;
+      color: #140d02;
+      border-color: #ffb300;
+      outline: none;
+    }
+    @media (max-width: 620px) {
+      .eas { font-size: 0.58rem; letter-spacing: 0.09em; gap: 0.4rem; padding: 0.5rem 0.6rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .eas::before, .eas .emo { animation: none; opacity: 1; }
+    }
+
+    /* Typing "storm" pulls the whole page into the weather */
+    @keyframes storm-out {
+      0%   { filter: none; transform: none; opacity: 1; }
+      35%  { filter: invert(1) hue-rotate(90deg); }
+      45%  { filter: none; }
+      60%  { filter: invert(1) hue-rotate(200deg); }
+      70%  { filter: none; }
+      100% { filter: brightness(3); transform: scale(1.35) rotate(-4deg); opacity: 0; }
+    }
+    body.storming { animation: storm-out 1.1s ease-in forwards; }
+    @media (prefers-reduced-motion: reduce) { body.storming { animation: none; } }
+
     /* Mobile adjustments */
     @media (max-width: 480px) {
       main {
-        padding: 2rem 1.25rem 2rem;
+        padding: 4rem 1.25rem 2rem;
       }
 
       .cover-wrap {
@@ -187,6 +279,28 @@
   </style>
 </head>
 <body>
+  <a href="fun/" class="eas" title="You probably shouldn't.">
+    <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M6.5 17a5.5 5.5 0 0 1 11 0Z" fill="currentColor"/>
+      <path d="M3.5 20h17"/>
+      <path d="M12 2.5v2.2M4.6 5.6l1.6 1.6M19.4 5.6l-1.6 1.6"/>
+    </svg>
+    <span>AIGS Climate Crisis</span>
+    <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 3 2.5 20h19L12 3Z"/>
+      <path d="M12 9.5v4" stroke-linecap="round"/>
+      <circle cx="12" cy="16.6" r="1.15" fill="currentColor" stroke="none"/>
+    </svg>
+    <span>AIGS Emergency Broadcast</span>
+    <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3.5 10v4a1 1 0 0 0 1 1H7l7 4V5L7 9H4.5a1 1 0 0 0-1 1Z"/>
+      <path d="M17.6 9.4a4 4 0 0 1 0 5.2"/>
+    </svg>
+  </a>
+
   <main>
     <div class="cover-wrap">
       <img src="images/cover.png" alt="The AIGS Pod cover art" class="cover">
@@ -242,6 +356,21 @@
       <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M6.18 15.64a2.18 2.18 0 110 4.36 2.18 2.18 0 010-4.36zM4 4.44A15.56 15.56 0 0119.56 20h-2.83A12.73 12.73 0 004 7.27V4.44zm0 5.66a9.9 9.9 0 019.9 9.9h-2.83A7.07 7.07 0 004 12.93V10.1z"/></svg>
       RSS Feed
     </a>
+
+    <a href="fun/" class="storm-door" title="You probably shouldn't."><span>⚡</span> Severe weather mode</a>
   </main>
+
+  <script>
+    // Type "storm" anywhere to be taken by the weather.
+    let buf = '';
+    addEventListener('keydown', e => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      buf = (buf + e.key.toLowerCase()).slice(-5);
+      if (buf !== 'storm') return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { location.href = 'fun/'; return; }
+      document.body.classList.add('storming');
+      setTimeout(() => location.href = 'fun/', 1000);
+    });
+  </script>
 </body>
 </html>
