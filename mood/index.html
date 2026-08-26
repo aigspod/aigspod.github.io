@@ -10,7 +10,7 @@
 <meta property="og:title" content="The AIGS Pod — Severe Weather Mode">
 <meta property="og:description" content="Every episode loose in a wind tunnel. Turn the chaos dial at your own risk.">
 <meta property="og:image" content="https://aigspod.github.io/images/funcover.png">
-<meta property="og:url" content="https://aigspod.github.io/fun/">
+<meta property="og:url" content="https://aigspod.github.io/mood/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,10 +39,14 @@ body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opac
 /* rolls down over the ticker once the dial goes past SEVERE */
 .alert{position:fixed;top:0;left:0;right:0;z-index:9;background:var(--amber);color:var(--ink);
   font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.14em;
-  text-align:center;padding:.55rem .8rem;border-bottom:3px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;gap:.35rem .6rem;flex-wrap:wrap;
+  padding:.55rem .8rem;border-bottom:3px solid var(--ink);
   transform:translateY(-140%);transition:transform .4s cubic-bezier(.34,1.4,.64,1);
   text-transform:uppercase;pointer-events:none}
 .alert.on{transform:none;animation:alertflash .55s steps(2) infinite}
+.alert .emo{width:15px;height:15px;flex:0 0 auto}
+@media(max-width:560px){.alert{font-size:10px;letter-spacing:.08em;gap:.3rem .4rem}
+  .alert .emo{width:13px;height:13px}}
 @keyframes alertflash{50%{background:var(--hot);color:var(--paper)}}
 .ticker{position:relative;z-index:3;background:var(--tickbg,var(--lime));color:var(--ink);
   font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.06em;
@@ -255,7 +259,27 @@ footer a{color:var(--lime)}
 <body>
 <canvas id="field"></canvas>
 
-<div class="alert" id="alert" role="status">⚠ Severe weather advisory · secure loose episodes · ⚠</div>
+<div class="alert" id="alert" role="status">
+  <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M3.5 10v4a1 1 0 0 0 1 1H7l7 4V5L7 9H4.5a1 1 0 0 0-1 1Z"/>
+    <path d="M17.6 9.4a4 4 0 0 1 0 5.2"/>
+  </svg>
+  <span>Severe weather advisory</span>
+  <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 3 2.5 20h19L12 3Z"/>
+    <path d="M12 9.5v4" stroke-linecap="round"/>
+    <circle cx="12" cy="16.6" r="1.15" fill="currentColor" stroke="none"/>
+  </svg>
+  <span>Secure loose episodes</span>
+  <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M6.5 17a5.5 5.5 0 0 1 11 0Z" fill="currentColor"/>
+    <path d="M3.5 20h17"/>
+    <path d="M12 2.5v2.2M4.6 5.6l1.6 1.6M19.4 5.6l-1.6 1.6"/>
+  </svg>
+</div>
 <div class="ticker"><div id="tick"></div></div>
 
 <div class="wrap">

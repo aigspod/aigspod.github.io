@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Paper Mill — The AIGS Pod</title>
+<meta name="description" content="We grind machine-learning-for-Earth-science papers into podcasts. Turn the crank.">
+<meta property="og:title" content="The Paper Mill — The AIGS Pod">
+<meta property="og:description" content="Paper in, podcast out. Turn the crank and see what comes off the belt.">
+<meta property="og:image" content="https://aigspod.github.io/images/cover.png">
+<meta property="og:url" content="https://aigspod.github.io/mill/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f7f4e9; --card:#fffdf7;
+  --ink:#1e3050; --ink2:#5a7291; --ink3:#93a3b8;
+  --blush:#f7d9d5; --sand:#ecdcb8; --mint:#d6e6dd;
+  --accent:#c0564a; --accent2:#a8382a; --creek:#3b7d8c;
+  --note:#f9e97e; --notefg:#4c4110; --notetag:#8a7420;
+  --line:rgba(30,48,80,.15);
+  --sans:'Poppins',system-ui,-apple-system,sans-serif;
+  --hand:'Caveat',cursive;
+  --mono:'Space Mono',ui-monospace,monospace;
+}
+/* lamp-lit version of the same drawing */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --cream:#131a26; --card:#1b2432;
+    --ink:#ece5d6; --ink2:#9db0c8; --ink3:#6b7d95;
+    --blush:#7c4640; --sand:#6d5c33; --mint:#334a41;
+    --accent:#e07a68; --accent2:#c0564a; --creek:#5aa3b4;
+    --note:#c9b53f; --notefg:#231d05; --notetag:#5c4f12;
+    --line:rgba(236,229,214,.17);
+  }
+}
+:root[data-theme="dark"]{
+  --cream:#131a26; --card:#1b2432;
+  --ink:#ece5d6; --ink2:#9db0c8; --ink3:#6b7d95;
+  --blush:#7c4640; --sand:#6d5c33; --mint:#334a41;
+  --accent:#e07a68; --accent2:#c0564a; --creek:#5aa3b4;
+  --note:#c9b53f; --notefg:#231d05; --notetag:#5c4f12;
+  --line:rgba(236,229,214,.17);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);
+  line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* the thin inset frame from the deck */
+.frame{position:fixed;inset:18px;border:1px solid var(--line);pointer-events:none;z-index:1}
+@media(max-width:700px){.frame{inset:9px}}
+
+.sheet{position:relative;z-index:2;max-width:1000px;margin:0 auto;padding:0 clamp(1.4rem,5vw,3.5rem)}
+
+/* ---------- shared slide-ish furniture ---------- */
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--ink3);
+  text-transform:lowercase;margin-bottom:1.1rem}
+.eyebrow b{color:var(--ink2);font-weight:400}
+h1,h2{font-weight:700;letter-spacing:-.02em;line-height:1.12;text-wrap:balance}
+h1{font-size:clamp(2.1rem,6.4vw,3.9rem)}
+h2{font-size:clamp(1.5rem,4vw,2.4rem)}
+.hl{background:var(--blush);padding:.03em .3em;border-radius:2px;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.hl.sand{background:var(--sand)}
+.lede{max-width:56ch;color:var(--ink2);font-size:clamp(.95rem,1.6vw,1.05rem);margin-top:1.1rem}
+.lede b{color:var(--ink);font-weight:600}
+.scrawl{font-family:var(--hand);font-size:1.35rem;color:var(--ink2);
+  display:inline-block;transform:rotate(-1.2deg)}
+
+section{padding:clamp(3rem,7vw,5.5rem) 0 0}
+header{padding:clamp(2rem,5vw,3.4rem) 0 0}
+
+/* ---------- the millworks ---------- */
+.works{margin-top:2.2rem;position:relative;cursor:pointer}
+#mill{width:100%;height:auto;display:block;overflow:visible;color:var(--ink)}
+.gear{transform-box:fill-box;transform-origin:center}
+.crank{cursor:grab}.crank:active{cursor:grabbing}
+.hand{font-family:var(--hand);font-size:17px;fill:var(--ink2)}
+.hand.sm{font-size:15px;fill:var(--ink3)}
+.works:focus-visible{outline:2px solid var(--ink);outline-offset:10px}
+.works.jammed{animation:judder .36s ease-in-out 2}
+@keyframes judder{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.readout{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-top:1.4rem;
+  padding-top:1.1rem;border-top:1px solid var(--line)}
+.readout .pull{font-family:var(--hand);font-size:1.3rem;color:var(--ink)}
+.readout .tally{margin-left:auto;font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;color:var(--ink3)}
+.readout .tally b{color:var(--ink);font-size:15px;font-weight:700}
+.readout .tally em{font-style:normal}
+
+/* ---------- out-tray ---------- */
+.tray-head{display:flex;align-items:baseline;gap:.8rem;margin-bottom:1rem}
+#tray{display:flex;flex-wrap:wrap;gap:.7rem;align-items:flex-start;min-height:86px}
+.tray-empty{font-family:var(--hand);font-size:1.25rem;color:var(--ink3)}
+
+.cassette{position:relative;overflow:hidden;width:118px;border:1px solid var(--line);
+  border-radius:6px;background:var(--card);cursor:pointer;font:inherit;flex:0 0 auto;
+  display:flex;flex-direction:column;gap:5px;padding:9px 9px 8px;
+  transition:transform .16s cubic-bezier(.34,1.6,.64,1),border-color .16s,box-shadow .16s}
+.cassette:hover{transform:translateY(-3px);border-color:var(--ink2);
+  box-shadow:0 8px 18px rgba(30,48,80,.10)}
+.cassette:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.cassette .win{height:26px;flex:0 0 auto;border:1px solid var(--line);border-radius:3px;
+  background:var(--cream);display:flex;align-items:center;justify-content:space-around}
+.cassette .reel{width:12px;height:12px;border:1.5px solid var(--ink2);border-radius:50%}
+.cassette .lab{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;
+  text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cassette .dur{font-family:var(--mono);font-size:9px;color:var(--ink3);text-align:center;
+  margin-top:-3px}
+.cassette .qc{position:absolute;right:-18px;top:11px;transform:rotate(-14deg);
+  background:var(--blush);color:var(--ink);font-family:var(--mono);font-size:6.5px;
+  font-weight:700;letter-spacing:.1em;padding:2px 16px;text-transform:uppercase;
+  pointer-events:none;white-space:nowrap}
+.cassette.flying{position:fixed;z-index:60;pointer-events:none;margin:0;
+  transition:transform .85s cubic-bezier(.3,.05,.4,1)}
+.cassette.fresh{animation:plop .45s cubic-bezier(.34,1.7,.64,1)}
+@keyframes plop{0%{transform:scale(.4) rotate(-12deg)}100%{transform:none}}
+
+/* ---------- the archive ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(126px,1fr));
+  gap:1.1rem .9rem;margin-top:1.6rem}
+.card{background:none;border:none;padding:0;cursor:pointer;font:inherit;
+  text-align:left;transition:transform .2s}
+.card:hover{transform:translateY(-4px)}
+.card:hover .face{border-color:var(--ink2)}
+.card:focus-visible{outline:2px solid var(--ink);outline-offset:6px;border-radius:8px}
+.face{background:var(--card);border:1px solid var(--line);border-radius:8px;
+  overflow:hidden;transition:border-color .16s}
+.front{position:relative}
+.front img{width:100%;aspect-ratio:1;object-fit:cover;display:block;
+  border-bottom:1px solid var(--line)}
+.front .fm{padding:.45rem .55rem .6rem}
+.front h3{font-size:.72rem;font-weight:600;line-height:1.25}
+.front .sm{font-family:var(--mono);font-size:8px;color:var(--ink3);margin-top:.25rem;
+  letter-spacing:.02em}
+/* ---------- expanded episode ---------- */
+dialog#ep{border:none;padding:0;background:transparent;color:var(--ink);margin:auto;
+  max-width:min(680px,94vw);max-height:90vh;overflow:visible}
+dialog#ep::backdrop{background:rgba(19,26,38,.55);backdrop-filter:blur(4px)}
+.epcard{position:relative;display:grid;grid-template-columns:200px 1fr;gap:1.4rem;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:1.5rem;box-shadow:0 24px 60px rgba(19,26,38,.28);max-height:90vh}
+.epcard img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;
+  border:1px solid var(--line)}
+.epcard .body{display:flex;flex-direction:column;gap:.7rem;min-height:0}
+.epcard h3{font-size:1.25rem;font-weight:700;line-height:1.2;letter-spacing:-.01em}
+.epcard .meta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ink3)}
+.epcard p{font-size:.82rem;line-height:1.6;color:var(--ink2);overflow-y:auto;
+  padding-right:.4rem;flex:1;min-height:0}
+.epcard audio{width:100%;height:34px}
+.epcard .x{position:absolute;top:-13px;right:-13px;width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--line);background:var(--card);color:var(--ink2);cursor:pointer;
+  font-size:15px;line-height:1;display:grid;place-items:center}
+.epcard .x:hover{color:var(--ink);border-color:var(--ink2)}
+@media(max-width:620px){
+  .epcard{grid-template-columns:1fr;gap:.9rem;padding:1.1rem;max-height:88vh;overflow-y:auto}
+  .epcard img{width:132px}
+  .epcard h3{font-size:1.05rem}
+}
+.card .num{position:absolute;top:.35rem;left:.35rem;z-index:2;background:var(--cream);
+  border:1px solid var(--line);border-radius:3px;font-family:var(--mono);font-size:7.5px;
+  letter-spacing:.06em;padding:1px 4px;color:var(--ink2)}
+.card.justmilled{animation:wiggle .7s ease-in-out}
+@keyframes wiggle{25%{transform:rotate(-2.5deg)}75%{transform:rotate(2.5deg)}}
+
+/* ---------- listen ---------- */
+.subs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:.75rem;margin-top:1.6rem}
+.subs a{border:1px solid var(--line);border-radius:8px;background:var(--card);
+  padding:.85rem 1rem;text-decoration:none;color:var(--ink);font-weight:600;font-size:.92rem;
+  display:flex;justify-content:space-between;align-items:center;gap:.6rem;
+  transition:border-color .16s,transform .16s,background .16s}
+.subs a span{font-family:var(--mono);font-size:9.5px;color:var(--ink3);letter-spacing:.06em;
+  font-weight:400}
+.subs a:hover{border-color:var(--ink2);transform:translateY(-2px);background:#fff}
+
+.footnote{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--ink3);
+  margin-top:1rem}
+footer{margin-top:clamp(3rem,7vw,5rem);padding:1.6rem 0 4rem;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink3)}
+footer a{color:var(--ink2)}
+footer a:hover{color:var(--ink)}
+
+/* ---------- theme toggle ---------- */
+.topbar{display:flex;padding-top:clamp(1.4rem,3vw,2.2rem)}
+.themetoggle{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .85rem;
+  border-radius:999px;border:1px solid var(--line);background:var(--card);
+  color:var(--ink2);cursor:pointer;font-family:var(--hand);font-size:1.15rem;line-height:1;
+  transition:color .16s,border-color .16s,transform .16s}
+.themetoggle #themeicon{font-size:1rem}
+.themetoggle:hover{color:var(--ink);border-color:var(--ink2);transform:translateY(-2px)}
+.themetoggle:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+@media(max-width:560px){
+  .themetoggle{gap:.4rem;padding:.4rem .7rem;font-size:1rem}
+}
+
+/* ---------- sticky notes ---------- */
+.sticky{width:150px;min-height:150px;padding:1rem .95rem;background:var(--note);color:var(--notefg);
+  font-family:var(--hand);font-size:1.5rem;line-height:1.15;
+  box-shadow:2px 6px 16px rgba(30,48,80,.18);
+  clip-path:polygon(0 0,100% 0,100% 90%,90% 100%,0 100%)}
+.sticky{display:block;text-decoration:none;position:relative}
+.sticky .tag{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.2em;
+  color:var(--notetag);margin-bottom:.35rem}
+.sticky .src{display:block;font-family:var(--mono);font-size:7.5px;letter-spacing:.12em;
+  color:var(--notetag);opacity:.72;margin-top:.5rem}
+.stickies .sticky{cursor:pointer;pointer-events:auto}
+.stickies .sticky:hover{filter:brightness(1.06)}
+.stickies .sticky:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.sticky u{text-decoration-thickness:2px;text-underline-offset:3px}
+.sticky.pinned{position:absolute;z-index:5;top:clamp(1rem,4vw,3rem);right:clamp(1rem,4vw,3rem);
+  transform:rotate(5deg);width:168px;font-size:1.7rem;
+  transition:transform .18s cubic-bezier(.34,1.6,.64,1)}
+.sticky.pinned:hover{transform:rotate(2deg) scale(1.03)}
+.sticky.pinned::before{content:'';position:absolute;top:-9px;left:50%;width:16px;height:16px;
+  margin-left:-8px;border-radius:50%;background:var(--accent);
+  box-shadow:0 2px 4px rgba(30,48,80,.35)}
+.stickies{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+.stickies .sticky{position:absolute;top:-190px;width:126px;min-height:126px;font-size:1.25rem;
+  will-change:transform;opacity:.96}
+@media(max-width:900px){
+  /* stays pinned rather than becoming a block that shoves the page down */
+  .sticky.pinned{top:10px;right:10px;width:112px;min-height:100px;font-size:1.05rem;
+    padding:.7rem .6rem;transform:rotate(5deg);box-shadow:1px 4px 12px rgba(30,48,80,.16)}
+  .sticky.pinned::before{width:12px;height:12px;top:-7px;margin-left:-6px}
+  .stickies .sticky{width:100px;min-height:100px;font-size:1rem;padding:.65rem .55rem}
+  header{padding-top:3.2rem}
+}
+
+/* ---------- mobile ---------- */
+@media(max-width:760px){
+  /* the drawing scales to ~0.4x here, so the annotations need to be much larger */
+  .hand{font-size:31px}.hand.sm{font-size:26px}
+  .readout{flex-direction:column;align-items:flex-start;gap:.5rem}
+  .readout .tally{margin-left:0}
+  .cards{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:.85rem .7rem}
+  .front h3{font-size:.66rem}
+  .front .sm{font-size:7.5px}
+  .back h4{font-size:.9rem}
+  .back p{font-size:.58rem}
+  .cassette{width:104px}
+}
+@media(max-width:560px){
+  .hand.sm{display:none}          /* keep the main labels, drop the asides */
+  .hand{font-size:34px}
+  /* at this size the two main labels are wide enough to collide, so stagger them */
+  .hand.t2{transform:translateY(46px)}
+}
+@media(max-width:430px){
+  .cards{grid-template-columns:repeat(3,1fr);gap:.7rem .55rem}
+  .front h3{font-size:.6rem;line-height:1.2}
+  .front .fm{padding:.35rem .4rem .45rem}
+  .card .num{font-size:7px;padding:0 3px}
+  .subs{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="frame" aria-hidden="true"></div>
+
+<div class="stickies" id="stickies" aria-hidden="true"></div>
+<a class="sticky pinned" id="pinned" href="https://xkcd.com/1838/" target="_blank" rel="noopener"
+   title="what we actually do all day">
+  <span class="tag">TODO</span>
+  read the<br><u>actual</u> paper
+  <span class="src">xkcd 1838 →</span>
+</a>
+<div class="sheet">
+
+<div class="topbar">
+  <button class="themetoggle" id="themetoggle" type="button">
+    <span id="themeicon" aria-hidden="true">☾</span><span id="themelabel">pull an all-nighter</span>
+  </button>
+</div>
+
+<header>
+  <div class="eyebrow">00 / <b>the aigs pod</b> · paper in, podcast out</div>
+  <h1>We grind papers<br>into <span class="hl">podcasts</span></h1>
+  <p class="lede">Each week we tip one <b>machine-learning-for-Earth-science</b> paper into the hopper, turn the crank, and see what comes off the belt. Sometimes it's a breakthrough. Sometimes it's a very expensive interpolation. The mill does not distinguish.</p>
+</header>
+
+<section>
+  <div class="eyebrow">01 / <b>the millworks</b> · turn the crank</div>
+  <div class="works" id="works">
+    <svg id="mill" viewBox="-26 6 884 286" aria-label="A hand-cranked mill that turns papers into podcasts">
+      <defs>
+        <filter id="sketch" x="-6%" y="-12%" width="112%" height="124%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="3" seed="7" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"
+                             xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <marker id="tip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 1 L10 5 L0 9" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <g filter="url(#sketch)" fill="none" stroke="currentColor" stroke-width="2.4"
+         stroke-linecap="round" stroke-linejoin="round">
+        <g id="creek" stroke="var(--creek)" stroke-width="2"></g>
+        <g class="gear" id="wheel"></g>
+
+        <path d="M130 24 L236 24 L208 74 L158 74 Z"/>
+        <g id="sheets" stroke-width="2"></g>
+
+        <path d="M160 74 L560 74"/><path d="M160 85 L560 85"/>
+        <g id="belt-dashes" stroke-width="1.6" opacity=".4"></g>
+
+        <g class="gear" id="g1"></g>
+        <g class="gear" id="g2"></g>
+
+        <g id="tblock">
+          <rect x="450" y="112" width="150" height="94" rx="10"/>
+          <g id="net" stroke-width="1.4"></g>
+        </g>
+
+        <path d="M600 160 C 656 160, 652 100, 698 100" marker-end="url(#tip)"/>
+        <g id="horn"><path d="M706 72 L732 72 L768 42 L768 158 L732 128 L706 128 Z"/></g>
+        <g id="waves" opacity="0">
+          <path d="M782 76 Q795 100 782 124"/><path d="M797 62 Q818 100 797 138"/>
+        </g>
+
+        <g class="crank" id="crank" style="transform-origin:300px 172px;transform-box:view-box">
+          <path d="M300 172 L300 108" stroke="var(--accent)" stroke-width="6"/>
+          <circle cx="300" cy="102" r="12" fill="var(--accent)" stroke="var(--accent2)" stroke-width="2"/>
+          <circle cx="300" cy="102" r="32" fill="transparent" stroke="none"/>
+        </g>
+      </g>
+
+      <!-- annotations sit outside the wobble filter so they stay legible -->
+      <text class="hand sm" x="132" y="16">papers ↓</text>
+      <text class="hand" x="226" y="252">“the peer review stage”</text>
+      <text class="hand sm" x="226" y="274">nobody knows what it does</text>
+      <text class="hand t2" x="452" y="236">transformer, allegedly</text>
+      <text class="hand sm" x="452" y="258">we asked it nicely</text>
+      <text class="hand" x="698" y="188">↑ a podcast!</text>
+      <text class="hand sm" x="-20" y="270">the creek does most of the work</text>
+    </svg>
+
+    <div class="readout">
+      <span class="pull" id="pull">← turn the red crank, or click anywhere on the mill</span>
+      <span class="tally">milled: <b id="tally">0</b> <em id="unit">papers</em></span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="tray-head">
+    <div class="eyebrow" style="margin:0">02 / <b>out-tray</b> · freshly milled*</div>
+  </div>
+  <div id="tray"><span class="tray-empty">nothing yet — give the crank a turn ↑</span></div>
+  <p class="footnote">* nothing here is peer reviewed. the stamps are decorative. we are aware.</p>
+</section>
+
+<section>
+  <div class="eyebrow">03 / <b>the archive</b> · everything we have milled so far</div>
+  <h2>Every episode, <span class="hl sand">flippable</span></h2>
+  <p class="lede">Click any of them to open it up — artwork, abstract and player.</p>
+  <dialog id="ep"><div class="epcard" id="epcard"></div></dialog>
+  <div class="cards" id="cards">
+    <p class="scrawl" id="loading">unpinning the archive…</p>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">04 / <b>where to listen</b></div>
+  <h2>It's a podcast. It is, <span class="hl">alarmingly</span>, everywhere.</h2>
+  <div class="subs" id="subs"></div>
+</section>
+
+<footer>
+  <a href="../">← the normal version</a> ·
+  <a href="../mood/">severe weather mode ⚡</a> ·
+  <a href="../feed.xml">RSS</a> ·
+  MADE WITH COFFEE AND UNRESOLVED SUBGRID PROCESSES
+</footer>
+</div>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let EPS = [];
+
+/* ---------- episodes come straight from feed.xml, so they can never go stale ---------- */
+const ITUNES='http://www.itunes.com/dtds/podcast-1.0.dtd';
+async function loadEpisodes(){
+  if(window.AIGS_EPISODES) return window.AIGS_EPISODES;
+  const xml=await fetch('../feed.xml',{cache:'no-cache'}).then(r=>{
+    if(!r.ok) throw new Error('feed.xml '+r.status); return r.text();
+  });
+  const doc=new DOMParser().parseFromString(xml,'application/xml');
+  if(doc.querySelector('parsererror')) throw new Error('feed.xml is not valid XML');
+  return [...doc.querySelectorAll('item')].map(it=>{
+    const txt=t=>(it.querySelector(t)?.textContent||'').trim();
+    const itu=t=>it.getElementsByTagNameNS(ITUNES,t)[0];
+    const n=parseInt(itu('episode')?.textContent||'0',10);
+    const dur=(itu('duration')?.textContent||'').trim();
+    const d=new Date(txt('pubDate'));
+    const img=(itu('image')?.getAttribute('href')||'').replace(/^https?:\/\/[^/]+\//,'')
+              || 'images/ep'+String(n).padStart(3,'0')+'.png';
+    return {
+      n, title:txt('title'), dur,
+      // format in UTC: the feed stamps midnight UTC, a day earlier west of Greenwich
+      dateLabel:isNaN(d)?'':d.toLocaleDateString('en-US',
+        {month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}),
+      secs:dur?dur.split(':').reduce((a,x)=>a*60+ +x,0):0,
+      img,
+      thumb:img.replace(/^images\//,'images/thumbs/').replace(/\.png$/i,'.jpg'),
+      audio:it.querySelector('enclosure')?.getAttribute('url')||'',
+      desc:(txt('description')||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim()
+    };
+  }).filter(e=>e.n).sort((a,b)=>b.n-a.n);
+}
+// a missing thumbnail falls back to the full-res artwork instead of a broken image
+const FB='onerror="this.onerror=null;this.src=this.dataset.full"';
+
+/* ---------- drawing the machine ---------- */
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const n=document.createElementNS(NS,t);
+  for(const k in a) n.setAttribute(k,a[k]); return n;};
+
+function drawGear(g,cx,cy,R,teeth){
+  g.appendChild(el('circle',{cx,cy,r:R}));
+  for(let i=0;i<teeth;i++){
+    const a=i/teeth*Math.PI*2;
+    g.appendChild(el('path',{d:`M${cx+Math.cos(a)*R} ${cy+Math.sin(a)*R}
+      L${cx+Math.cos(a)*(R+11)} ${cy+Math.sin(a)*(R+11)}`}));
+  }
+  g.appendChild(el('circle',{cx,cy,r:5,fill:'currentColor'}));
+}
+drawGear(document.getElementById('g1'),300,172,48,8);
+drawGear(document.getElementById('g2'),398,172,32,6);
+
+(function drawWheel(){
+  const wheel=document.getElementById('wheel'), creek=document.getElementById('creek');
+  const cx=62, cy=158, R=54, r=19, N=9;
+  wheel.appendChild(el('circle',{cx,cy,r:R}));
+  wheel.appendChild(el('circle',{cx,cy,r:R-11,'stroke-width':1.6,opacity:.75}));
+  wheel.appendChild(el('circle',{cx,cy,r}));
+  for(let i=0;i<N;i++){
+    const a=i/N*Math.PI*2;
+    wheel.appendChild(el('path',{d:`M${cx+Math.cos(a)*r} ${cy+Math.sin(a)*r}
+      L${cx+Math.cos(a)*R} ${cy+Math.sin(a)*R}`,'stroke-width':1.8}));
+    const px=cx+Math.cos(a)*(R-5), py=cy+Math.sin(a)*(R-5);
+    const pd=el('path',{d:`M${px-9} ${py} L${px+9} ${py}`,'stroke-width':3.4});
+    pd.setAttribute('transform',`rotate(${a*180/Math.PI+90} ${px} ${py})`);
+    wheel.appendChild(pd);
+  }
+  wheel.appendChild(el('circle',{cx,cy,r:4,fill:'currentColor'}));
+  for(let k=0;k<3;k++){
+    let d='M-26 '+(222+k*10);
+    for(let x=-26;x<=150;x+=24) d+=` q 12 ${k%2?-6:6} 24 0`;
+    creek.appendChild(el('path',{d,opacity:.6-k*.16}));
+  }
+})();
+(function drawBelt(){
+  const g=document.getElementById('belt-dashes');
+  for(let x=172;x<556;x+=24) g.appendChild(el('path',{d:`M${x} 76 L${x+11} 83`}));
+})();
+(function drawNet(){
+  const net=document.getElementById('net'), L=[3,4,4,2], x0=478, dx=42;
+  const NY=159;
+  L.forEach((n,li)=>{ for(let i=0;i<n;i++){
+    const cy=NY-(n-1)*12+i*24, cx=x0+li*dx;
+    if(li<L.length-1){ const nn=L[li+1];
+      for(let j=0;j<nn;j++) net.appendChild(el('path',
+        {d:`M${cx} ${cy} L${cx+dx} ${NY-(nn-1)*12+j*24}`,opacity:.28}));
+    }
+  }});
+  L.forEach((n,li)=>{ for(let i=0;i<n;i++){
+    net.appendChild(el('circle',{cx:x0+li*dx,cy:NY-(n-1)*12+i*24,r:4,
+      fill:'currentColor',class:'node'}));
+  }});
+})();
+
+/* ---------- the mill ---------- */
+const crank=document.getElementById('crank'), g1=document.getElementById('g1'),
+      g2=document.getElementById('g2'), waves=document.getElementById('waves'),
+      net=document.getElementById('net'), sheets=document.getElementById('sheets'),
+      svg=document.getElementById('mill'), tray=document.getElementById('tray'),
+      wheelEl=document.getElementById('wheel'),
+      tallyEl=document.getElementById('tally'), pull=document.getElementById('pull');
+
+let ang=0, vel=0, drag=false, turns=0, lastAng=0, queued=0;
+let pool=[], milled=0, busy=false, jobs=0;
+
+const QUIPS=['again!','the gears like that','keep going','it never gets old',
+  'you are very good at this','the mill is content','this is your job now',
+  'we have plenty of papers','somewhere, a reviewer weeps','okay. last one. probably.'];
+
+function spin(){
+  if(!drag){
+    if(queued>0){                                 // a click buys exactly one revolution
+      const step=Math.max(3.5,queued*0.07);
+      const d=Math.min(queued,step); ang+=d; queued-=d;
+      if(queued>0){ vel=d; }
+      else {
+        // land exactly on the revolution: accumulated float error was leaving ang at
+        // 359.9999..., so Math.floor saw 0 turns and the click milled nothing
+        queued=0; vel=0; ang=Math.round(ang/360)*360;
+      }
+    } else { ang+=vel; vel*=0.965; if(Math.abs(vel)<0.05) vel=0; }
+  }
+  crank.style.transform=`rotate(${ang}deg)`;
+  g1.style.transform=`rotate(${ang}deg)`;
+  g2.style.transform=`rotate(${-ang*48/32}deg)`;
+  wheelEl.style.transform=`rotate(${ang*0.4}deg)`;      // big wheel, slow turn
+  const t=Math.floor((Math.abs(ang)+1e-6)/360);
+  if(t>turns){ turns=t; runMill(); }
+  requestAnimationFrame(spin);
+}
+if(!reduce) spin();
+
+function angleAt(e){
+  const r=svg.getBoundingClientRect();
+  const sx=-26+(e.clientX-r.left)/r.width*884, sy=6+(e.clientY-r.top)/r.height*286;
+  return Math.atan2(sy-172,sx-300)*180/Math.PI+90;
+}
+crank.addEventListener('pointerdown',e=>{
+  drag=true; queued=0; lastAng=angleAt(e); crank.setPointerCapture(e.pointerId); e.preventDefault();
+});
+addEventListener('pointermove',e=>{
+  if(!drag) return;
+  const a=angleAt(e); let d=a-lastAng;
+  if(d>180) d-=360; if(d<-180) d+=360;
+  ang+=d; vel=d; lastAng=a;
+});
+addEventListener('pointerup',()=>drag=false);
+document.getElementById('works').addEventListener('click',e=>{
+  if(e.target.closest('a')) return;
+  queued+=360;
+});
+
+/* ---- the production line ---- */
+function dropSheet(){
+  const p=el('path',{d:'M0 0 h22 v28 h-22 Z',fill:'var(--card)'});
+  sheets.appendChild(p);
+  let y=-30;
+  (function f(){ y+=5.5;
+    p.setAttribute('transform',`translate(${168+Math.sin(y*.05)*7},${y}) rotate(${y*.5} 11 14)`);
+    if(y<48) requestAnimationFrame(f); else p.remove(); })();
+}
+// the paper rides the belt, then tips off it and drops into the transformer box.
+// #sheets is drawn before the box, and the box has no fill, so it reads as falling in.
+function carryPaper(onHit){
+  const p=el('path',{d:'M0 0 h22 v28 h-22 Z',fill:'var(--card)'});
+  sheets.appendChild(p);
+  let x=170, y=46, falling=false;
+  (function f(){
+    if(!falling){
+      x+=6.6;
+      p.setAttribute('transform',`translate(${x},${y}) rotate(${Math.sin(x*.08)*4} 11 14)`);
+      if(x>=514) falling=true;
+    } else {
+      y+=4.6; x+=0.9;                                   // tips forward as it goes over the edge
+      const k=(y-46)/108, sc=Math.max(.28,1-k*0.72);
+      p.setAttribute('transform',
+        `translate(${x},${y}) rotate(${k*118} 11 14) scale(${sc})`);
+      p.setAttribute('opacity',String(Math.max(0,1-k*0.85)));
+      if(!p.dataset.hit && y>=112){ p.dataset.hit='1'; if(onHit) onHit(); }
+      if(y>150){ p.remove(); return; }
+    }
+    requestAnimationFrame(f);
+  })();
+}
+// the box takes the hit when the paper lands in it
+function shakeBox(){
+  const b=document.getElementById('tblock');
+  if(!b) return;
+  b.animate([
+    {transform:'translate(0,0) rotate(0deg)'},
+    {transform:'translate(-3px,4px) rotate(-1.1deg)'},
+    {transform:'translate(3px,-2px) rotate(1deg)'},
+    {transform:'translate(-2px,2px) rotate(-.6deg)'},
+    {transform:'translate(0,0) rotate(0deg)'}
+  ],{duration:420,easing:'ease-out'});
+}
+function flashNet(){
+  const cs=getComputedStyle(document.documentElement);
+  const base=cs.getPropertyValue('--ink').trim(), hot=cs.getPropertyValue('--accent').trim();
+  net.querySelectorAll('.node').forEach((n,i)=>
+    n.animate([{fill:base},{fill:hot},{fill:base}],{duration:520,delay:i*38}));
+}
+function toot(){
+  waves.style.opacity=1;
+  waves.animate([{opacity:0},{opacity:1},{opacity:.25},{opacity:1},{opacity:0}],{duration:1100});
+  setTimeout(()=>waves.style.opacity=0,1050);
+}
+
+const JAMS=['paper jam. give it another go.','it ate the paper. sorry.',
+  'the mill is thinking about it.','that one was too long. try again.',
+  'rejected at peer review. turn again.','the gears are sulking'];
+function jam(){
+  const works=document.getElementById('works');
+  works.classList.add('jammed');
+  pull.textContent='← '+JAMS[Math.floor(Math.random()*JAMS.length)];
+  setTimeout(()=>works.classList.remove('jammed'),700);
+}
+
+function runMill(){ jobs++; if(!busy) nextJob(); }
+async function nextJob(){
+  if(jobs<=0){ busy=false; return; }
+  busy=true; jobs--;
+  if(!pool.length) pool=[...EPS];
+  if(!pool.length){ busy=false; return; }
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+  // roughly one turn in nine, the mill simply refuses
+  if(!reduce && milled>0 && Math.random()<0.11){
+    dropSheet(); await wait(420); jam(); await wait(500);
+    return nextJob();
+  }
+  const ep=pool.splice(Math.floor(Math.random()*pool.length),1)[0];
+  if(reduce){
+    const b=document.createElement('button'); b.className='cassette';
+    b.innerHTML=cassetteHTML(ep); addCassette(b); finishCassette(b,ep);
+    return nextJob();
+  }
+  dropSheet();
+  await wait(340); carryPaper(shakeBox);        // shakes the box the moment it lands
+  await wait(1180); flashNet();                 // then the box thinks about it
+  await wait(460); toot(); ejectCassette(ep); dropSticky();
+  await wait(420);
+  return nextJob();
+}
+
+/* ---- a cassette flies out of the horn and lands in the tray ---- */
+const STAMPS=['approved','not peer reviewed','seems fine','do not cite','unverified',
+              'checked by nobody','probably true','vibes only','passed (barely)'];
+let stampSeq=0;
+const stamp=()=>STAMPS[(stampSeq++)%STAMPS.length];
+function cassetteHTML(ep){
+  return `<span class="win"><span class="reel"></span><span class="reel"></span></span>
+          <span class="lab">EP ${String(ep.n).padStart(3,'0')}</span>
+          <span class="dur">${ep.dur}</span>
+          <span class="qc">${stamp()}</span>`;
+}
+function ejectCassette(ep){
+  const hornRect=document.getElementById('horn').getBoundingClientRect();
+  const fly=document.createElement('div');
+  fly.className='cassette flying';
+  fly.innerHTML=cassetteHTML(ep);
+  fly.style.left=(hornRect.right-20)+'px';
+  fly.style.top=(hornRect.top+hornRect.height/2-33)+'px';
+  document.body.appendChild(fly);
+
+  const slot=document.createElement('button');    // reserve the landing spot first
+  slot.className='cassette'; slot.style.visibility='hidden';
+  slot.innerHTML=cassetteHTML(ep);
+  addCassette(slot);
+
+  requestAnimationFrame(()=>{
+    const to=slot.getBoundingClientRect(), from=fly.getBoundingClientRect();
+    fly.style.transform=
+      `translate(${to.left-from.left}px,${to.top-from.top}px) rotate(${(Math.random()-.5)*40}deg)`;
+  });
+  setTimeout(()=>{
+    fly.remove(); slot.style.visibility=''; slot.classList.add('fresh');
+    finishCassette(slot,ep);
+  },880);
+}
+function addCassette(node){
+  const empty=tray.querySelector('.tray-empty');
+  if(empty) empty.remove();
+  tray.prepend(node);
+  while(tray.children.length>12) tray.lastElementChild.remove();
+}
+const UNITS=['papers','papers','papers','reams','careers','weekends',
+             'good intentions','GPU-hours','arXiv preprints'];
+function finishCassette(node,ep){
+  milled++; tallyEl.textContent=milled;
+  const u=document.getElementById('unit');
+  if(u) u.textContent=UNITS[Math.min(milled-1,UNITS.length-1)];
+  if(pull) pull.textContent='← '+QUIPS[Math.min(milled-1,QUIPS.length-1)];
+  node.title=ep.title;
+  node.setAttribute('aria-label','Go to '+ep.title);
+  node.addEventListener('click',()=>revealCard(ep));
+}
+function revealCard(ep){
+  openEpisode(ep);
+  const card=document.getElementById('ep'+ep.n);
+  if(!card) return;
+  card.classList.remove('justmilled'); void card.offsetWidth;
+  card.classList.add('justmilled');
+}
+
+/* ---------- sticky notes that fall like leaves ---------- */
+// Each note is a reason not to read the paper, and links to the relevant xkcd.
+const TODOS=[
+  ['read the actual paper',            1838],   // machine learning
+  ['check the appendix',               2278],
+  ['reply to reviewer 2',              386 ],   // duty calls
+  ['learn what spectral bias is',      1838],
+  ['stop saying “foundation model”',   927 ],   // standards
+  ['re-run it at higher resolution',   1205],   // is it worth the time
+  ['just average the ensembles',       1885],   // ensemble model
+  ['check if it is significant',       882 ],   // significant
+  ['blame the training data',          2494],
+  ['automate it instead',              1319],   // automation
+  ['argue about it online',            386 ],
+  ['look at the temperature record',   1732],   // earth temperature timeline
+  ['ask a physicist',                  793 ],   // physicists
+  ['update the dependency',            2347],   // dependency
+  ['water the plants',                 1425],   // tasks
+  ['sleep',                            1150]
+];
+const stickyLayer=document.getElementById('stickies');
+let todoSeq=0;
+function dropSticky(){
+  if(reduce || stickyLayer.children.length>4) return;
+  const [text,num]=TODOS[(todoSeq++)%TODOS.length];
+  const n=document.createElement('a');
+  n.className='sticky';
+  n.href='https://xkcd.com/'+num+'/';
+  n.target='_blank'; n.rel='noopener';
+  n.innerHTML='<span class="tag">TODO</span>'+text+'<span class="src">xkcd '+num+' →</span>';
+  const x=6+Math.random()*80;                       // vw
+  n.style.left=x+'vw';
+  stickyLayer.appendChild(n);
+  const dur=7000+Math.random()*4000, sway=30+Math.random()*70, spin=(Math.random()-.5)*260;
+  // hold still while someone is reaching for it, or it is impossible to click
+  n.addEventListener('pointerenter',()=>a.pause());
+  n.addEventListener('pointerleave',()=>a.play());
+  n.addEventListener('focus',()=>a.pause());
+  n.addEventListener('blur',()=>a.play());
+  const a=n.animate([
+    {transform:`translateY(0) translateX(0) rotate(${(Math.random()-.5)*20}deg)`,opacity:0},
+    {transform:`translateY(30vh) translateX(${sway*.6}px) rotate(${spin*.4}deg)`,opacity:.96,offset:.28},
+    {transform:`translateY(70vh) translateX(${-sway}px) rotate(${spin*.8}deg)`,opacity:.96,offset:.7},
+    {transform:`translateY(118vh) translateX(${sway*.3}px) rotate(${spin}deg)`,opacity:.9}
+  ],{duration:dur,easing:'cubic-bezier(.35,.05,.5,1)'});
+  a.onfinish=()=>n.remove();
+}
+
+// a note wanders down every so often, whether or not you touch the crank
+if(!reduce) setInterval(()=>{ if(Math.random()<0.55) dropSticky(); }, 14000);
+setTimeout(()=>{ if(!reduce) dropSticky(); }, 2600);
+
+/* ---------- the archive ---------- */
+function buildBoard(){
+  document.getElementById('cards').innerHTML=EPS.map(e=>`
+    <button class="card" id="ep${e.n}" data-n="${e.n}" aria-label="Open ${e.title}">
+      <div class="face front">
+        <span class="num">EP ${String(e.n).padStart(3,'0')}</span>
+        <img src="../${e.thumb}" data-full="../${e.img}" ${FB} alt="" loading="lazy">
+        <div class="fm"><h3>${e.title}</h3>
+          <div class="sm">${e.dateLabel} · ${e.dur}</div></div>
+      </div>
+    </button>`).join('');
+}
+const dlg=document.getElementById('ep'), epcard=document.getElementById('epcard');
+function openEpisode(ep){
+  epcard.innerHTML=`
+    <button class="x" type="button" aria-label="Close">✕</button>
+    <img src="../${ep.thumb}" data-full="../${ep.img}" ${FB} alt="">
+    <div class="body">
+      <div class="meta">EP ${String(ep.n).padStart(3,'0')} · ${ep.dateLabel} · ${ep.dur}</div>
+      <h3>${ep.title}</h3>
+      <audio controls preload="none" src="${ep.audio}"></audio>
+      <p>${ep.desc}</p>
+    </div>`;
+  dlg.showModal();
+}
+document.getElementById('cards').addEventListener('click',e=>{
+  const c=e.target.closest('.card'); if(!c) return;
+  const ep=EPS.find(x=>x.n===+c.dataset.n);
+  if(ep) openEpisode(ep);
+});
+dlg.addEventListener('click',e=>{ if(e.target===dlg || e.target.closest('.x')) dlg.close(); });
+dlg.addEventListener('close',()=>{ const a=epcard.querySelector('audio'); if(a) a.pause(); });
+
+/* ---------- subscribe ---------- */
+const LINKS=[['Apple Podcasts','the big one','https://podcasts.apple.com/us/podcast/the-aigs-pod/id1889040734'],
+['Spotify','also big','https://open.spotify.com/show/31CkWW6MrZ2c6EX4pNOLLe'],
+['YouTube','with pictures','https://www.youtube.com/@aigspod'],
+['Overcast','smart speed','https://overcast.fm/p5667866-pLSxDi'],
+['Pocket Casts','beloved','https://pca.st/nd87z4rq'],
+['Podcast Addict','android','https://podcastaddict.com/podcast/the-aigs-pod/6899043'],
+['Podcast Index','open web','https://podcastindex.org/podcast/7789674'],
+['AntennaPod','foss','antennapod-subscribe://aigspod.github.io/feed.xml'],
+['iHeartRadio','sure','https://iheart.com/podcast/328627475/'],
+['RSS','the real one','../feed.xml']];
+document.getElementById('subs').innerHTML=LINKS.map(([n,s,u])=>
+  `<a href="${u}" target="_blank" rel="noopener">${n}<span>${s}</span></a>`).join('');
+
+/* ---------- day / lamplight ---------- */
+(function(){
+  const btn=document.getElementById('themetoggle'), icon=document.getElementById('themeicon');
+  const label=document.getElementById('themelabel');
+  const root=document.documentElement;
+  const sysDark=()=>matchMedia('(prefers-color-scheme: dark)').matches;
+  // no stored choice -> no data-theme attribute -> prefers-color-scheme decides
+  let saved=null;
+  try{ saved=localStorage.getItem('mill-theme'); }catch(e){}
+  if(saved==='dark'||saved==='light') root.setAttribute('data-theme',saved);
+  const paint=()=>{
+    const dark=(root.getAttribute('data-theme')||(sysDark()?'dark':'light'))==='dark';
+    // the label says what happens if you press it, not what mode you are in
+    icon.textContent = dark ? '☀' : '☾';
+    label.textContent = dark ? 'see daylight again' : 'pull an all-nighter';
+    btn.setAttribute('aria-label', dark
+      ? 'Switch to the daytime version' : 'Switch to the late-night version');
+    btn.title = dark ? 'go outside. it has been hours.' : 'the mill runs all night.';
+  };
+  paint();
+  btn.addEventListener('click',()=>{
+    const dark=(root.getAttribute('data-theme')||(sysDark()?'dark':'light'))==='dark';
+    const next=dark?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{ localStorage.setItem('mill-theme',next); }catch(e){}
+    paint();
+  });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',paint);
+})();
+
+/* ---------- boot ---------- */
+(async function init(){
+  const loading=document.getElementById('loading');
+  try{
+    EPS=await loadEpisodes();
+    if(!EPS.length) throw new Error('no episodes in feed');
+  }catch(err){
+    console.error('[AIGS]',err);
+    loading.innerHTML='the archive is jammed. <a href="../">back to the normal version →</a>';
+    return;
+  }
+  pool=[...EPS];
+  buildBoard();
+})();
+</script>
+</body>
+</html>

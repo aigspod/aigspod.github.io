@@ -69,6 +69,36 @@
       max-width: 340px;
     }
 
+    /* The methodology is, of course, a hand-cranked mill */
+    .methods {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.6rem;
+      padding: 0.6rem 1.15rem;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 24px;
+      font-size: 0.95rem;
+      color: #8aabb8;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .methods .clown {
+      width: 21px;
+      height: 21px;
+      flex-shrink: 0;
+      transition: transform 0.25s cubic-bezier(0.34, 1.6, 0.64, 1);
+    }
+    .methods:hover .clown { transform: rotate(-12deg) scale(1.12); }
+    .methods .arr { transition: transform 0.2s; }
+    .methods:hover, .methods:focus-visible {
+      color: #cfe2ea;
+      border-color: rgba(217, 154, 31, 0.45);
+      background: rgba(217, 154, 31, 0.06);
+      outline: none;
+    }
+    .methods:hover .arr { transform: translateX(3px); }
+
     .meta {
       font-size: 0.8rem;
       color: #4a6070;
@@ -168,6 +198,75 @@
       color: #7ac78f;
       border-color: rgba(90, 158, 111, 0.5);
       background: rgba(90, 158, 111, 0.08);
+    }
+
+    /* Code & data availability — a journal statement, on a podcast website */
+    .cds {
+      width: 100%;
+      margin-top: 1.6rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: 1.1rem;
+      text-align: left;
+    }
+    .cds > summary {
+      list-style: none;
+      cursor: pointer;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #3f5666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      transition: color 0.2s;
+    }
+    .cds > summary::-webkit-details-marker { display: none; }
+    .cds > summary::before {
+      content: '+';
+      font-size: 0.85rem;
+      line-height: 1;
+      color: #2e3d4a;
+      transition: transform 0.2s, color 0.2s;
+    }
+    .cds[open] > summary::before { transform: rotate(45deg); }
+    .cds > summary:hover, .cds > summary:focus-visible {
+      color: #8aabb8;
+      outline: none;
+    }
+    .cds > summary:hover::before { color: #5a9e6f; }
+    .cds .body {
+      font-size: 0.78rem;
+      line-height: 1.75;
+      color: #6b8592;
+      padding: 0.9rem 0 0.2rem;
+      display: grid;
+      gap: 0.75rem;
+    }
+    .cds .body a { color: #5a9e6f; }
+    .cds .body a:hover { color: #7ac78f; }
+    .cds .apparatus-row { text-align: center; }
+    .cds .apparatus {
+      display: inline-block;
+      border: 1px solid rgba(217, 154, 31, 0.3);
+      border-radius: 4px;
+      padding: 0.4rem 0.8rem;
+      color: #d99a1f;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .cds .apparatus:hover {
+      background: rgba(217, 154, 31, 0.1);
+      border-color: rgba(217, 154, 31, 0.6);
+      color: #f0bd4e;
+    }
+    .cds .sig {
+      font-size: 0.68rem;
+      color: #3f5666;
+      border-left: 2px solid rgba(90, 158, 111, 0.3);
+      padding-left: 0.75rem;
     }
 
     /* Quiet second doorway to /fun — findable if you look, invisible if you don't */
@@ -279,25 +378,25 @@
   </style>
 </head>
 <body>
-  <a href="fun/" class="eas" title="You probably shouldn't.">
+  <a href="mood/" class="eas" title="You probably shouldn't.">
     <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M6.5 17a5.5 5.5 0 0 1 11 0Z" fill="currentColor"/>
-      <path d="M3.5 20h17"/>
-      <path d="M12 2.5v2.2M4.6 5.6l1.6 1.6M19.4 5.6l-1.6 1.6"/>
+      <path d="M3.5 10v4a1 1 0 0 0 1 1H7l7 4V5L7 9H4.5a1 1 0 0 0-1 1Z"/>
+      <path d="M17.6 9.4a4 4 0 0 1 0 5.2"/>
     </svg>
-    <span>AIGS Climate Crisis</span>
+    <span>AIGS Emergency Broadcast</span>
     <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
          stroke-linejoin="round" aria-hidden="true">
       <path d="M12 3 2.5 20h19L12 3Z"/>
       <path d="M12 9.5v4" stroke-linecap="round"/>
       <circle cx="12" cy="16.6" r="1.15" fill="currentColor" stroke="none"/>
     </svg>
-    <span>AIGS Emergency Broadcast</span>
+    <span>The Climate Crisis</span>
     <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M3.5 10v4a1 1 0 0 0 1 1H7l7 4V5L7 9H4.5a1 1 0 0 0-1 1Z"/>
-      <path d="M17.6 9.4a4 4 0 0 1 0 5.2"/>
+      <path d="M6.5 17a5.5 5.5 0 0 1 11 0Z" fill="currentColor"/>
+      <path d="M3.5 20h17"/>
+      <path d="M12 2.5v2.2M4.6 5.6l1.6 1.6M19.4 5.6l-1.6 1.6"/>
     </svg>
   </a>
 
@@ -308,6 +407,21 @@
 
     <h1>The AIGS Pod</h1>
     <p class="tagline">The podcast at the intersection of artificial intelligence and Earth system science.</p>
+
+    <a class="methods" href="mill/">
+      <svg class="clown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 6.6h12v7.6a6 6 0 0 1-12 0Z"/>
+        <path d="M6 9.6h12"/>
+        <path d="M9 6.6v3M12 6.6v3M15 6.6v3"/>
+        <path d="M4.1 12.2h1.9M18 12.2h1.9"/>
+        <circle cx="9.5" cy="12.2" r=".95" fill="currentColor" stroke="none"/>
+        <circle cx="14.5" cy="12.2" r=".95" fill="currentColor" stroke="none"/>
+        <path d="M9.7 16.4h4.6"/>
+      </svg>
+      to reproduce, see methods
+      <span class="arr">&rarr;</span>
+    </a>
 
     <div class="links">
       <a href="https://podcasts.apple.com/us/podcast/the-aigs-pod/id1889040734" target="_blank" rel="noopener" class="primary">
@@ -357,7 +471,32 @@
       RSS Feed
     </a>
 
-    <a href="fun/" class="storm-door" title="You probably shouldn't."><span>⚡</span> Severe weather mode</a>
+    <a href="mood/" class="storm-door" title="You probably shouldn't."><span>⚡</span> Severe weather mode</a>
+
+    <details class="cds">
+      <summary>Code &amp; data availability</summary>
+      <div class="body">
+        <p><b>Methods.</b> The full pipeline is documented in
+        <a href="mill/">Fig. 1: the millworks</a>. One paper is tipped into the
+        hopper, the crank is turned, the paper is conveyed into the transformer, and a
+        podcast comes off the other end. The apparatus is open to inspection and may be
+        cranked by any reader.</p>
+
+        <p class="apparatus-row"><a class="apparatus" href="mill/">&#9881; Inspect the apparatus &rarr;</a></p>
+
+        <p>No data were withheld. There is no secret sauce. There is barely a sauce.
+        The recommendation engine is two people arguing about which paper annoyed them
+        most this week, and it is not available under any licence.</p>
+
+        <p><b>To reproduce:</b> turn the crank yourself, then listen to every episode
+        in order. Results should agree with ours to within floating-point differences in
+        enthusiasm. If your findings differ materially, the discrepancy is interesting
+        and we would like to hear about it.</p>
+
+        <p class="sig">Conflicts of interest: we like this stuff. Funding: none, alarmingly.
+        Ethics approval: not sought, arguably needed.</p>
+      </div>
+    </details>
   </main>
 
   <script>
@@ -367,9 +506,9 @@
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       buf = (buf + e.key.toLowerCase()).slice(-5);
       if (buf !== 'storm') return;
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { location.href = 'fun/'; return; }
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { location.href = 'mood/'; return; }
       document.body.classList.add('storming');
-      setTimeout(() => location.href = 'fun/', 1000);
+      setTimeout(() => location.href = 'mood/', 1000);
     });
   </script>
 </body>
