@@ -7,9 +7,14 @@
 <meta name="description" content="We grind machine-learning-for-Earth-science papers into podcasts. Turn the crank.">
 <meta property="og:title" content="The Paper Mill — The AIGS Pod">
 <meta property="og:description" content="Paper in, podcast out. Turn the crank and see what comes off the belt.">
-<meta property="og:image" content="https://aigspod.github.io/images/cover.png">
+<meta property="og:image" content="https://aigspod.github.io/images/mill-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A hand-drawn mill: papers go into a hopper, along a belt, through a transformer, and out of a horn as a podcast.">
 <meta property="og:url" content="https://aigspod.github.io/mill/">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aigspod.github.io/images/mill-og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -206,8 +211,6 @@ footer a:hover{color:var(--ink)}
 .sticky{display:block;text-decoration:none;position:relative}
 .sticky .tag{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.2em;
   color:var(--notetag);margin-bottom:.35rem}
-.sticky .src{display:block;font-family:var(--mono);font-size:7.5px;letter-spacing:.12em;
-  color:var(--notetag);opacity:.72;margin-top:.5rem}
 .stickies .sticky{cursor:pointer;pointer-events:auto}
 .stickies .sticky:hover{filter:brightness(1.06)}
 .stickies .sticky:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
@@ -265,10 +268,9 @@ footer a:hover{color:var(--ink)}
 
 <div class="stickies" id="stickies" aria-hidden="true"></div>
 <a class="sticky pinned" id="pinned" href="https://xkcd.com/1838/" target="_blank" rel="noopener"
-   title="what we actually do all day">
+   title="what we actually do all day" aria-label="TODO: read the actual paper (opens a comic in a new tab)">
   <span class="tag">TODO</span>
   read the<br><u>actual</u> paper
-  <span class="src">xkcd 1838 →</span>
 </a>
 <div class="sheet">
 
@@ -717,7 +719,9 @@ function dropSticky(){
   n.className='sticky';
   n.href='https://xkcd.com/'+num+'/';
   n.target='_blank'; n.rel='noopener';
-  n.innerHTML='<span class="tag">TODO</span>'+text+'<span class="src">xkcd '+num+' →</span>';
+  n.innerHTML='<span class="tag">TODO</span>'+text;
+  // no visible tell — the destination is the surprise. Screen readers still get told.
+  n.setAttribute('aria-label','TODO: '+text+' (opens a comic in a new tab)');
   const x=6+Math.random()*80;                       // vw
   n.style.left=x+'vw';
   stickyLayer.appendChild(n);

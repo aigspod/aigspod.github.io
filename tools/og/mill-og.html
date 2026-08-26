@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<title>mill og card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Poppins:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#f7f4e9;--ink:#1e3050;--ink2:#5a7291;--ink3:#93a3b8;
+  --blush:#f7d9d5;--accent:#c0564a;--accent2:#a8382a;--creek:#3b7d8c;
+  --sans:'Poppins',sans-serif;--hand:'Caveat',cursive;--mono:'Space Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1200px;height:630px;background:var(--cream);color:var(--ink);
+  font-family:var(--sans);overflow:hidden;position:relative}
+.frame{position:absolute;inset:22px;border:1px solid rgba(30,48,80,.16)}
+.pad{position:absolute;inset:22px;padding:38px 56px;display:flex;flex-direction:column}
+.eyebrow{font-family:var(--mono);font-size:14px;letter-spacing:.24em;color:var(--ink3)}
+.eyebrow b{color:var(--ink2);font-weight:400}
+h1{font-size:48px;font-weight:700;letter-spacing:-.02em;line-height:1.12;margin-top:14px}
+.hl{background:var(--blush);padding:.02em .26em;border-radius:3px}
+#mill{height:300px;width:auto;display:block;color:var(--ink);margin-top:22px;overflow:visible}
+.hand{font-family:var(--hand);font-size:21px;fill:var(--ink2)}
+.hand.sm{font-size:18px;fill:var(--ink3)}
+.foot{display:flex;align-items:baseline;gap:14px;margin-top:auto;
+  font-family:var(--mono);font-size:13px;letter-spacing:.16em;color:var(--ink3)}
+.foot b{color:var(--accent);font-weight:700}
+.sticky{position:absolute;top:52px;right:64px;width:150px;min-height:136px;
+  padding:16px 14px;background:#f9e97e;color:#4c4110;font-family:var(--hand);
+  font-size:24px;line-height:1.15;transform:rotate(5deg);
+  box-shadow:2px 6px 16px rgba(30,48,80,.18);
+  clip-path:polygon(0 0,100% 0,100% 90%,90% 100%,0 100%)}
+.sticky .tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;
+  color:#8a7420;margin-bottom:6px}
+.sticky::before{content:'';position:absolute;top:-9px;left:50%;width:16px;height:16px;
+  margin-left:-8px;border-radius:50%;background:var(--accent);
+  box-shadow:0 2px 4px rgba(30,48,80,.35)}
+</style></head>
+<body>
+<div class="frame"></div>
+<div class="sticky"><span class="tag">TODO</span>read the<br><u>actual</u> paper</div>
+<div class="pad">
+  <div class="eyebrow">the aigs pod &middot; <b>paper in, podcast out</b></div>
+  <h1>We grind papers<br>into <span class="hl">podcasts</span></h1>
+    <svg id="mill" viewBox="-26 6 884 286" aria-label="A hand-cranked mill that turns papers into podcasts">
+      <defs>
+        <filter id="sketch" x="-6%" y="-12%" width="112%" height="124%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="3" seed="7" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"
+                             xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <marker id="tip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 1 L10 5 L0 9" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <g filter="url(#sketch)" fill="none" stroke="currentColor" stroke-width="2.4"
+         stroke-linecap="round" stroke-linejoin="round">
+        <g id="creek" stroke="var(--creek)" stroke-width="2"></g>
+        <g class="gear" id="wheel"></g>
+
+        <path d="M130 24 L236 24 L208 74 L158 74 Z"/>
+        <g id="sheets" stroke-width="2"></g>
+
+        <path d="M160 74 L560 74"/><path d="M160 85 L560 85"/>
+        <g id="belt-dashes" stroke-width="1.6" opacity=".4"></g>
+
+        <g class="gear" id="g1"></g>
+        <g class="gear" id="g2"></g>
+
+        <g id="tblock">
+          <rect x="450" y="112" width="150" height="94" rx="10"/>
+          <g id="net" stroke-width="1.4"></g>
+        </g>
+
+        <path d="M600 160 C 656 160, 652 100, 698 100" marker-end="url(#tip)"/>
+        <g id="horn"><path d="M706 72 L732 72 L768 42 L768 158 L732 128 L706 128 Z"/></g>
+        <g id="waves" opacity="0">
+          <path d="M782 76 Q795 100 782 124"/><path d="M797 62 Q818 100 797 138"/>
+        </g>
+
+        <g class="crank" id="crank" style="transform-origin:300px 172px;transform-box:view-box">
+          <path d="M300 172 L300 108" stroke="var(--accent)" stroke-width="6"/>
+          <circle cx="300" cy="102" r="12" fill="var(--accent)" stroke="var(--accent2)" stroke-width="2"/>
+          <circle cx="300" cy="102" r="32" fill="transparent" stroke="none"/>
+        </g>
+      </g>
+
+      <!-- annotations sit outside the wobble filter so they stay legible -->
+      <text class="hand sm" x="132" y="16">papers ↓</text>
+      <text class="hand" x="226" y="252">“the peer review stage”</text>
+      <text class="hand sm" x="226" y="274">nobody knows what it does</text>
+      <text class="hand t2" x="452" y="236">transformer, allegedly</text>
+      <text class="hand sm" x="452" y="258">we asked it nicely</text>
+      <text class="hand" x="698" y="188">↑ a podcast!</text>
+      <text class="hand sm" x="-20" y="270">the creek does most of the work</text>
+    </svg>
+  <div class="foot"><b>aigspod.github.io/mill</b> &middot; turn the crank</div>
+</div>
+<script>
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;};
+function drawGear(g,cx,cy,R,teeth){
+  g.appendChild(el('circle',{cx,cy,r:R}));
+  for(let i=0;i<teeth;i++){
+    const a=i/teeth*Math.PI*2;
+    g.appendChild(el('path',{d:`M${cx+Math.cos(a)*R} ${cy+Math.sin(a)*R}
+      L${cx+Math.cos(a)*(R+11)} ${cy+Math.sin(a)*(R+11)}`}));
+  }
+  g.appendChild(el('circle',{cx,cy,r:5,fill:'currentColor'}));
+}
+drawGear(document.getElementById('g1'),300,172,48,8);
+drawGear(document.getElementById('g2'),398,172,32,6);
+(function drawWheel(){
+  const wheel=document.getElementById('wheel'), creek=document.getElementById('creek');
+  const cx=62, cy=158, R=54, r=19, N=9;
+  wheel.appendChild(el('circle',{cx,cy,r:R}));
+  wheel.appendChild(el('circle',{cx,cy,r:R-11,'stroke-width':1.6,opacity:.75}));
+  wheel.appendChild(el('circle',{cx,cy,r}));
+  for(let i=0;i<N;i++){
+    const a=i/N*Math.PI*2;
+    wheel.appendChild(el('path',{d:`M${cx+Math.cos(a)*r} ${cy+Math.sin(a)*r}
+      L${cx+Math.cos(a)*R} ${cy+Math.sin(a)*R}`,'stroke-width':1.8}));
+    const px=cx+Math.cos(a)*(R-5), py=cy+Math.sin(a)*(R-5);
+    const pd=el('path',{d:`M${px-9} ${py} L${px+9} ${py}`,'stroke-width':3.4});
+    pd.setAttribute('transform',`rotate(${a*180/Math.PI+90} ${px} ${py})`);
+    wheel.appendChild(pd);
+  }
+  wheel.appendChild(el('circle',{cx,cy,r:4,fill:'currentColor'}));
+  for(let k=0;k<3;k++){
+    let d='M-26 '+(222+k*10);
+    for(let x=-26;x<=150;x+=24) d+=` q 12 ${k%2?-6:6} 24 0`;
+    creek.appendChild(el('path',{d,opacity:.6-k*.16}));
+  }
+})();
+(function drawBelt(){
+  const g=document.getElementById('belt-dashes');
+  for(let x=172;x<556;x+=24) g.appendChild(el('path',{d:`M${x} 76 L${x+11} 83`}));
+})();
+(function drawNet(){
+  const net=document.getElementById('net'), L=[3,4,4,2], x0=478, dx=42;
+  const NY=159;
+  L.forEach((n,li)=>{ for(let i=0;i<n;i++){
+    const cy=NY-(n-1)*12+i*24, cx=x0+li*dx;
+    if(li<L.length-1){ const nn=L[li+1];
+      for(let j=0;j<nn;j++) net.appendChild(el('path',
+        {d:`M${cx} ${cy} L${cx+dx} ${NY-(nn-1)*12+j*24}`,opacity:.28}));
+    }
+  }});
+  L.forEach((n,li)=>{ for(let i=0;i<n;i++){
+    net.appendChild(el('circle',{cx:x0+li*dx,cy:NY-(n-1)*12+i*24,r:4,
+      fill:'currentColor',class:'node'}));
+  }});
+})();
+</script>
+</body></html>
