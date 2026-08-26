@@ -64,6 +64,11 @@ h1 .w{will-change:transform}
 h1 .w{display:inline-block;transition:transform .12s linear}
 h1 .a{color:var(--lime)}h1 .b{color:var(--hot)}h1 .c{color:var(--cyan)}
 .slogan{max-width:36ch;margin:.9rem auto 0;font-size:clamp(.95rem,1.6vw,1.1rem);line-height:1.45;opacity:.85}
+@keyframes slogan-pop{
+  0%{transform:rotate(-1.5deg) scale(1)}
+  40%{transform:rotate(2.5deg) scale(1.14)}
+  100%{transform:rotate(-1.5deg) scale(1)}
+}
 .slogan b{background:var(--hot);color:var(--ink);padding:0 .25em;font-weight:800;
   display:inline-block;transform:rotate(-1.5deg)}
 
@@ -129,6 +134,35 @@ h1 .a{color:var(--lime)}h1 .b{color:var(--hot)}h1 .c{color:var(--cyan)}
 .body .n{position:absolute;left:0;bottom:0;background:var(--lime);color:var(--ink);
   font-family:'Space Mono',monospace;font-weight:700;font-size:10px;padding:1px 5px}
 .body:hover{border-color:var(--lime)}
+/* --- storm damage --- */
+#tank.damaged{border-color:var(--hot);
+  box-shadow:0 0 0 2px rgba(255,46,136,.25),inset 0 0 90px rgba(255,46,136,.22);
+  animation:tankfail 2.4s ease-in-out infinite}
+@keyframes tankfail{50%{border-color:#ff8fbc}}
+#tank.damaged .body{filter:saturate(.35) contrast(1.15) brightness(.85)}
+#tank.damaged .body::after{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.85;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='%23fff' stroke-width='1.4' fill='none' opacity='.9'%3E%3Cpath d='M12 0 38 34 26 52 46 74 40 100'/%3E%3Cpath d='M38 34 66 26 88 6'/%3E%3Cpath d='M46 74 74 62 100 70'/%3E%3Cpath d='M26 52 0 60'/%3E%3Cpath d='M74 62 82 100'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:100% 100%;
+  mix-blend-mode:screen}
+#tank.damaged .body:nth-child(2n)::after{transform:scaleX(-1)}
+#tank.damaged .body:nth-child(3n)::after{transform:rotate(180deg)}
+#tank.damaged .body:nth-child(5n)::after{transform:scaleY(-1)}
+.signal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;
+  font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(12px,2.4vw,18px);
+  letter-spacing:.3em;color:var(--hot);text-align:center;pointer-events:none;
+  text-shadow:0 0 18px rgba(255,46,136,.8);opacity:0;transition:opacity .4s}
+.signal.on{opacity:1;animation:sigflick 1.1s steps(3) infinite}
+.signal small{display:block;font-size:9px;letter-spacing:.18em;opacity:.7;
+  margin-top:.5rem;font-weight:400;color:var(--paper)}
+@keyframes sigflick{40%{opacity:.25}}
+
+/* --- a cover that has been flung clean out of the tank --- */
+/* above the page content, not behind it — the archive cards are opaque, so a
+   z-index below them would hide the escape entirely */
+.body.escaped{position:fixed;left:0;top:0;z-index:6;pointer-events:none;
+  opacity:.9;box-shadow:0 18px 50px rgba(0,0,0,.7)}
+
 .tankmsg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:1.5rem;
   font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;opacity:.5}
 .tankmsg a{color:var(--lime)}
@@ -177,12 +211,22 @@ dialog::backdrop{background:rgba(11,7,20,.86);backdrop-filter:blur(6px)}
   border:3px solid var(--ink);border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer;font-weight:800}
 
 /* --- subscribe --- */
-.funcover{display:block;width:min(330px,72vw);aspect-ratio:1;margin:0 auto 1.6rem;
+.coverbtn{display:block;margin:0 auto 1.6rem;padding:0;border:none;background:none;
+  cursor:pointer;line-height:0;perspective:1000px}
+.coverbtn:focus-visible{outline:3px solid var(--lime);outline-offset:8px;border-radius:22px}
+/* --spin / --spinx are bumped by JS on every click; the hover rule repeats them
+   so hovering and spinning compose instead of cancelling each other */
+.funcover{display:block;width:min(330px,72vw);aspect-ratio:1;
   border:4px solid var(--paper);border-radius:20px;object-fit:cover;
   box-shadow:0 0 0 3px var(--ink),0 18px 60px rgba(198,255,46,.22),0 8px 30px rgba(255,46,136,.18);
-  transform:rotate(-2.5deg);transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
-.funcover:hover{transform:rotate(0deg) scale(1.04);
+  transform-style:preserve-3d;
+  transform:rotate(-2.5deg) rotateY(var(--spin,0deg)) rotateX(var(--spinx,0deg));
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+.coverbtn:hover .funcover{transform:rotate(0deg) scale(1.04) rotateY(var(--spin,0deg)) rotateX(var(--spinx,0deg));
   box-shadow:0 0 0 3px var(--ink),0 24px 80px rgba(198,255,46,.4),0 10px 40px rgba(37,244,238,.3)}
+.funcover.spinning{transition:transform .95s cubic-bezier(.22,.75,.2,1),box-shadow .3s}
+.coverhint{text-align:center;font-family:'Space Mono',monospace;font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;opacity:.45;margin:-.9rem 0 1.7rem}
 .subs{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center}
 .subs a{border:3px solid var(--paper);border-radius:999px;padding:.75rem 1.3rem;
   text-decoration:none;color:var(--paper);font-weight:800;font-size:.95rem;
@@ -219,7 +263,7 @@ footer a{color:var(--lime)}
 <header>
   <div class="kicker">◉ Live from the boundary layer</div>
   <h1 id="title"></h1>
-  <p class="slogan">A podcast about AI, weather, and climate that is <b>normal about it</b>. Mostly.</p>
+  <p class="slogan">A podcast about AI, weather, and climate that is <b id="slogan-word">normal about it</b>. Mostly.</p>
 
   <nav class="listen" aria-label="Listen on">
     <span class="lab">LISTEN ON</span>
@@ -247,7 +291,10 @@ footer a{color:var(--lime)}
 </header>
 
 <p class="tank-note"><span class="long">↓ 17 episodes loose in a wind tunnel · move your mouse to steer · grab one, throw it, or click it to listen ↓</span><span class="short">↓ 17 episodes loose in a wind tunnel · tap one to listen ↓</span></p>
-<div id="tank"><p class="tankmsg" id="tankmsg">LOADING THE FORECAST…</p></div>
+<div id="tank">
+  <p class="tankmsg" id="tankmsg">LOADING THE FORECAST…</p>
+  <div class="signal" id="signal" role="status">⚠ SIGNAL LOST ⚠<small>structural integrity of the archive compromised</small></div>
+</div>
 </div><!-- /.hero -->
 
 <section>
@@ -259,14 +306,17 @@ footer a{color:var(--lime)}
 </section>
 
 <section id="everywhere" style="text-align:center">
-  <img class="funcover" src="../images/thumbs/funcover.jpg" data-full="../images/funcover.png"
-       onerror="this.onerror=null;this.src=this.dataset.full"
-       alt="The AIGS Pod cover art: neon lightning, rain and waves" loading="lazy" width="330" height="330">
+  <button class="coverbtn" id="coverbtn" aria-label="Spin the cover art">
+    <img class="funcover" id="funcover" src="../images/thumbs/funcover.jpg" data-full="../images/funcover.png"
+         onerror="this.onerror=null;this.src=this.dataset.full"
+         alt="The AIGS Pod cover art: neon lightning, rain and waves" loading="lazy" width="330" height="330">
+  </button>
+  <p class="coverhint" id="coverhint">↑ go on, spin it</p>
   <div class="sechead" style="justify-content:center"><h2>Get it <em>everywhere</em></h2></div>
   <div class="subs" id="subs"></div>
 </section>
 
-<footer><a href="../">← BACK TO THE NORMAL VERSION</a> · <a href="../feed.xml">RSS</a> · TYPE “STORM” IF YOU DARE · “CALM” TO REPENT</footer>
+<footer><a href="../">← BACK TO THE NORMAL VERSION</a> · <a href="../feed.xml">RSS</a> · TYPE “STORM” IF YOU DARE · “CALM” TO REPENT · THE URL REMEMBERS YOUR CHAOS LEVEL</footer>
 </div>
 
 <dialog id="modal"><div class="sheet" id="sheet"></div></dialog>
@@ -340,13 +390,48 @@ function jitter(t){
   }
 }
 
-/* ---------- ticker ---------- */
-const FACTS=['424.7 PPM AND CLIMBING','A 10-DAY FORECAST USED TO BE SCIENCE FICTION',
- 'YOUR GPU IS A TINY WEATHER STATION','THE ATMOSPHERE DOES NOT CARE ABOUT YOUR LOSS FUNCTION',
- 'EMULATORS DRIFT. SO DO WE.','SPECTRAL BIAS IS REAL AND IT IS COMING FOR YOUR SMALL SCALES',
- 'ERA5 IS NOT THE TRUTH, IT IS A VERY GOOD GUESS','NEW EPISODE MOST SUNDAYS','⚡','◉','☁'];
-document.getElementById('tick').innerHTML =
-  (FACTS.map(f=>`<span>${f}</span>`).join('')).repeat(2);
+/* ---------- the five chaos bands ----------
+   Each band retunes the state word, the slogan, and what the news bar is reporting.
+   The headlines stay firmly inside the simulation — jokes about models falling over,
+   never invented claims about the actual climate. */
+const BANDS=[
+ {max:.02, state:'DEAD CALM',     slogan:'clinically normal about it',   tick:'lime'},
+ {max:.30, state:'BREEZY',        slogan:'normal about it',              tick:'lime'},
+ {max:.60, state:'GALE',          slogan:'a bit shouty about it',        tick:'lime'},
+ {max:.85, state:'SEVERE',        slogan:'not okay about it',            tick:'amber'},
+ {max:2,   state:'UNSURVIVABLE',  slogan:'completely unhinged about it', tick:'hot'},
+];
+
+const HEADLINES=[
+ // 0 · dead calm — the bar is barely awake
+ ['ALL QUIET','RESIDUALS NOMINAL','THE ATMOSPHERE IS BEHAVING','NOTHING TO REPORT',
+  'CONSERVATION LAWS: CONSERVED','NEW EPISODE MOST SUNDAYS','◉'],
+ // 1 · breezy — the house style
+ ['424.7 PPM AND CLIMBING','A 10-DAY FORECAST USED TO BE SCIENCE FICTION',
+  'YOUR GPU IS A TINY WEATHER STATION','THE ATMOSPHERE DOES NOT CARE ABOUT YOUR LOSS FUNCTION',
+  'EMULATORS DRIFT. SO DO WE.','SPECTRAL BIAS IS REAL AND IT IS COMING FOR YOUR SMALL SCALES',
+  'ERA5 IS NOT THE TRUTH, IT IS A VERY GOOD GUESS','NEW EPISODE MOST SUNDAYS','⚡','◉','☁'],
+ // 2 · gale — things are getting away from us
+ ['ENSEMBLE SPREAD WIDENING','VALIDATION LOSS GOING THE WRONG WAY',
+  'TIMESTEP UNDER REVIEW','SOMEONE LEFT THE BOUNDARY LAYER OPEN',
+  'THE SMALL SCALES ARE FILING A COMPLAINT','SPIN-UP NEVER FINISHED','⚡','☁'],
+ // 3 · severe — full crisis desk
+ ['⚠ BREAKING: THE GRADIENT HAS EXPLODED','CFL CONDITION VIOLATED · EVACUATE THE GRID',
+  'NaN SIGHTED IN THE TROPICS','MODEL POSTS NEGATIVE SKILL SCORE, REFUSES TO COMMENT',
+  'PARAMETERIZATION SCHEME FLEES THE COUNTRY','REANALYSIS DISOWNS ITS OWN OUTPUT',
+  'ENSEMBLE SPREAD NOW WIDER THAN THE ATLANTIC','⚠','⚡'],
+ // 4 · unsurvivable — the desk has stopped coping
+ ['⚠⚠ TOTAL LOSS OF PHYSICAL REALISM ⚠⚠','THE LOSS FUNCTION HAS STOPPED RESPONDING',
+  'TIMESTEP REDUCED TO ZERO · SIMULATION NOW PERMANENT',
+  'EVERY VARIABLE IS NOW NaN INCLUDING THE TIME',
+  'ADVISORY: STOP LOOKING AT THE ROLLOUT','WE HAVE LOST THE STRATOSPHERE',
+  'PLEASE STAND BY · PLEASE STAND BY','⚠','⚡','☠'],
+];
+const tickEl=document.getElementById('tick');
+function paintTicker(i){
+  const set=HEADLINES[i];
+  tickEl.innerHTML=(set.map(f=>`<span>${f}</span>`).join('')).repeat(3);
+}
 
 /* ---------- wind field ---------- */
 (function(){
@@ -465,6 +550,7 @@ function buildBodies(){
   });
 }
 function layout(){
+  while(escapees.length) recall(escapees[0]);
   const w=tank.clientWidth,h=tank.clientHeight;
   const r=(bodies[0]?.el.offsetWidth||96)/2;
   bodies.forEach(b=>{
@@ -497,14 +583,66 @@ addEventListener('pointerup',()=>{
 });
 tank.addEventListener('pointerleave',()=>mouseIn={x:-999,y:-999});
 
+/* ---------- storm damage: sustained max chaos degrades the signal ---------- */
+let hot=0, damaged=false, lastT=0;
+const DAMAGE_AT=10000;                      // 10s held above 0.9
+function setDamaged(v){
+  if(damaged===v) return;
+  damaged=v;
+  tank.classList.toggle('damaged',v);
+  document.getElementById('signal').classList.toggle('on',v);
+}
+
+/* ---------- the tank leaks: at max chaos a cover gets flung out of it ---------- */
+const escapees=[]; let nextLeak=0;
+function tryLeak(now){
+  if(reduce || CHAOS<0.86 || now<nextLeak) return;
+  // only leak while the tank is on screen — otherwise a cover disappears for
+  // several seconds somewhere the reader can't see it
+  const tr=tank.getBoundingClientRect();
+  if(tr.bottom<80 || tr.top>innerHeight-80) return;
+  nextLeak=now+2600+Math.random()*4200;
+  const free=bodies.filter(b=>!b.escaped && b!==held);
+  if(free.length<3) return;                 // never empty the tank
+  const b=free[Math.floor(Math.random()*free.length)];
+  const r=b.el.getBoundingClientRect();
+  b.escaped=true;
+  b.el.classList.add('escaped');
+  document.body.appendChild(b.el);          // out of the tank's overflow:hidden
+  b.ex=r.left; b.ey=r.top;
+  b.evx=(Math.random()-.5)*13; b.evy=-12-Math.random()*7;   // kicked up first, so it arcs
+  b.erot=b.rot; b.evr=(Math.random()-.5)*16;
+  escapees.push(b);
+}
+function stepEscapees(){
+  for(let i=escapees.length-1;i>=0;i--){
+    const b=escapees[i];
+    b.evy+=0.28; b.evx+=(Math.random()-.5)*1.1;              // gentle enough to actually watch
+    b.ex+=b.evx; b.ey+=b.evy; b.erot+=b.evr;
+    b.el.style.transform=`translate(${b.ex}px,${b.ey}px) rotate(${b.erot}deg)`;
+    if(b.ey>innerHeight+240) recall(b);
+  }
+}
+function recall(b){
+  const i=escapees.indexOf(b); if(i>=0) escapees.splice(i,1);
+  b.escaped=false; b.el.classList.remove('escaped'); b.el.style.transform='';
+  tank.appendChild(b.el);
+  b.x=b.r+Math.random()*Math.max(1,tank.clientWidth-b.r*2);
+  b.y=b.r; b.vx=(Math.random()-.5)*6; b.vy=3;
+}
+
 function physics(now){
   const w=tank.clientWidth,h=tank.clientHeight;
+  const dt=Math.min(64,now-(lastT||now)); lastT=now;
+  hot = CHAOS>=0.9 ? hot+dt : Math.max(0,hot-dt*3);
+  setDamaged(hot>=DAMAGE_AT);
+  tryLeak(now); stepEscapees();
   // Every ambient force scales with CHAOS, so chaos 0 is a genuine dead calm:
   // nothing pushes the covers, and heavy damping brings them to a complete stop.
   const g=CHAOS*0.62;
   const damp=0.99-(1-Math.min(1,CHAOS*5))*0.08;
   bodies.forEach(b=>{
-    if(b!==held){
+    if(b!==held && !b.escaped){
       b.vy+=g;
       const lift=0.24*CHAOS;                 // ambient swirl
       b.vx+=Math.cos(now*0.0006+b.ph)*lift;
@@ -528,7 +666,9 @@ function physics(now){
   });
   // pairwise separation
   for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
-    const a=bodies[i],b=bodies[j],dx=b.x-a.x,dy=b.y-a.y;
+    const a=bodies[i],b=bodies[j];
+    if(a.escaped||b.escaped) continue;
+    const dx=b.x-a.x,dy=b.y-a.y;
     let d=Math.hypot(dx,dy); if(d===0)d=.01;
     const ov=a.r+b.r-d;
     if(ov>0){
@@ -538,6 +678,7 @@ function physics(now){
     }
   }
   bodies.forEach(b=>{
+    if(b.escaped) return;                   // escapees run on viewport coordinates
     b.el.style.transform=`translate(${b.x-b.r}px,${b.y-b.r}px) rotate(${b.rot}deg)`;
   });
   requestAnimationFrame(physics);
@@ -554,22 +695,60 @@ function applyReducedMotion(){
 
 /* ---------- chaos control ---------- */
 const slider=document.getElementById('chaos'), out=document.getElementById('chaosv');
+const sloganEl=document.getElementById('slogan-word');
+setChaos.band=-1;
 function setChaos(v){
   CHAOS=v/100; out.textContent=CHAOS.toFixed(2);
   document.documentElement.style.setProperty('--chaos',CHAOS);
   out.style.color = CHAOS>.75?'var(--hot)':CHAOS>.4?'var(--amber)':'var(--lime)';
+  const bi=BANDS.findIndex(b=>CHAOS<b.max);
+  const band=BANDS[bi];
   const st=document.getElementById('chaosstate');
-  if(st) st.textContent = CHAOS<.02?'DEAD CALM' : CHAOS<.3?'BREEZY' :
-    CHAOS<.6?'GALE' : CHAOS<.85?'SEVERE' : 'UNSURVIVABLE';
-  // the ticker runs faster and turns hotter as the storm builds
-  const td=document.getElementById('tick');
-  if(td) td.style.animationDuration = (42/(1+CHAOS*4)).toFixed(1)+'s';
-  document.documentElement.style.setProperty('--tickbg',
-    CHAOS>.85?'var(--hot)':CHAOS>.6?'var(--amber)':'var(--lime)');
+  if(st) st.textContent=band.state;
+  // the ticker runs faster as the storm builds
+  if(tickEl) tickEl.style.animationDuration=(42/(1+CHAOS*4)).toFixed(1)+'s';
   const al=document.getElementById('alert');
   if(al) al.classList.toggle('on', CHAOS>=.85);
+
+  if(bi!==setChaos.band){                 // only repaint when the band actually changes
+    setChaos.band=bi;
+    document.documentElement.style.setProperty('--tickbg','var(--'+band.tick+')');
+    paintTicker(bi);
+    if(sloganEl){
+      sloganEl.textContent=band.slogan;
+      sloganEl.style.animation='none';
+      void sloganEl.offsetWidth;          // restart the pop
+      sloganEl.style.animation='slogan-pop .4s cubic-bezier(.34,1.6,.64,1)';
+    }
+  }
 }
-slider.addEventListener('input',e=>setChaos(+e.target.value)); setChaos(18);
+slider.addEventListener('input',e=>{ setChaos(+e.target.value); syncUrl(); });
+
+/* ---------- ?chaos= makes a storm level shareable ----------
+   Accepts 0-1 (0.85), 0-100 (85), or the words calm / storm. */
+function chaosFromUrl(){
+  const raw=(new URLSearchParams(location.search).get('chaos')||'').trim().toLowerCase();
+  if(!raw) return null;
+  if(raw==='storm'||raw==='max') return 100;
+  if(raw==='calm') return 0;
+  const n=parseFloat(raw);
+  if(!isFinite(n)) return null;
+  return Math.max(0,Math.min(100, n<=1 ? n*100 : n));
+}
+let urlTimer=null;
+function syncUrl(){
+  clearTimeout(urlTimer);
+  urlTimer=setTimeout(()=>{
+    try{
+      const u=new URL(location.href);
+      u.searchParams.set('chaos',CHAOS.toFixed(2));
+      history.replaceState(null,'',u);      // replace, so the back button stays usable
+    }catch(e){ /* sandboxed preview frames refuse history writes; harmless */ }
+  },400);
+}
+const fromUrl=chaosFromUrl();
+slider.value = fromUrl===null ? 18 : fromUrl;
+setChaos(+slider.value);
 document.getElementById('shake').addEventListener('click',()=>{
   bodies.forEach(b=>{b.vx+=(Math.random()-.5)*62;b.vy-=Math.random()*38;b.vr+=(Math.random()-.5)*26});
   if(window.__strike) window.__strike(3);
@@ -657,13 +836,37 @@ document.getElementById('subs').innerHTML=LINKS.map(([n,u])=>
   if(reduce){ applyReducedMotion(); } else { layout(); requestAnimationFrame(()=>layout()); }
 })();
 
+/* ---------- the cover spins, and throws lightning while it does ---------- */
+(function(){
+  const btn=document.getElementById('coverbtn'), img=document.getElementById('funcover');
+  const hint=document.getElementById('coverhint');
+  if(!btn) return;
+  let spin=0, spinx=0, clicks=0, t=null;
+  const QUIPS=['again','harder','you have a problem','stop','this is not a toy',
+               'the walrus is dizzy','okay that is enough','⚠ structural failure imminent'];
+  btn.addEventListener('click',()=>{
+    clicks++;
+    // two axes at different rates, so it tumbles rather than spinning flat
+    spin  += reduce ? 0 : 360 + Math.min(clicks,6)*180;
+    spinx += reduce ? 0 : 180 + Math.min(clicks,4)*90;
+    img.style.setProperty('--spin',spin+'deg');
+    img.style.setProperty('--spinx',spinx+'deg');
+    img.classList.add('spinning');
+    clearTimeout(t); t=setTimeout(()=>img.classList.remove('spinning'),1000);
+    if(window.__strike) window.__strike(clicks>3?3:1);
+    if(hint) hint.textContent='↑ '+QUIPS[Math.min(clicks-1,QUIPS.length-1)];
+    // a really determined spinner cranks the whole storm up
+    if(clicks===8 && slider){ slider.value=100; setChaos(100); syncUrl(); }
+  });
+})();
+
 /* ---------- easter egg: type STORM ---------- */
 let buf='';
 addEventListener('keydown',e=>{
   if(e.target.matches('input,textarea'))return;
   buf=(buf+e.key.toLowerCase()).slice(-5);
-  if(buf.endsWith('calm')){ slider.value=0; setChaos(0); }
-  if(buf==='storm'){ slider.value=100; setChaos(100);
+  if(buf.endsWith('calm')){ slider.value=0; setChaos(0); syncUrl(); }
+  if(buf==='storm'){ slider.value=100; setChaos(100); syncUrl();
     if(window.__strike) window.__strike(6);
     document.getElementById('shake').click();
     document.body.animate([{filter:'hue-rotate(0)'},{filter:'hue-rotate(360deg)'}],{duration:1600,iterations:2});
