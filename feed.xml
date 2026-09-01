@@ -35,6 +35,40 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 19 -->
+    <item>
+      <title>AI weather models independently learned physics</title>
+      <description>Large data-driven physics models like DeepMind's weather model GraphCast have empirically succeeded in parameterizing time operators for complex dynamical systems with an accuracy reaching or in some cases exceeding that of traditional physics-based solvers. Unfortunately, how these data-driven models perform computations is largely unknown and whether their internal representations are interpretable or physically consistent is an open question. Here, the authors adapt tools from interpretability research in Large Language Models to analyze intermediate computational layers in GraphCast, leveraging sparse autoencoders to discover interpretable features in the neuron space of the model. They uncover distinct features on a wide range of length and time scales that correspond to tropical cyclones, atmospheric rivers, diurnal and seasonal behavior, large-scale precipitation patterns, specific geographical coding, and sea-ice extent, among others. They further demonstrate how the precise abstraction of these features can be probed via interventions on the prediction steps of the model. As a case study, they sparsely modify a feature corresponding to tropical cyclones in GraphCast and observe interpretable and physically consistent modifications to evolving hurricanes. Such methods offer a window into the black-box behavior of data-driven physics models and are a step towards realizing their potential as trustworthy predictors and scientifically valuable tools for discovery. Paper: https://arxiv.org/abs/2512.24440</description>
+      <enclosure url="https://archive.org/download/ai-weather-models-independently-learned-physics/ai-weather-models-independently-learned-physics.mp3"
+                 length="40463319"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep019-ai-weather-models-independently-learned-physics</guid>
+      <pubDate>Sun, 30 Aug 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep019.png"/>
+      <itunes:duration>42:09</itunes:duration>
+      <itunes:summary>A long look at what happens when you apply LLM interpretability tooling to a weather model: sparse autoencoders surface human-legible features inside GraphCast, and nudging the tropical-cyclone feature by hand steers a simulated hurricane in physically consistent ways.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>19</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
+    <!-- Episode 18 -->
+    <item>
+      <title>GraphCast learns the laws of physics</title>
+      <description>Large data-driven physics models like DeepMind's weather model GraphCast have empirically succeeded in parameterizing time operators for complex dynamical systems with an accuracy reaching or in some cases exceeding that of traditional physics-based solvers. Unfortunately, how these data-driven models perform computations is largely unknown and whether their internal representations are interpretable or physically consistent is an open question. Here, the authors adapt tools from interpretability research in Large Language Models to analyze intermediate computational layers in GraphCast, leveraging sparse autoencoders to discover interpretable features in the neuron space of the model. They uncover distinct features on a wide range of length and time scales that correspond to tropical cyclones, atmospheric rivers, diurnal and seasonal behavior, large-scale precipitation patterns, specific geographical coding, and sea-ice extent, among others. They further demonstrate how the precise abstraction of these features can be probed via interventions on the prediction steps of the model. As a case study, they sparsely modify a feature corresponding to tropical cyclones in GraphCast and observe interpretable and physically consistent modifications to evolving hurricanes. Such methods offer a window into the black-box behavior of data-driven physics models and are a step towards realizing their potential as trustworthy predictors and scientifically valuable tools for discovery. Paper: https://arxiv.org/abs/2512.24440</description>
+      <enclosure url="https://archive.org/download/ai-weather-models-independently-learned-physics/graphcast-learns-the-laws-of-physics.mp3"
+                 length="19388134"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep018-graphcast-learns-the-laws-of-physics</guid>
+      <pubDate>Sat, 29 Aug 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep018.png"/>
+      <itunes:duration>20:12</itunes:duration>
+      <itunes:summary>Sparse autoencoders borrowed from LLM interpretability research pull open GraphCast's hidden layers, revealing neurons that have independently learned tropical cyclones, atmospheric rivers, the diurnal cycle and sea-ice extent without ever being told they exist.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>18</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 17 -->
     <item>
       <title>Walrus masters physics from stars to oceans</title>
