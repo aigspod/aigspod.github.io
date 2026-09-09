@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Turn mood/index.html or mill/index.html into a self-contained page for an Artifact.
+"""Turn mood/, mill/ or morn/index.html into a self-contained page for an Artifact.
 
 Artifacts run under a strict CSP: no same-origin fetch of feed.xml, no ../images,
 no archive.org audio. So we parse the feed here and inline it as window.AIGS_EPISODES
 (the page prefers that over fetching), swap thumbnails for data URIs, and replace
 the <audio> players with a note. Google Fonts still load.
 
-  python3 tools/make_preview.py <thumbdir> <out.html> [page]   # page: fun | mill
+  python3 tools/make_preview.py <thumbdir> <out.html> [page]   # page: mood | mill | morn
 """
 import sys, re, json, base64, pathlib, html, email.utils
 import xml.etree.ElementTree as ET
@@ -57,6 +57,11 @@ page_html = page_html.replace('<script>\n', '<script>\nconst THUMBS={%s};\nwindo
                     % (table, json.dumps(eps)), 1)
 page_html = page_html.replace('../${e.thumb}', '${THUMBS[e.n]||""}')
 page_html = page_html.replace('data-full="../${e.img}"', '')
+# morn/ spells the loop variable out and also sets one <img> from script
+page_html = page_html.replace('../${ep.thumb}', '${THUMBS[ep.n]||""}')
+page_html = page_html.replace('data-full="../${ep.img}"', '')
+page_html = page_html.replace("im.dataset.full='../'+ep.img; im.src='../'+ep.thumb;",
+                              "im.src=THUMBS[ep.n]||'';")
 page_html = page_html.replace('src="../images/thumbs/funcover.jpg"', 'src="%s"' % cover_uri)
 page_html = page_html.replace('data-full="../images/funcover.png"', '')
 page_html = re.sub(r'<link rel="(?:apple-touch-)?icon"[^>]*>', '', page_html)
@@ -68,6 +73,8 @@ page_html = re.sub(r'<audio[^>]*></audio>',
 page_html = page_html.replace('<a href="../">← BACK TO THE NORMAL VERSION</a> · ', '')
 page_html = page_html.replace('<a href="../">← the normal version</a> ·', '')
 page_html = page_html.replace('<a href="../mood/">severe weather mode ⚡</a> ·', '')
+page_html = page_html.replace('<a href="../morn/">a quiet room ☀</a> ·', '')
+page_html = page_html.replace('<a href="../mill/">the paper mill ⚙</a> ·', '')
 
 # strip the document skeleton — Artifact supplies <!doctype>/<head>/<body>
 page_html = re.sub(r'^.*?<head>', '', page_html, flags=re.S)
@@ -76,6 +83,8 @@ page_html = re.sub(r'<body[^>]*>', '', page_html).replace('</body>', '')
 page_html = page_html.replace('<title>AIGS POD // CHAOS LAB</title>', '<title>Chaos Lab</title>', 1)
 page_html = page_html.replace('<title>The Paper Mill — The AIGS Pod</title>',
                               '<title>The Paper Mill</title>', 1)
+page_html = page_html.replace('<title>A Quiet Room — The AIGS Pod</title>',
+                              '<title>A Quiet Room</title>', 1)
 
 page_html += """
 <div class="pv-banner">PROTOTYPE PREVIEW · low-res covers, audio disabled — both are live on the real site</div>

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Quiet Room — The AIGS Pod</title>
+<meta name="description" content="The whole catalogue laid out as one long day. Move the sun; the light picks an episode.">
+<meta property="og:title" content="A Quiet Room — The AIGS Pod">
+<meta property="og:description" content="Every episode arrives with the light. Move the sun and see which one it lands on.">
+<meta property="og:image" content="https://aigspod.github.io/images/ep020.png">
+<meta property="og:image:alt" content="An artificial friend sitting at a tall window, facing a low amber sun.">
+<meta property="og:url" content="https://aigspod.github.io/morn/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aigspod.github.io/images/ep020.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------------
+   /morn/ — the quiet one. Klara-and-the-Sun: warm, slow, patient.
+   The sun is the interface. Drag it across the window and the room
+   changes colour, the figure turns her head, and the light lands on
+   one episode at a time.
+   --------------------------------------------------------------- */
+:root{
+  /* room furniture — the daylight version */
+  --wall:#f4ece0; --floor:#e9dccb; --card:#fffaf2;
+  --ink:#3b3440; --ink2:#736a78; --ink3:#a89ca8;
+  --rose:#e3bcb1; --amber:#eda85a; --slate:#8296b0;
+  --afl:#e7dccd; --afd:#9aa7b7;
+  --line:rgba(59,52,64,.16);
+  --sky1:#cfe0ea; --sky2:#f6ddc4; --sunc:#f6c27a;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'Space Mono',ui-monospace,monospace;
+}
+/* the version where she is waiting for it to come back */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --wall:#1b1824; --floor:#141119; --card:#242030;
+    --ink:#f0e7db; --ink2:#a99fae; --ink3:#786f83;
+    --rose:#7a4f4a; --amber:#c98a44; --slate:#5b6c85;
+    --afl:#4a4454; --afd:#39344a;
+    --line:rgba(240,231,219,.16);
+    --sky1:#171a2c; --sky2:#2b2438; --sunc:#c8cbe0;
+  }
+}
+:root[data-theme="dark"]{
+  --wall:#1b1824; --floor:#141119; --card:#242030;
+  --ink:#f0e7db; --ink2:#a99fae; --ink3:#786f83;
+  --rose:#7a4f4a; --amber:#c98a44; --slate:#5b6c85;
+  --afl:#4a4454; --afd:#39344a;
+  --line:rgba(240,231,219,.16);
+  --sky1:#171a2c; --sky2:#2b2438; --sunc:#c8cbe0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--wall);color:var(--ink);font-family:var(--sans);font-weight:300;
+  line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  transition:background .9s ease,color .9s ease}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+.sheet{max-width:980px;margin:0 auto;padding:0 clamp(1.3rem,5vw,3rem)}
+section{padding:clamp(3rem,7vw,5rem) 0 0}
+header{padding:clamp(2.2rem,5vw,3.6rem) 0 0}
+
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ink3);
+  text-transform:lowercase;margin-bottom:1rem}
+.eyebrow b{color:var(--ink2);font-weight:400}
+h1,h2{font-family:var(--serif);font-weight:300;letter-spacing:-.015em;line-height:1.15;
+  text-wrap:balance}
+h1{font-size:clamp(2rem,6vw,3.6rem)}
+h2{font-size:clamp(1.4rem,3.6vw,2.2rem)}
+em.warm{font-style:italic;color:var(--ink2)}
+.lede{max-width:58ch;color:var(--ink2);margin-top:1.1rem;font-size:clamp(.95rem,1.5vw,1.05rem)}
+.lede b{color:var(--ink);font-weight:500}
+
+/* ---------- the theme toggle, top-left, deliberately small ---------- */
+.themebtn{position:fixed;top:14px;left:14px;z-index:40;display:flex;align-items:center;
+  gap:.5rem;padding:.42rem .8rem;border:1px solid var(--line);border-radius:999px;
+  background:var(--card);color:var(--ink2);font:inherit;font-size:12px;cursor:pointer;
+  transition:color .25s,border-color .25s}
+.themebtn:hover{color:var(--ink);border-color:var(--ink3)}
+.themebtn span.i{font-size:13px}
+@media(max-width:640px){.themebtn span.t{display:none}}
+
+/* ---------- the room ---------- */
+.room{margin-top:2rem;border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  background:var(--wall);position:relative;touch-action:pan-y}
+#scene{display:block;width:100%;height:auto}
+#sun{cursor:grab}
+.room.grabbing #sun{cursor:grabbing}
+.room:focus-visible{outline:2px solid var(--ink3);outline-offset:6px}
+/* right-aligned so it stays clear of her, who sits bottom-left */
+.hint{position:absolute;right:14px;bottom:10px;text-align:right;font-family:var(--mono);
+  font-size:10.5px;letter-spacing:.14em;color:var(--ink3);pointer-events:none;
+  transition:opacity .6s ease}
+.hint.gone{opacity:0}
+
+/* ---------- what the light is currently on ---------- */
+.readout{display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap;margin-top:1.3rem;
+  padding-top:1.2rem;border-top:1px solid var(--line)}
+.readout .hour{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--ink3);
+  min-width:9.5rem}
+.readout .hour b{display:block;font-size:15px;letter-spacing:.02em;color:var(--ink);
+  font-weight:400;font-family:var(--serif)}
+.lit{display:flex;gap:.85rem;align-items:center;background:none;border:0;padding:.3rem;
+  margin:-.3rem;border-radius:8px;font:inherit;color:inherit;text-align:left;cursor:pointer;
+  flex:1 1 20rem;transition:background .2s}
+.lit:hover{background:var(--card)}
+.lit:focus-visible{outline:2px solid var(--ink3);outline-offset:2px}
+.lit img{width:54px;height:54px;border-radius:6px;object-fit:cover;flex:0 0 auto;
+  border:1px solid var(--line)}
+.lit .no{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ink3)}
+.lit .ti{font-family:var(--serif);font-size:1.06rem;line-height:1.3;display:block}
+.lit .du{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+
+/* ---------- the day, as a row of episodes ---------- */
+#arc{width:100%;height:auto;display:block;margin-top:.6rem;overflow:visible;
+  touch-action:pan-y;cursor:pointer}
+#arc .dot{cursor:pointer;transition:r .25s ease,opacity .25s ease}
+#arc .dot:focus-visible{outline:2px solid var(--ink3);outline-offset:3px}
+
+/* ---------- archive ---------- */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
+  gap:clamp(.7rem,2vw,1.1rem);margin-top:1.6rem}
+.pane{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;
+  text-align:left;transition:transform .3s cubic-bezier(.2,.9,.3,1)}
+.pane:hover{transform:translateY(-4px)}
+.pane:focus-visible{outline:2px solid var(--ink3);outline-offset:4px;border-radius:8px}
+.pane img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:7px;
+  border:1px solid var(--line);display:block}
+.pane .no{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink3);
+  margin-top:.5rem}
+.pane .ti{font-family:var(--serif);font-size:.92rem;line-height:1.32;margin-top:.1rem}
+.waiting{font-family:var(--serif);font-style:italic;color:var(--ink3)}
+
+/* ---------- the episode, opened ---------- */
+dialog{border:0;padding:0;background:none;margin:auto;max-width:min(620px,94vw);color:var(--ink)}
+dialog::backdrop{background:rgba(24,20,28,.55);backdrop-filter:blur(3px)}
+.epcard{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:clamp(1.2rem,3vw,1.9rem);max-height:86vh;overflow:auto}
+.epcard img{width:132px;border-radius:8px;border:1px solid var(--line);float:left;
+  margin:0 1.1rem .7rem 0}
+.epcard h3{font-family:var(--serif);font-weight:300;font-size:1.4rem;line-height:1.25}
+.epcard .meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;color:var(--ink3);
+  margin:.45rem 0 .9rem}
+.epcard p{font-size:.9rem;color:var(--ink2);clear:none}
+.epcard audio{width:100%;margin-top:1.1rem;clear:both;display:block}
+.epcard .x{float:right;background:none;border:0;font:inherit;font-size:1.3rem;line-height:1;
+  color:var(--ink3);cursor:pointer;padding:0 .2rem}
+.epcard .x:hover{color:var(--ink)}
+
+/* ---------- subscribe ---------- */
+.subs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.6rem;
+  margin-top:1.6rem}
+.subs a{display:block;padding:.75rem .9rem;border:1px solid var(--line);border-radius:8px;
+  color:var(--ink);text-decoration:none;font-size:.92rem;transition:border-color .25s,background .25s}
+.subs a:hover{border-color:var(--ink3);background:var(--card)}
+.subs a span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  color:var(--ink3);margin-top:.15rem}
+
+@media(max-width:640px){
+  header{padding-top:4.2rem}
+  .readout .hour{min-width:0;flex:1 0 100%}
+  .lit{flex:1 1 100%}
+  .epcard img{float:none;width:104px;margin:0 0 .8rem}
+  .subs{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+footer{margin-top:clamp(3.5rem,8vw,6rem);padding:1.8rem 0 3rem;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;color:var(--ink3)}
+footer a{color:var(--ink2);text-decoration:none}
+footer a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<button class="themebtn" id="themetoggle" aria-label="Switch to the version after dark">
+  <span class="i" id="themeicon">☾</span><span class="t" id="themelabel">wait for the sun</span>
+</button>
+
+<div class="sheet">
+
+<header>
+  <div class="eyebrow">the aigs pod · <b>a quiet room</b></div>
+  <h1>Every episode arrives <em class="warm">with the light</em>.</h1>
+  <p class="lede">The whole catalogue, laid out as one long day. <b>Move the sun</b> — drag it,
+  or use the arrow keys — and the room changes around it. Whatever the light falls on is what
+  you listen to next. She has been sitting here the entire time, and does not mind waiting.</p>
+</header>
+
+<section>
+  <div class="eyebrow">01 / <b>the window</b> · the sun starts wherever it actually is where you are</div>
+  <div class="room" id="room" tabindex="0" role="slider" aria-label="Time of day — moves through the catalogue"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+    <svg id="scene" viewBox="0 0 1000 620" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--sky1)"/>
+          <stop offset="1" stop-color="var(--sky2)"/>
+        </linearGradient>
+        <radialGradient id="glow">
+          <stop offset="0" stop-color="var(--sunc)" stop-opacity=".8"/>
+          <stop offset="1" stop-color="var(--sunc)" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="beamg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--sunc)" stop-opacity=".42"/>
+          <stop offset="1" stop-color="var(--sunc)" stop-opacity="0"/>
+        </linearGradient>
+        <clipPath id="winclip"><rect x="250" y="46" width="512" height="384" rx="5"/></clipPath>
+      </defs>
+
+      <rect width="1000" height="620" fill="var(--wall)"/>
+      <rect y="470" width="1000" height="150" fill="var(--floor)"/>
+
+      <!-- the window: sky, sun, and the world drawn inside the sun's own glow -->
+      <g clip-path="url(#winclip)">
+        <rect x="250" y="46" width="512" height="384" fill="url(#sky)"/>
+        <circle id="glowc" r="215" fill="url(#glow)"/>
+        <g id="sunwrap">
+          <circle id="sun" r="44" fill="var(--sunc)"/>
+          <g id="globe" opacity=".55" fill="none" stroke="var(--ink2)" stroke-width="1">
+            <circle r="36"/>
+            <ellipse rx="36" ry="13"/><ellipse rx="36" ry="26"/>
+            <ellipse rx="13" ry="36"/><ellipse rx="26" ry="36"/>
+            <!-- western europe, running warm -->
+            <path d="M-9-17 q7-6 13-2 q6 4 3 10 q-4 7-11 5 q-7-2-5-13Z"
+                  fill="#e2653a" stroke="none" opacity=".8"/>
+            <!-- and one small spiral in the western pacific -->
+            <path d="M21 4 q6-5 9 1 q2 5-4 6 q-7 1-8-6 q-1-9 10-9" stroke-width="1.2"/>
+          </g>
+        </g>
+      </g>
+
+      <!-- mullions: the panes she has been counting -->
+      <g stroke="var(--ink3)" stroke-width="2.4" fill="none" opacity=".85">
+        <rect x="250" y="46" width="512" height="384" rx="5" stroke-width="3.4"/>
+        <path d="M421 46v384M591 46v384M250 238h512"/>
+      </g>
+
+      <!-- light on the floor -->
+      <path id="beam" fill="url(#beamg)"/>
+      <!-- and what drifts in it: curves that bend where a straight line would fail -->
+      <g id="motes" fill="none" stroke="var(--sunc)" stroke-width="1.6"
+         stroke-linecap="round" opacity=".7"></g>
+
+      <!-- the artificial friend, three-quarter from behind, warming herself -->
+      <g id="af" stroke="var(--line)" stroke-width="1.5">
+        <ellipse cx="152" cy="588" rx="78" ry="26" fill="var(--afd)"/>
+        <path d="M112 470q40-14 80 0l10 104q-45 14-100 0Z" fill="var(--afl)"/>
+        <path d="M104 494q-12 40-6 88" stroke="var(--afd)" stroke-width="11"
+              fill="none" stroke-linecap="round"/>
+        <path d="M200 494q12 40 6 88" stroke="var(--afd)" stroke-width="11"
+              fill="none" stroke-linecap="round"/>
+        <rect x="140" y="446" width="26" height="32" rx="9" fill="var(--afd)"/>
+        <g id="head">
+          <rect x="115" y="378" width="76" height="80" rx="26" fill="var(--afl)"/>
+          <path d="M115 418h76" stroke="var(--afd)" stroke-width="1.2" opacity=".5"/>
+          <circle cx="183" cy="416" r="10" fill="var(--afd)"/>
+          <circle cx="196" cy="416" r="2.6" fill="var(--ink2)" stroke="none"/>
+        </g>
+      </g>
+    </svg>
+    <p class="hint" id="hint">drag the sun · or press ← →</p>
+  </div>
+
+  <div class="readout">
+    <div class="hour"><span id="phase">morning</span><b id="clock">—</b></div>
+    <button class="lit" id="lit" hidden>
+      <img id="litimg" alt="">
+      <span>
+        <span class="no" id="litno"></span>
+        <span class="ti" id="litti"></span>
+        <span class="du" id="litdu"></span>
+      </span>
+    </button>
+    <p class="waiting" id="waiting">waiting for the archive…</p>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">02 / <b>the day so far</b> · the first episode at dawn, the newest at dusk</div>
+  <h2><span id="hours">Twenty-odd</span> hours, <em class="warm">one per paper</em></h2>
+  <svg id="arc" viewBox="0 0 1000 150" role="group" aria-label="Episodes along the day"></svg>
+</section>
+
+<section>
+  <div class="eyebrow">03 / <b>the shelf</b> · everything, in order, no sun required</div>
+  <h2>If you would rather just <em class="warm">pick one</em></h2>
+  <dialog id="ep"><div class="epcard" id="epcard"></div></dialog>
+  <div class="shelf" id="shelf"></div>
+</section>
+
+<section>
+  <div class="eyebrow">04 / <b>where to listen</b></div>
+  <h2>It is, in the ordinary way, <em class="warm">a podcast</em></h2>
+  <div class="subs" id="subs"></div>
+</section>
+
+<footer>
+  <a href="../">← the normal version</a> ·
+  <a href="../mood/">severe weather mode ⚡</a> ·
+  <a href="../mill/">the paper mill ⚙</a> ·
+  <a href="../feed.xml">RSS</a> ·
+  SHE IS STILL AT THE WINDOW
+</footer>
+</div>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let EPS = [], ASC = [], t = 0.5;
+
+/* ---------- episodes come straight from feed.xml, so they can never go stale ---------- */
+const ITUNES='http://www.itunes.com/dtds/podcast-1.0.dtd';
+async function loadEpisodes(){
+  if(window.AIGS_EPISODES) return window.AIGS_EPISODES;
+  const xml=await fetch('../feed.xml',{cache:'no-cache'}).then(r=>{
+    if(!r.ok) throw new Error('feed.xml '+r.status); return r.text();
+  });
+  const doc=new DOMParser().parseFromString(xml,'application/xml');
+  if(doc.querySelector('parsererror')) throw new Error('feed.xml is not valid XML');
+  return [...doc.querySelectorAll('item')].map(it=>{
+    const txt=t=>(it.querySelector(t)?.textContent||'').trim();
+    const itu=t=>it.getElementsByTagNameNS(ITUNES,t)[0];
+    const n=parseInt(itu('episode')?.textContent||'0',10);
+    const dur=(itu('duration')?.textContent||'').trim();
+    const d=new Date(txt('pubDate'));
+    const img=(itu('image')?.getAttribute('href')||'').replace(/^https?:\/\/[^/]+\//,'')
+              || 'images/ep'+String(n).padStart(3,'0')+'.png';
+    return {
+      n, title:txt('title'), dur,
+      // format in UTC: the feed stamps midnight UTC, a day earlier west of Greenwich
+      dateLabel:isNaN(d)?'':d.toLocaleDateString('en-US',
+        {month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}),
+      img,
+      thumb:img.replace(/^images\//,'images/thumbs/').replace(/\.png$/i,'.jpg'),
+      audio:it.querySelector('enclosure')?.getAttribute('url')||'',
+      desc:(txt('description')||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim()
+    };
+  }).filter(e=>e.n).sort((a,b)=>b.n-a.n);
+}
+// a missing thumbnail falls back to the full-res artwork instead of a broken image
+const fb='onerror="this.onerror=null;this.src=this.dataset.full"';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- the sun's arc across the window ---------- */
+const X0=306, X1=706, YB=404, YT=118;
+const sunX=u=>X0+(X1-X0)*u;
+const sunY=u=>YB-(YB-YT)*Math.sin(Math.PI*u);
+
+/* ---------- palettes: dawn, noon, dusk (and the same day after dark) ---------- */
+const PAL={
+  light:[{sky1:'#b9cddd',sky2:'#f3cdb4',sunc:'#f0a273',wall:'#efe3d8',floor:'#e4d3c4'},
+         {sky1:'#cfe3ee',sky2:'#f8e8d0',sunc:'#f8cf87',wall:'#f6efe4',floor:'#ece0cf'},
+         {sky1:'#a9b8cf',sky2:'#f2c193',sunc:'#ef9b52',wall:'#efe0d2',floor:'#e3cebc'}],
+  dark: [{sky1:'#151a2e',sky2:'#2a2438',sunc:'#8e93b8',wall:'#1a1723',floor:'#131019'},
+         {sky1:'#1b2340',sky2:'#312a44',sunc:'#cdd0e6',wall:'#1f1c2a',floor:'#16131d'},
+         {sky1:'#141727',sky2:'#2c2233',sunc:'#9a86a8',wall:'#191621',floor:'#121016'}]
+};
+const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const mix=(a,b,k)=>'#'+hex(a).map((v,i)=>
+  Math.round(v+(hex(b)[i]-v)*k).toString(16).padStart(2,'0')).join('');
+function paintRoom(u){
+  const dark=(document.documentElement.getAttribute('data-theme')
+              || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))==='dark';
+  const [a,b,c]=PAL[dark?'dark':'light'];
+  // two halves of the day, so noon is a real waypoint and not an average
+  const from=u<.5?a:b, to=u<.5?b:c, k=u<.5?u*2:(u-.5)*2;
+  const st=document.documentElement.style;
+  for(const key of ['sky1','sky2','sunc','wall','floor'])
+    st.setProperty('--'+key, mix(from[key],to[key],k));
+}
+
+/* ---------- the phase of the day, in her words ---------- */
+const PHASES=[[.08,'first light'],[.2,'early morning'],[.36,'mid-morning'],
+  [.52,'the middle of the day'],[.68,'afternoon'],[.84,'late afternoon'],[1.01,'the last of it']];
+const phaseOf=u=>(PHASES.find(p=>u<p[0])||PHASES[6])[1];
+// the window is open from 6am to 8pm; anything else is her waiting
+const clockOf=u=>{
+  const m=Math.round((6+u*14)*60), h=Math.floor(m/60)%24;
+  return String(h).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+};
+
+/* ---------- the room, redrawn ---------- */
+const $=id=>document.getElementById(id);
+function setSun(u,quiet){
+  t=Math.min(1,Math.max(0,u));
+  const x=sunX(t), y=sunY(t);
+  $('sunwrap').setAttribute('transform',`translate(${x} ${y})`);
+  $('glowc').setAttribute('cx',x); $('glowc').setAttribute('cy',y);
+  // light on the floor leans away from the sun, and lies flattest at noon
+  const lean=(506-x)*1.15;
+  $('beam').setAttribute('d',
+    `M250 430 H762 L${762+lean} 620 H${250+lean} Z`);
+  $('beam').setAttribute('opacity',(0.35+0.65*Math.sin(Math.PI*t)).toFixed(3));
+  $('motes').setAttribute('opacity',(0.25+0.5*Math.sin(Math.PI*t)).toFixed(3));
+  // she turns her head to follow it, but only so far
+  const turn=Math.max(-9,Math.min(9,(x-500)/26));
+  $('head').setAttribute('transform',`rotate(${turn.toFixed(2)} 153 458)`);
+  $('globe').setAttribute('opacity',(0.25+0.4*Math.sin(Math.PI*t)).toFixed(3));
+  paintRoom(t);
+  $('phase').textContent=phaseOf(t);
+  $('clock').textContent=clockOf(t);
+  $('room').setAttribute('aria-valuenow',Math.round(t*100));
+  if(!quiet) light();
+}
+
+/* ---------- whichever episode the light is on ---------- */
+let litEp=null;
+function light(){
+  if(!ASC.length) return;
+  const i=Math.min(ASC.length-1,Math.round(t*(ASC.length-1)));
+  const ep=ASC[i];
+  $('room').setAttribute('aria-valuetext',`${clockOf(t)} — episode ${ep.n}, ${ep.title}`);
+  [...document.querySelectorAll('#arc .dot')].forEach((d,j)=>{
+    d.setAttribute('r',j===i?9:4.5);
+    d.setAttribute('opacity',j===i?1:.42);
+  });
+  if(litEp===ep) return;
+  litEp=ep;
+  const im=$('litimg');
+  im.dataset.full='../'+ep.img; im.src='../'+ep.thumb; im.alt='';
+  im.onerror=()=>{im.onerror=null;im.src=im.dataset.full;};
+  $('litno').textContent='EP '+String(ep.n).padStart(3,'0')+' · '+ep.dateLabel;
+  $('litti').textContent=ep.title;
+  $('litdu').textContent=ep.dur;
+  $('lit').hidden=false; $('waiting').hidden=true;
+}
+$('lit').addEventListener('click',()=>litEp&&openEpisode(litEp));
+
+/* ---------- dragging the sun ---------- */
+(function(){
+  const room=$('room'), svg=$('scene');
+  let dragging=false, pending=null;
+  const uAt=e=>{
+    const r=svg.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width*1000;
+    return (x-X0)/(X1-X0);
+  };
+  const hide=()=>$('hint').classList.add('gone');
+  const start=e=>{
+    dragging=true; pending=null; hide(); room.classList.add('grabbing');
+    room.setPointerCapture(e.pointerId); setSun(uAt(e)); room.focus();
+  };
+  room.addEventListener('pointerdown',e=>{
+    // a mouse press means business; a finger might just be starting to scroll,
+    // so wait until it has moved further sideways than down
+    if(e.pointerType==='mouse') start(e);
+    else pending={x:e.clientX,y:e.clientY,e};
+  });
+  room.addEventListener('pointermove',e=>{
+    if(dragging){ setSun(uAt(e)); return; }
+    if(!pending) return;
+    const dx=e.clientX-pending.x, dy=e.clientY-pending.y;
+    if(Math.abs(dx)>8 && Math.abs(dx)>Math.abs(dy)) start(e);
+    else if(Math.abs(dy)>10) pending=null;   // they are scrolling; let them
+  });
+  const stop=()=>{dragging=false;pending=null;room.classList.remove('grabbing');};
+  room.addEventListener('pointerup',stop);
+  room.addEventListener('pointercancel',stop);
+  room.addEventListener('keydown',e=>{
+    const step=ASC.length?1/(ASC.length-1):.05;
+    if(e.key==='ArrowRight'||e.key==='ArrowUp') setSun(t+step);
+    else if(e.key==='ArrowLeft'||e.key==='ArrowDown') setSun(t-step);
+    else if(e.key==='Home') setSun(0);
+    else if(e.key==='End') setSun(1);
+    else if(e.key==='Enter'||e.key===' '){ if(litEp){e.preventDefault();openEpisode(litEp);} return; }
+    else return;
+    e.preventDefault(); hide();
+  });
+})();
+
+/* ---------- dust that bends where a straight line would fail ---------- */
+(function(){
+  const g=$('motes');
+  for(let i=0;i<9;i++){
+    const y=470+Math.random()*130, x=120+Math.random()*760, w=60+Math.random()*90;
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M${x} ${y} c${w*.3} ${-18-Math.random()*22} ${w*.6} ${16+Math.random()*22} ${w} ${-6}`);
+    p.setAttribute('opacity',(.25+Math.random()*.5).toFixed(2));
+    if(!reduce){
+      p.style.animation=`drift ${16+Math.random()*16}s ease-in-out ${(-Math.random()*20).toFixed(1)}s infinite alternate`;
+    }
+    g.appendChild(p);
+  }
+  const s=document.createElement('style');
+  s.textContent='@keyframes drift{from{transform:translate(0,0)}to{transform:translate(26px,-16px)}}'+
+                '#motes path{transform-box:fill-box}';
+  document.head.appendChild(s);
+})();
+
+/* ---------- the day, as a row of episodes ---------- */
+// the heading counts the hours out loud, so it can never disagree with the feed
+const ONES=['zero','one','two','three','four','five','six','seven','eight','nine','ten',
+  'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+const TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+function spell(n){
+  if(n<20) return ONES[n];
+  if(n<100) return TENS[Math.floor(n/10)]+(n%10?'-'+ONES[n%10]:'');
+  return String(n);            // past ninety-nine she can just read the number
+}
+function setHours(){
+  const w=spell(ASC.length);
+  $('hours').textContent=w.charAt(0).toUpperCase()+w.slice(1);
+}
+
+function buildArc(){
+  const svg=$('arc'), NS='http://www.w3.org/2000/svg';
+  const X=(i,n)=>60+(880*(n<2?0.5:i/(n-1)));
+  const Y=(i,n)=>128-Math.sin(Math.PI*(n<2?.5:i/(n-1)))*88;
+  const n=ASC.length;
+  let d='';
+  for(let i=0;i<n;i++) d+=(i?' L':'M')+X(i,n)+' '+Y(i,n);
+  const path=document.createElementNS(NS,'path');
+  path.setAttribute('d',d); path.setAttribute('fill','none');
+  path.setAttribute('stroke','var(--line)'); path.setAttribute('stroke-width','1.5');
+  svg.appendChild(path);
+  ASC.forEach((ep,i)=>{
+    const g=document.createElementNS(NS,'g');
+    g.setAttribute('tabindex','0'); g.setAttribute('role','button');
+    g.setAttribute('aria-label',`Episode ${ep.n}: ${ep.title}`);
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('class','dot'); c.setAttribute('cx',X(i,n)); c.setAttribute('cy',Y(i,n));
+    c.setAttribute('r','4.5'); c.setAttribute('fill','var(--sunc)');
+    c.setAttribute('stroke','var(--ink3)'); c.setAttribute('stroke-width','.8');
+    const hit=document.createElementNS(NS,'circle');
+    hit.setAttribute('cx',X(i,n)); hit.setAttribute('cy',Y(i,n));
+    hit.setAttribute('r','20'); hit.setAttribute('fill','transparent');
+    g.append(c,hit); svg.appendChild(g);
+    const go=()=>{ setSun(n<2?.5:i/(n-1)); $('hint').classList.add('gone');
+      document.getElementById('room').scrollIntoView({block:'center'}); };
+    g.addEventListener('click',go);
+    g.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}
+    });
+  });
+  const lab=(x,anchor,txt)=>{
+    const el=document.createElementNS(NS,'text');
+    el.setAttribute('x',x); el.setAttribute('y',148); el.setAttribute('text-anchor',anchor);
+    el.setAttribute('fill','var(--ink3)'); el.setAttribute('font-size','11');
+    el.setAttribute('font-family',"'Space Mono',monospace");
+    el.setAttribute('letter-spacing','.14em'); el.textContent=txt;
+    svg.appendChild(el);
+  };
+  lab(60,'start','dawn · ep '+String(ASC[0].n).padStart(3,'0'));
+  lab(940,'end','ep '+String(ASC[n-1].n).padStart(3,'0')+' · dusk');
+  scrubArc(svg,n);
+}
+
+// the whole arc is draggable, so you never have to hit one small dot
+function scrubArc(svg,n){
+  let dragging=false, pending=null;
+  const uAt=e=>{
+    const r=svg.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width*1000;
+    return Math.round(((x-60)/880)*(n-1))/(n-1);
+  };
+  const start=e=>{ dragging=true; pending=null;
+    svg.setPointerCapture(e.pointerId); setSun(uAt(e)); };
+  svg.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='mouse') start(e);
+    else pending={x:e.clientX,y:e.clientY};
+  });
+  svg.addEventListener('pointermove',e=>{
+    if(dragging){ setSun(uAt(e)); return; }
+    if(!pending) return;
+    const dx=e.clientX-pending.x, dy=e.clientY-pending.y;
+    if(Math.abs(dx)>8 && Math.abs(dx)>Math.abs(dy)) start(e);
+    else if(Math.abs(dy)>10) pending=null;
+  });
+  const stop=()=>{dragging=false;pending=null;};
+  svg.addEventListener('pointerup',stop);
+  svg.addEventListener('pointercancel',stop);
+}
+
+/* ---------- the shelf ---------- */
+function buildShelf(){
+  $('shelf').innerHTML=EPS.map(ep=>`
+    <button class="pane" data-n="${ep.n}">
+      <img src="../${ep.thumb}" data-full="../${ep.img}" ${fb} alt="" loading="lazy">
+      <span class="no">EP ${String(ep.n).padStart(3,'0')}</span>
+      <span class="ti">${esc(ep.title)}</span>
+    </button>`).join('');
+  $('shelf').addEventListener('click',e=>{
+    const b=e.target.closest('.pane'); if(!b) return;
+    openEpisode(EPS.find(x=>x.n===+b.dataset.n));
+  });
+}
+function openEpisode(ep){
+  $('epcard').innerHTML=`
+    <button class="x" id="epx" aria-label="Close">×</button>
+    <img src="../${ep.thumb}" data-full="../${ep.img}" ${fb} alt="">
+    <h3>${esc(ep.title)}</h3>
+    <p class="meta">EP ${String(ep.n).padStart(3,'0')} · ${esc(ep.dateLabel)} · ${esc(ep.dur)}</p>
+    <p>${esc(ep.desc)}</p>
+    ${ep.audio?`<audio controls preload="none" src="${esc(ep.audio)}"></audio>`:''}`;
+  $('epx').addEventListener('click',()=>$('ep').close());
+  $('ep').showModal();
+}
+$('ep').addEventListener('close',()=>{ $('epcard').innerHTML=''; });
+$('ep').addEventListener('click',e=>{ if(e.target===$('ep')) $('ep').close(); });
+
+/* ---------- subscribe ---------- */
+const LINKS=[['Apple Podcasts','the big one','https://podcasts.apple.com/us/podcast/the-aigs-pod/id1889040734'],
+['Spotify','also big','https://open.spotify.com/show/31CkWW6MrZ2c6EX4pNOLLe'],
+['YouTube','with pictures','https://www.youtube.com/@aigspod'],
+['Overcast','smart speed','https://overcast.fm/p5667866-pLSxDi'],
+['Pocket Casts','beloved','https://pca.st/nd87z4rq'],
+['Podcast Addict','android','https://podcastaddict.com/podcast/the-aigs-pod/6899043'],
+['Podcast Index','open web','https://podcastindex.org/podcast/7789674'],
+['AntennaPod','foss','antennapod-subscribe://aigspod.github.io/feed.xml'],
+['iHeartRadio','sure','https://iheart.com/podcast/328627475/'],
+['RSS','the real one','../feed.xml']];
+$('subs').innerHTML=LINKS.map(([n,s,u])=>
+  `<a href="${u}" target="_blank" rel="noopener">${n}<span>${s}</span></a>`).join('');
+
+/* ---------- daylight / after dark ---------- */
+(function(){
+  const btn=$('themetoggle'), icon=$('themeicon'), label=$('themelabel');
+  const root=document.documentElement;
+  const sysDark=()=>matchMedia('(prefers-color-scheme: dark)').matches;
+  // no stored choice -> no data-theme attribute -> prefers-color-scheme decides
+  let saved=null;
+  try{ saved=localStorage.getItem('morn-theme'); }catch(e){}
+  if(saved==='dark'||saved==='light') root.setAttribute('data-theme',saved);
+  const paint=()=>{
+    const dark=(root.getAttribute('data-theme')||(sysDark()?'dark':'light'))==='dark';
+    // the label says what pressing it does, not which mode you are in
+    icon.textContent = dark ? '☀' : '☾';
+    label.textContent = dark ? 'let the sun in' : 'wait for the sun';
+    btn.setAttribute('aria-label', dark
+      ? 'Switch to the daylight version' : 'Switch to the version after dark');
+    btn.title = dark ? 'she has been very patient.' : 'she will still be here.';
+    paintRoom(t);
+  };
+  paint();
+  btn.addEventListener('click',()=>{
+    const dark=(root.getAttribute('data-theme')||(sysDark()?'dark':'light'))==='dark';
+    const next=dark?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{ localStorage.setItem('morn-theme',next); }catch(e){}
+    paint();
+  });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',paint);
+})();
+
+/* ---------- boot: the sun starts where it actually is ---------- */
+(async function init(){
+  const now=new Date();
+  const hours=now.getHours()+now.getMinutes()/60;
+  setSun(Math.min(1,Math.max(0,(hours-6)/14)),true);
+  try{
+    EPS=await loadEpisodes();
+    if(!EPS.length) throw new Error('no episodes in feed');
+  }catch(err){
+    console.error('[AIGS]',err);
+    $('waiting').innerHTML='the archive is dark. <a href="../">back to the normal version →</a>';
+    return;
+  }
+  ASC=[...EPS].slice().reverse();
+  setHours(); buildArc(); buildShelf(); light();
+})();
+</script>
+</body>
+</html>
