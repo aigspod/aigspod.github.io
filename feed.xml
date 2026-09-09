@@ -35,6 +35,23 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 20 -->
+    <item>
+      <title>How AI weather models understand physics</title>
+      <description>Deep learning weather prediction models achieve remarkable predictive skill yet remain largely opaque: little is known about how they represent physical climate phenomena internally. Mechanistic interpretability through Sparse Autoencoders (SAEs) offers a principled route to decomposing these representations, but existing SAEs assume strictly linear feature superposition - a constraint ill-suited for the highly nonlinear atmospheric dynamics encoded in modern transformers. The authors introduce KAN-SAE, a sparse autoencoder whose encoder replaces the standard ReLU with learnable per-feature B-spline activations drawn from Kolmogorov-Arnold Networks (KANs), allowing each latent dimension to develop its own nonlinear gating profile. Applied to Sonny, KAN-SAE discovers 975 alive features (vs. 566 for a linear baseline, a 72% improvement) with 20% lower inter-feature redundancy and comparable reconstruction fidelity. Without any climate supervision, KAN-SAE identifies an interpretable European heatwave feature spatially concentrated over western Europe, and a western Pacific typhoon tracker confirmed by causal steering experiments. The results demonstrate that nonlinear activations are essential for mechanistic interpretability of deep learning weather prediction models, recovering climate features that remain invisible to linear baselines. Paper: https://arxiv.org/abs/2605.17493</description>
+      <enclosure url="https://archive.org/download/how-ai-weather-models-understand-physics/how-ai-weather-models-understand-physics.mp3"
+                 length="22768174"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep020-how-ai-weather-models-understand-physics</guid>
+      <pubDate>Tue, 08 Sep 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep020.png"/>
+      <itunes:duration>23:43</itunes:duration>
+      <itunes:summary>Swapping ReLU for learnable B-spline activations from Kolmogorov-Arnold Networks nearly doubles the number of live features a sparse autoencoder finds inside a weather model - surfacing a European heatwave feature and a western Pacific typhoon tracker that linear baselines miss entirely.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>20</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 19 -->
     <item>
       <title>AI weather models independently learned physics</title>
