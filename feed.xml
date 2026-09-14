@@ -35,6 +35,40 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 22 -->
+    <item>
+      <title>How AI predicts weather without physics</title>
+      <description>Artificial Intelligence (AI) weather models are improving rapidly, and their forecasts are already competitive with long-established traditional Numerical Weather Prediction (NWP). To build confidence in this new methodology, it is critical to understand how these predictions are generated. This is a huge challenge as these AI weather models remain largely black boxes. In other areas of Machine Learning (ML), mechanistic interpretability has emerged as a framework for understanding ML predictions by analysing the building blocks responsible for them. Here the authors present an open-source, highly adaptable tool which incorporates concepts from mechanistic interpretability. The tool organises internal latent representations from the model processor and allows for initial analyses, including cosine similarity and Principal Component Analysis (PCA), enabling the user to identify directions in latent space potentially associated with meteorological features. Applying the tool to the graph neural network GraphCast, they present preliminary case studies for mid-latitude synoptic-scale waves and specific humidity. These demonstrate the tool's ability to identify linear combinations of latent channels that appear to correspond to interpretable features. Paper: https://arxiv.org/abs/2604.20467</description>
+      <enclosure url="https://archive.org/download/how-ai-predicts-weather-without-physics/how-ai-predicts-weather-without-physics.mp3"
+                 length="51578100"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep022-how-ai-predicts-weather-without-physics</guid>
+      <pubDate>Sun, 13 Sep 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep022.png"/>
+      <itunes:duration>53:44</itunes:duration>
+      <itunes:summary>A long, unhurried walk through an open-source tool for poking at GraphCast's latent space: organise the processor's internal representations, run cosine similarity and PCA, and watch linear directions emerge that line up with mid-latitude waves and specific humidity.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>22</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
+    <!-- Episode 21 -->
+    <item>
+      <title>How AI weather models actually think</title>
+      <description>Artificial Intelligence (AI) weather models are improving rapidly, and their forecasts are already competitive with long-established traditional Numerical Weather Prediction (NWP). To build confidence in this new methodology, it is critical to understand how these predictions are generated. This is a huge challenge as these AI weather models remain largely black boxes. In other areas of Machine Learning (ML), mechanistic interpretability has emerged as a framework for understanding ML predictions by analysing the building blocks responsible for them. Here the authors present an open-source, highly adaptable tool which incorporates concepts from mechanistic interpretability. The tool organises internal latent representations from the model processor and allows for initial analyses, including cosine similarity and Principal Component Analysis (PCA), enabling the user to identify directions in latent space potentially associated with meteorological features. Applying the tool to the graph neural network GraphCast, they present preliminary case studies for mid-latitude synoptic-scale waves and specific humidity. These demonstrate the tool's ability to identify linear combinations of latent channels that appear to correspond to interpretable features. Paper: https://arxiv.org/abs/2604.20467</description>
+      <enclosure url="https://archive.org/download/how-ai-predicts-weather-without-physics/how-ai-weather-models-actually-think.mp3"
+                 length="22149591"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep021-how-ai-weather-models-actually-think</guid>
+      <pubDate>Sat, 12 Sep 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep021.png"/>
+      <itunes:duration>23:04</itunes:duration>
+      <itunes:summary>A simple, easy-to-use visualisation tool for exploring the latent spaces of AI weather models, and what it finds when pointed at GraphCast: directions in latent space that seem to track synoptic-scale waves and humidity.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>21</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 20 -->
     <item>
       <title>How AI weather models understand physics</title>
