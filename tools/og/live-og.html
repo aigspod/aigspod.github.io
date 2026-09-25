@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>live og card</title>
+<!-- 1200x630 link-preview card for /live/. The study drawing and its styles are lifted
+     out of live/index.html at load time, so the card can't drift from the page. -->
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Shantell+Sans:ital,wght,BNCE,INFM@0,300..800,-100..100,0..100;1,300..800,-100..100,0..100&family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style id="lifted"></style>
+<style>
+html,body{margin:0;width:1200px;height:630px;overflow:hidden}
+body{background:var(--cream)}
+.card{position:relative;width:1200px;height:630px;box-sizing:border-box}
+.card .frame{position:absolute;inset:18px}
+.words{position:absolute;left:70px;top:0;bottom:0;width:420px;z-index:3;display:flex;flex-direction:column;justify-content:center}
+.words h1{margin:0;font-size:60px;line-height:1.32}
+.words .hl{white-space:nowrap}
+.words .eyebrow{margin-bottom:22px;font-size:13px}
+.words .sub{margin-top:28px;font-family:var(--mono);font-size:14px;line-height:1.8;letter-spacing:.14em;color:var(--ink2)}
+.scene{position:absolute;right:34px;top:50%;transform:translateY(-50%);width:690px}
+.scene svg{width:100%;height:auto;display:block}
+/* hold one quiet frame: the radio on, notes in the air */
+*{animation:none!important}
+.notes text{opacity:.85!important}
+.notes text:nth-child(1){transform:translate(-20px,-18px)}
+.notes text:nth-child(2){transform:translate(-40px,-44px)}
+.notes text:nth-child(3){transform:translate(-30px,-72px)}
+.antenna{fill:var(--accent)!important}
+.kssh,.cursor{display:none}
+</style>
+</head>
+<body class="on">
+<div class="card">
+  <div class="frame"></div>
+  <div class="words">
+    <div class="eyebrow">the aigs pod · <b>on air</b></div>
+    <h1>Something<br>to <span class="hl">work to</span></h1>
+    <div class="sub">a radio for working<br>wqed 89.3 · lofi · quiet</div>
+  </div>
+  <div class="scene" id="scene"></div>
+</div>
+<script>
+fetch('../../live/index.html').then(r=>r.text()).then(t=>{
+  const doc=new DOMParser().parseFromString(t,'text/html');
+  document.getElementById('lifted').textContent=doc.querySelector('style').textContent;
+  const svg=doc.getElementById('room');
+  svg.setAttribute('viewBox','20 0 980 520');
+  document.getElementById('scene').appendChild(document.importNode(svg,true));
+  document.fonts.ready.then(()=>document.body.setAttribute('data-ready','1'));
+});
+</script>
+</body>
+</html>
