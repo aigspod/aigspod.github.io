@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>On Air — The AIGS Pod</title>
+<meta name="description" content="A radio for working. Pittsburgh classical, lofi beats to study to, and quiet ambient. Turn the dial.">
+<meta property="og:title" content="On Air — The AIGS Pod">
+<meta property="og:description" content="Something to work to. Turn the dial.">
+<meta property="og:image" content="https://aigspod.github.io/images/mill-og.png">
+<meta property="og:url" content="https://aigspod.github.io/live/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Shantell+Sans:ital,wght,BNCE,INFM@0,300..800,-100..100,0..100;1,300..800,-100..100,0..100&family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f7f4e9; --card:#fffdf7;
+  --ink:#1e3050; --ink2:#5a7291; --ink3:#93a3b8;
+  --blush:#f7d9d5; --sand:#ecdcb8;
+  --accent:#c0564a;
+  --note:#f9e97e; --notefg:#4c4110; --notetag:#8a7420;
+  --line:rgba(30,48,80,.15);
+  /* the view out of the window */
+  --sky:#e3ecf5; --hill:#e9ead9; --orb:#f5c46b; --litwin:#e3ecf5; --gold:#d9a93a;
+  --starop:0; --glowop:.4;
+  --lines:#51627d; --lines-op:.62;
+  --screen:#e4ecf7; --bulb1:#f3b566; --bulb2:#f7d9d5; --bulb3:#f5dfa0;
+  --sans:'Poppins',system-ui,-apple-system,sans-serif;
+  --hand:'Caveat',cursive;
+  --mono:'Space Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --cream:#131a26; --card:#1b2432;
+    --ink:#ece5d6; --ink2:#9db0c8; --ink3:#6b7d95;
+    --blush:#7c4640; --sand:#6d5c33;
+    --accent:#e07a68;
+    --note:#c9b53f; --notefg:#231d05; --notetag:#5c4f12;
+    --line:rgba(236,229,214,.17);
+    --sky:#1a2340; --hill:#212a44; --orb:#efe6cc; --litwin:#e3a75a; --gold:#c9a24a;
+    --starop:.9; --glowop:.95;
+    --lines:#c9c2d6; --lines-op:.5;
+    --screen:#2a3a5e; --bulb1:#f3b566; --bulb2:#e89a8a; --bulb3:#f5dfa0;
+  }
+}
+:root[data-theme="dark"]{
+  --cream:#131a26; --card:#1b2432;
+  --ink:#ece5d6; --ink2:#9db0c8; --ink3:#6b7d95;
+  --blush:#7c4640; --sand:#6d5c33;
+  --accent:#e07a68;
+  --note:#c9b53f; --notefg:#231d05; --notetag:#5c4f12;
+  --line:rgba(236,229,214,.17);
+  --sky:#1a2340; --hill:#212a44; --orb:#efe6cc; --litwin:#e3a75a; --gold:#c9a24a;
+  --starop:.9; --glowop:.95;
+  --lines:#c9c2d6; --lines-op:.5;
+  --screen:#2a3a5e; --bulb1:#f3b566; --bulb2:#e89a8a; --bulb3:#f5dfa0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);
+  line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.frame{position:fixed;inset:18px;border:1px solid var(--line);pointer-events:none;z-index:1}
+@media(max-width:700px){.frame{inset:9px}}
+.sheet{position:relative;z-index:2;max-width:1000px;margin:0 auto;padding:0 clamp(1rem,5vw,3.5rem)}
+
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--ink3);
+  text-transform:lowercase;margin-bottom:1.1rem}
+.eyebrow b{color:var(--ink2);font-weight:400}
+h1,h2{font-weight:700;letter-spacing:-.02em;line-height:1.12;text-wrap:balance}
+h1{font-size:clamp(2.3rem,7vw,4.3rem);font-family:"Shantell Sans",var(--hand);font-weight:700;
+  font-variation-settings:"BNCE" 60,"INFM" 70;letter-spacing:-.01em}
+h1 em{font-weight:500}
+.hl{background:var(--blush);padding:.03em .3em;border-radius:2px;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.lede{max-width:56ch;color:var(--ink2);font-size:clamp(.95rem,1.6vw,1.05rem);margin-top:1.1rem}
+.lede b{color:var(--ink);font-weight:600}
+section{padding:clamp(2.6rem,6vw,4.5rem) 0 0}
+header{padding:clamp(2rem,5vw,3.4rem) 0 0}
+
+/* ---------- theme toggle ---------- */
+.topbar{display:flex;padding-top:clamp(1.4rem,3vw,2.2rem)}
+.themetoggle{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .85rem;
+  border-radius:999px;border:1px solid var(--line);background:var(--card);
+  color:var(--ink2);cursor:pointer;font-family:var(--hand);font-size:1.15rem;line-height:1;
+  transition:color .16s,border-color .16s,transform .16s}
+.themetoggle:hover{color:var(--ink);border-color:var(--ink2);transform:translateY(-2px)}
+.themetoggle:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* ---------- the sticky on the frame ---------- */
+.sticky{position:absolute;z-index:5;top:clamp(1rem,4vw,3rem);right:clamp(1rem,4vw,3rem);
+  width:150px;min-height:140px;padding:1rem .95rem;background:var(--note);color:var(--notefg);
+  font-family:var(--hand);font-size:1.4rem;line-height:1.15;text-decoration:none;display:block;
+  box-shadow:2px 6px 16px rgba(30,48,80,.18);transform:rotate(3deg);
+  clip-path:polygon(0 0,100% 0,100% 90%,90% 100%,0 100%);transition:transform .2s}
+.sticky:hover{transform:rotate(1deg) translateY(-2px)}
+.sticky .tag{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.2em;
+  color:var(--notetag);margin-bottom:.35rem}
+@media(max-width:720px){
+  .sticky{position:relative;top:auto;right:auto;margin:1.4rem 0 0 auto;width:auto;
+    min-height:0;max-width:260px;transform:rotate(1.5deg)}
+}
+
+/* ---------- the study ---------- */
+.study{margin-top:2.4rem}
+#room{width:100%;height:auto;display:block;overflow:visible;color:var(--ink)}
+.hand{font-family:var(--hand);font-size:20px;fill:var(--ink2)}
+.hand.sm{font-size:19px;fill:var(--ink3)}
+#head{transform-box:fill-box;transform-origin:50% 100%}
+body.on #head{animation:nod 1.4s ease-in-out infinite}
+@keyframes nod{0%,100%{transform:rotate(0)}50%{transform:rotate(4deg)}}
+#tail{transform-box:fill-box;transform-origin:0% 0%;animation:swish 4s ease-in-out infinite}
+@keyframes swish{0%,100%{transform:rotate(0)}50%{transform:rotate(12deg)}}
+.steam{animation:rise 3.2s ease-in-out infinite;opacity:.7}
+.steam.b{animation-delay:1.1s}
+@keyframes rise{0%{transform:translateY(4px);opacity:0}40%{opacity:.7}100%{transform:translateY(-10px);opacity:0}}
+.notes text{font-size:22px;fill:var(--ink2);opacity:0}
+body.on:not(.hiss) .notes text{animation:float 3.6s ease-out infinite}
+.notes text:nth-child(2){animation-delay:1.2s!important}
+.notes text:nth-child(3){animation-delay:2.4s!important}
+@keyframes float{0%{opacity:0;transform:translate(0,0)}20%{opacity:.9}
+  100%{opacity:0;transform:translate(-60px,-80px) rotate(-14deg)}}
+.kssh{opacity:0;transition:opacity .2s}
+body.on.hiss .kssh{opacity:1;animation:jitter .18s steps(2) infinite}
+@keyframes jitter{50%{transform:translate(1px,-1px)}}
+.three circle{fill:var(--orb);opacity:var(--starop);animation:twinkle 5s ease-in-out infinite}
+.three circle:nth-child(2){animation-delay:1.6s}.three circle:nth-child(3){animation-delay:3.1s}
+@keyframes twinkle{50%{opacity:calc(var(--starop)*.4)}}
+.star{fill:var(--ink);opacity:calc(var(--starop)*.7)}
+.cloud{animation:drift 40s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(60px)}}
+.rays{opacity:calc(1 - var(--starop))}
+.antenna{transition:fill .4s}
+.bulb{animation:twinkle2 4s ease-in-out infinite}
+@keyframes twinkle2{50%{opacity:.55}}
+.cursor{animation:blink 1.1s steps(1) infinite}
+.screennote{cursor:pointer}
+.screennote:hover g{transform:rotate(2deg) translate(0,-2px)}
+.screennote:focus-visible{outline:2px solid var(--ink)}
+body.on:not(.hiss) .antenna{fill:var(--accent);animation:blink 1.6s ease-in-out infinite}
+body.on:not(.hiss) .heart{fill:var(--blush);animation:blink 2.8s ease-in-out infinite}
+.whale{transform-box:fill-box;animation:dive 9s ease-in-out infinite}
+@keyframes dive{0%,60%,100%{transform:translateY(0);opacity:1}75%,90%{transform:translateY(14px);opacity:0}}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important}
+}
+
+/* ---------- the dial ---------- */
+.dialwrap{margin-top:1.4rem}
+#dial{width:100%;height:auto;display:block;touch-action:pan-y;cursor:ew-resize;
+  color:var(--ink);user-select:none;-webkit-user-select:none}
+#dial:focus-visible{outline:2px solid var(--ink);outline-offset:6px;border-radius:14px}
+#dial .num{font-family:var(--mono);font-size:12px;fill:var(--ink3)}
+#dial .st{font-family:var(--mono);font-size:13px;font-weight:700;fill:var(--ink2);
+  letter-spacing:.06em;cursor:pointer}
+#dial .sub{font-family:var(--hand);font-size:17px;fill:var(--ink3);cursor:pointer}
+#dial g.lit .st{fill:var(--ink)}
+#dial g.lit .sub{fill:var(--ink2)}
+#dial .mark{fill:var(--ink3)}
+#dial g.lit .mark{fill:var(--accent)}
+
+.controls{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:1.1rem}
+.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.05rem;border-radius:999px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;
+  font:500 .92rem var(--sans);transition:border-color .16s,transform .16s}
+.btn:hover{border-color:var(--ink2);transform:translateY(-2px)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.btn.power{background:var(--ink);color:var(--cream);border-color:var(--ink);font-weight:600}
+.btn.small{padding:.5rem .8rem;font-family:var(--mono);font-size:.8rem}
+.vol{display:inline-flex;align-items:center;gap:.5rem;margin-left:auto;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink3)}
+.vol input{accent-color:var(--accent);width:120px}
+.nowline{margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--line);
+  display:flex;gap:.8rem;align-items:baseline;flex-wrap:wrap}
+.nowline .tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ink3)}
+.nowline .tag i{display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--ink3);margin-right:.45rem;vertical-align:1px}
+body.on:not(.hiss) .nowline .tag i{background:var(--accent);animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{50%{opacity:.3}}
+#now{font-family:var(--hand);font-size:1.35rem;line-height:1.2;color:var(--ink)}
+
+
+
+/* ---------- take it with you ---------- */
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:1.2rem}
+.station{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:1rem 1.1rem}
+.station h3{font-size:1.05rem;font-weight:600;line-height:1.3}
+.station p{font-size:.88rem;color:var(--ink2);margin-top:.35rem}
+.station .links{margin-top:.7rem;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  display:flex;gap:.3rem .9rem;flex-wrap:wrap}
+.station .links a{color:var(--ink2)}
+.station .links a:hover{color:var(--ink)}
+
+footer{margin-top:clamp(3rem,7vw,5rem);padding:1.6rem 0 4rem;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink3)}
+footer a{color:var(--ink2)}
+footer a:hover{color:var(--ink)}
+
+@media(max-width:560px){
+  .themetoggle{gap:.4rem;padding:.4rem .7rem;font-size:1rem}
+  .vol{margin-left:0;width:100%}
+  .vol input{flex:1}
+}
+</style>
+</head>
+<body>
+<div class="frame" aria-hidden="true"></div>
+
+<div class="sheet">
+
+<div class="topbar">
+  <button class="themetoggle" id="themetoggle" type="button">
+    <span id="themeicon" aria-hidden="true">☾</span><span id="themelabel">stay past dark</span>
+  </button>
+</div>
+
+<a class="sticky" id="today" href="https://docs.e3sm.org/aigroup/package/" target="_blank" rel="noopener">
+  <span class="tag" id="todaytag">TODAY</span>
+  <span id="todaytext">mini-hackathon<br><u>xaig</u> docs</span>
+</a>
+
+<header>
+  <div class="eyebrow">00 / <b>the aigs pod</b> · on air</div>
+  <h1>Something to <span class="hl">work to</span></h1>
+  <p class="lede">Three stations for the long middle of a hackathon: <b>Pittsburgh classical</b>, <b>lofi beats to study to</b>, and <b>quiet ambient</b> for when even beats feel like too many opinions. Turn the dial. The robot has headphones on and will not notice.</p>
+</header>
+
+<section>
+  <div class="eyebrow">01 / <b>the study</b> · turn the dial</div>
+
+  <div class="study">
+    <svg id="room" viewBox="0 0 1000 520" aria-label="A cosy hand-drawn study, seen from behind an artificial friend in headphones and a blanket, working at a computer by a window over Pittsburgh. A cat supervises from the sill; string lights hang over the glass; a radio sits on the desk.">
+      <defs>
+        <filter id="sketch" x="-4%" y="-6%" width="108%" height="112%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="4" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <radialGradient id="glow">
+          <stop offset="0" stop-color="#f3b566" stop-opacity=".6"/>
+          <stop offset="1" stop-color="#f3b566" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="screenglow">
+          <stop offset="0" stop-color="var(--screen)" stop-opacity=".9"/>
+          <stop offset="1" stop-color="var(--screen)" stop-opacity="0"/>
+        </radialGradient>
+        <clipPath id="glass"><rect x="176" y="30" width="648" height="270" rx="10"/></clipPath>
+      </defs>
+
+      <!-- the view -->
+      <g clip-path="url(#glass)">
+        <rect x="170" y="20" width="660" height="290" fill="var(--sky)"/>
+        <g class="rays" stroke="var(--orb)" stroke-width="2" stroke-linecap="round">
+          <path d="M730 92 v-9 M730 152 v9 M700 122 h-9 M760 122 h9 M709 101 l-6 -6 M751 143 l6 6 M751 101 l6 -6 M709 143 l-6 6"/>
+        </g>
+        <circle cx="730" cy="122" r="17" fill="var(--orb)"/>
+        <circle class="star" cx="260" cy="120" r="1.4"/><circle class="star" cx="420" cy="96" r="1.2"/>
+        <circle class="star" cx="610" cy="140" r="1.1"/><circle class="star" cx="330" cy="176" r="1.3"/>
+        <circle class="star" cx="660" cy="80" r="1.2"/>
+        <g class="three"><circle cx="560" cy="104" r="2"/><circle cx="576" cy="104" r="2"/><circle cx="568" cy="91" r="2"/></g>
+        <path class="cloud" d="M250 170 q-2 -14 14 -14 q6 -14 22 -8 q12 -10 24 2 q16 0 14 14 z" fill="var(--sky)" stroke="var(--lines)" stroke-opacity="var(--lines-op)" stroke-width="1.4"/>
+      </g>
+
+      <!-- one warm source: the desk lamp; and the screen, faintly -->
+      <ellipse cx="250" cy="380" rx="250" ry="150" fill="url(#glow)" style="opacity:var(--glowop)"/>
+      <ellipse cx="500" cy="280" rx="170" ry="110" fill="url(#screenglow)" style="opacity:calc(var(--glowop) * .6)"/>
+
+      <g filter="url(#sketch)" fill="none" stroke="var(--lines)" stroke-opacity="var(--lines-op)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+
+        <!-- pittsburgh, roughly -->
+        <g clip-path="url(#glass)">
+          <path d="M176 262 C 280 238, 380 256, 470 246 S 700 232, 824 252"/>
+          <path d="M600 272 V196 l5 -12 l5 12 l6 -15 l6 15 l5 -12 l5 12 V272"/>
+          <path d="M576 272 V220 h18 V272 M644 272 V210 h16 V272 M666 272 V232 h22 V272 M540 272 V238 h28 V272"/>
+          <path d="M220 284 Q 290 226, 360 284" stroke="var(--gold)" stroke-opacity=".9" stroke-width="2.2"/>
+          <path d="M210 274 H 372" stroke="var(--gold)" stroke-opacity=".9" stroke-width="2.2"/>
+          <path d="M176 292 C 330 282, 620 298, 824 288" stroke-dasharray="7 9"/>
+          <path class="whale" d="M452 294 q2 -9 -4 -13 q7 0 9 6 q2 -6 9 -6 q-6 4 -4 13"/>
+        </g>
+        <!-- the window -->
+        <rect x="176" y="30" width="648" height="270" rx="10" stroke-opacity="calc(var(--lines-op) + .15)"/>
+        <path d="M500 30 V300 M176 166 H824"/>
+
+        <!-- string lights, strung a bit too generously -->
+        <path d="M150 36 Q 325 104, 500 42 Q 675 104, 850 36"/>
+        <g stroke-width="1.2">
+          <g class="bulb" style="animation-delay:0.0s"><path d="M185 48 v5"/><circle cx="185" cy="58" r="4.5" fill="var(--bulb1)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:0.7s"><path d="M238 62 v5"/><circle cx="238" cy="72" r="4.5" fill="var(--bulb2)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:1.4s"><path d="M290 70 v5"/><circle cx="290" cy="80" r="4.5" fill="var(--bulb3)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:2.1s"><path d="M342 71 v5"/><circle cx="342" cy="81" r="4.5" fill="var(--bulb1)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:2.8s"><path d="M395 68 v5"/><circle cx="395" cy="78" r="4.5" fill="var(--bulb2)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:3.5s"><path d="M447 58 v5"/><circle cx="447" cy="68" r="4.5" fill="var(--bulb3)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:0.2s"><path d="M535 53 v5"/><circle cx="535" cy="63" r="4.5" fill="var(--bulb1)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:0.9s"><path d="M588 65 v5"/><circle cx="588" cy="75" r="4.5" fill="var(--bulb2)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:1.6s"><path d="M640 71 v5"/><circle cx="640" cy="81" r="4.5" fill="var(--bulb3)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:2.3s"><path d="M692 71 v5"/><circle cx="692" cy="81" r="4.5" fill="var(--bulb1)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:3.0s"><path d="M745 65 v5"/><circle cx="745" cy="75" r="4.5" fill="var(--bulb2)" stroke="none"/></g>
+          <g class="bulb" style="animation-delay:3.7s"><path d="M797 53 v5"/><circle cx="797" cy="63" r="4.5" fill="var(--bulb3)" stroke="none"/></g>
+        </g>
+
+        <!-- a plant that has been allowed to do what it likes -->
+        <path d="M70 0 V 64"/>
+        <path d="M46 64 h48 l-6 26 h-36 z" fill="var(--blush)" fill-opacity=".8"/>
+        <path d="M58 90 C 50 160, 70 230, 52 300 C 44 340, 58 380, 50 420"/>
+        <path d="M82 90 C 100 150, 88 200, 104 250"/>
+        <path d="M58 130 q-16 -2 -20 -14 q14 0 20 12 M60 200 q14 -6 22 2 q-12 8 -22 0 M54 270 q-16 2 -22 -10 q14 -4 22 8 M52 350 q14 -4 20 4 q-10 8 -20 0 M90 140 q14 -6 20 2 q-10 8 -20 0 M100 220 q-14 -2 -18 -12 q12 0 18 10"/>
+
+        <!-- the sill, and the supervisor -->
+        <path d="M156 300 H 844 M162 312 H 838"/>
+        <path d="M216 300 l-3 -16 h22 l-3 16 z" fill="var(--sand)"/>
+        <path d="M224 284 q-2 -14 -10 -20 M224 284 q4 -16 14 -20 M224 284 v-18"/>
+        <path id="tail" d="M792 300 q10 10 4 22 q-6 12 4 20"/>
+        <path d="M752 300 q-6 -28 10 -36 q-4 -10 -1 -17 l7 8 q7 -2 13 0 l7 -8 q3 8 -1 17 q16 8 12 36 z" fill="var(--cream)" stroke-opacity="calc(var(--lines-op) + .25)"/>
+        <path d="M886 262 C 860 250, 830 256, 806 272" stroke-dasharray="2 5"/>
+
+        <!-- a paper plane on a long lazy loop -->
+        <path d="M994 150 C 960 40, 880 150, 900 80 S 950 30, 930 20" stroke-dasharray="2 8"/>
+
+        <!-- the desk, seen from behind the chair -->
+        <path d="M120 332 C 380 328, 640 334, 880 330 L 944 384 C 640 390, 360 380, 58 386 Z" fill="var(--card)"/>
+        <path d="M80 386 C 76 430, 84 480, 78 510 M920 386 C 926 430, 916 480, 922 510"/>
+
+        <!-- the lamp -->
+        <path d="M150 354 q16 -8 34 0"/>
+        <path d="M167 350 C 158 300, 170 250, 196 226 C 220 206, 250 210, 262 226"/>
+        <path d="M248 214 L 296 240 L 268 260 Z" fill="var(--card)"/>
+
+        <!-- books, mug -->
+        <path d="M226 360 h60 v-10 h-60 z M232 350 h52 v-9 h-52 z M228 341 h46 v-9 h-46 z" fill="var(--card)"/>
+        <path d="M310 324 h24 v32 h-24 z" fill="var(--card)"/>
+        <path d="M334 332 q10 0 10 8 t-10 8"/>
+        <path class="steam" d="M318 316 C 312 306, 324 300, 318 288"/>
+        <path class="steam b" d="M326 316 C 332 306, 320 300, 326 288"/>
+
+        <!-- the computer -->
+        <path d="M486 336 h28 l6 20 h-40 z" fill="var(--card)"/>
+        <rect x="392" y="196" width="216" height="142" rx="10" fill="var(--card)" stroke-opacity="calc(var(--lines-op) + .2)"/>
+        <rect x="404" y="208" width="192" height="118" rx="4" fill="var(--screen)"/>
+        <path d="M416 224 h40 M416 236 h66 M428 248 h52 M428 260 h30 M416 272 h44" stroke-width="2.4"/>
+        <path d="M500 228 C 520 280, 540 300, 588 306" stroke="var(--accent)" stroke-opacity=".9" stroke-width="2"/>
+        <path d="M500 312 H 588 M500 312 V 222" stroke-opacity=".5"/>
+
+        <!-- the radio -->
+        <path d="M800 336 C 808 312, 820 296, 836 284"/>
+        <rect x="690" y="336" width="124" height="44" rx="12" fill="var(--card)" stroke-opacity="calc(var(--lines-op) + .2)"/>
+        <circle cx="718" cy="358" r="13"/>
+        <path d="M709 354 h18 M707 359 h22 M709 364 h18"/>
+        <rect x="742" y="348" width="58" height="12" rx="3"/>
+        <circle cx="754" cy="370" r="3"/><circle cx="788" cy="370" r="3"/>
+
+        <!-- floor, rug, slippers -->
+        <path d="M0 510 C 300 504, 700 516, 1000 508"/>
+        <path d="M300 500 C 380 486, 620 486, 700 500 C 620 516, 380 516, 300 500 Z" stroke-dasharray="3 7"/>
+        <path d="M596 498 c0 -10 26 -12 32 -2 c2 6 -30 8 -32 2 z M634 502 c0 -10 26 -12 32 -2 c2 6 -30 8 -32 2 z" fill="var(--blush)" fill-opacity=".85"/>
+
+        <!-- the chair -->
+        <path d="M410 470 C 404 440, 420 420, 500 418 C 580 420, 596 440, 590 470"/>
+        <path d="M430 470 L 424 506 M570 470 L 576 506 M500 472 V 506"/>
+
+        <!-- the headphone cord, taking the long way to the radio -->
+        <path d="M576 330 C 610 380, 600 440, 660 440 C 720 440, 700 400, 730 382" stroke-dasharray="1 5"/>
+
+        <!-- the artificial friend, from behind, facing the work -->
+        <g stroke-opacity="calc(var(--lines-op) + .25)">
+          <path d="M416 470 C 404 420, 410 370, 442 352 C 470 340, 530 340, 558 352 C 590 370, 596 420, 584 470 Z" fill="var(--card)"/>
+          <g id="head">
+            <path d="M474 350 v-10 h52 v10" fill="var(--card)"/>
+            <rect x="440" y="256" width="120" height="90" rx="34" fill="var(--card)"/>
+            <path d="M452 312 C 480 320, 520 320, 548 312" stroke-opacity=".45"/>
+            <path d="M500 256 C 498 236, 516 232, 514 220 C 512 208, 496 210, 500 200"/>
+            <circle class="antenna" cx="501" cy="196" r="5" fill="var(--sand)"/>
+            <path d="M436 300 C 430 226, 570 226, 564 300" stroke-width="6" stroke="var(--ink2)" stroke-opacity=".85"/>
+            <rect x="422" y="282" width="22" height="40" rx="10" fill="var(--blush)"/>
+            <rect x="556" y="282" width="22" height="40" rx="10" fill="var(--blush)"/>
+          </g>
+          <!-- a blanket, because it is that kind of evening -->
+          <path d="M424 380 C 450 360, 550 360, 576 380 C 590 420, 588 452, 580 468 C 540 480, 460 480, 420 468 C 412 440, 412 410, 424 380 Z" fill="var(--sand)" fill-opacity=".9"/>
+          <path d="M436 400 C 470 392, 530 392, 564 400 M432 430 C 470 422, 530 422, 568 430" stroke-dasharray="4 6"/>
+          <path d="M428 468 l-3 10 M444 472 l-2 10 M460 474 l-1 10 M540 474 l1 10 M556 472 l2 10 M572 468 l3 10"/>
+        </g>
+      </g>
+
+      <!-- legible bits sit outside the wobble -->
+      <path d="M926 20 l-30 10 l18 16 l2 -10 z" fill="var(--card)" stroke="var(--lines)" stroke-opacity="calc(var(--lines-op) + .2)" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect class="cursor" x="416" y="282" width="7" height="11" fill="var(--ink2)"/>
+      <line id="mini" x1="744" y1="349" x2="744" y2="359" stroke="var(--accent)" stroke-width="2"/>
+      <a href="https://github.com/E3SM-Project/aigroup/issues/44" target="_blank" rel="noopener" class="screennote" aria-label="Sticky note: issue 44 on the aigroup repository (opens in a new tab)">
+        <g transform="rotate(6 614 214)">
+          <path d="M580 184 h66 v54 l-10 10 h-56 z" fill="var(--note)"/>
+          <text x="590" y="200" style="font-family:var(--mono);font-size:8px;letter-spacing:.2em;fill:var(--notetag)">TODO</text>
+          <text x="590" y="222" style="font-family:var(--hand);font-size:21px;font-weight:700;fill:var(--notefg)">#44</text>
+          <text x="590" y="238" style="font-family:var(--hand);font-size:13px;fill:var(--notefg)">the issue</text>
+        </g>
+      </a>
+      <g class="notes"><text x="730" y="330">♪</text><text x="754" y="326">♫</text><text x="778" y="332">♪</text></g>
+      <text class="hand kssh" x="730" y="328">kssh</text>
+      <text class="hand sm" x="892" y="258">the supervisor</text>
+    </svg>
+  </div>
+
+  <div class="dialwrap">
+    <svg id="dial" viewBox="0 0 800 124" tabindex="0" role="slider" aria-label="Tuning dial"
+         aria-valuemin="88" aria-valuemax="108" aria-valuenow="89.3">
+      <rect x="6" y="6" width="788" height="112" rx="14" fill="var(--card)" stroke="var(--line)" stroke-width="1.5"/>
+      <g id="scale"></g>
+      <g id="marks"></g>
+      <g id="needle">
+        <line x1="0" y1="14" x2="0" y2="58" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="0" cy="60" r="6" fill="var(--accent)"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <button class="btn power" id="power" type="button">switch on</button>
+    <button class="btn small" id="prev" type="button" aria-label="Previous station">‹ prev</button>
+    <button class="btn small" id="next" type="button" aria-label="Next station">next ›</button>
+    <label class="vol">vol <input id="vol" type="range" min="0" max="100" value="70"></label>
+  </div>
+
+  <div class="nowline" aria-live="polite">
+    <span class="tag"><i></i><span id="station">89.3 · wqed</span></span>
+    <span id="now">switch it on. the classical station is already warm.</span>
+  </div>
+
+</section>
+
+<section>
+  <div class="eyebrow">02 / <b>take it with you</b> · your own player</div>
+  <div class="stations">
+    <div class="station">
+      <h3>WQED-FM 89.3</h3>
+      <p>Classical music, live from Pittsburgh. Public radio; somebody real is choosing the next piece.</p>
+      <div class="links"><a href="https://www.wqed.org/listen-live-wqed-fm-89-3/" target="_blank" rel="noopener">listen at wqed.org</a><a href="https://ice-1.streamhoster.com/lv_wqed--893" target="_blank" rel="noopener">raw stream</a></div>
+    </div>
+    <div class="station">
+      <h3>I♥CHILLHOP</h3>
+      <p>Chillhop and lofi beats from ilovemusic.de. The cat approves, as far as anyone can tell.</p>
+      <div class="links"><a href="https://ilovemusic.de/" target="_blank" rel="noopener">ilovemusic.de</a><a href="https://streams.ilovemusic.de/iloveradio17.mp3" target="_blank" rel="noopener">raw stream</a></div>
+    </div>
+    <div class="station">
+      <h3>SomaFM Drone Zone and Fluid</h3>
+      <p>Two favourites that only play on SomaFM's own player: drone zone for atmosphere, fluid for instrumental hip hop. Listener-supported, and worth it.</p>
+      <div class="links"><a href="https://somafm.com/player/#/now-playing/dronezone" target="_blank" rel="noopener">drone zone</a><a href="https://somafm.com/player/#/now-playing/fluid" target="_blank" rel="noopener">fluid</a><a href="https://somafm.com/support/" target="_blank" rel="noopener">support soma</a></div>
+    </div>
+    <div class="station">
+      <h3>Ambient Sleeping Pill</h3>
+      <p>Long, quiet ambient with no drums. Quiet enough to hear a test fail.</p>
+      <div class="links"><a href="https://ambientsleepingpill.com/" target="_blank" rel="noopener">ambientsleepingpill.com</a><a href="https://radio.stereoscenic.com/asp-h" target="_blank" rel="noopener">raw stream</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="../">← the normal version</a> ·
+  <a href="../mill/">the paper mill ⚙</a> ·
+  <a href="../morn/">a quiet room ☀</a> ·
+  <a href="../mood/">severe weather mode ⚡</a> ·
+  <span style="white-space:nowrap">RADIO LEFT ON</span>
+</footer>
+
+</div>
+
+<audio id="audio" preload="none"></audio>
+
+<script>
+/* ---------- the stations ---------- */
+const STATIONS=[
+  {id:'wqed', f:89.3, name:'89.3 · wqed', sub:'classical, pittsburgh', kind:'stream',
+   urls:['https://ice-1.streamhoster.com/lv_wqed--893'],
+   idle:'live classical from pittsburgh. no track list, just trust.'},
+  {id:'lofi', f:97.9, name:'lofi', sub:'beats to study to', kind:'stream',
+   urls:['https://streams.ilovemusic.de/iloveradio17.mp3','https://live.hunter.fm/lofi_high'],
+   idle:'chillhop, soft and slightly dusty. good for refactoring.'},
+  {id:'quiet', f:105.9, name:'quiet', sub:'ambient, no drums', kind:'stream',
+   urls:['https://radio.stereoscenic.com/asp-h','https://radio.stereoscenic.com/asp-s'],
+   idle:'ambient sleeping pill. long tones, no drums, nothing to argue with.'},
+];
+const LO=88, HI=108, X0=44, X1=756, CAPTURE=0.6;
+const fx=f=>X0+(f-LO)/(HI-LO)*(X1-X0);
+const xf=x=>LO+(x-X0)/(X1-X0)*(HI-LO);
+
+const $=id=>document.getElementById(id);
+const dial=$('dial'), needle=$('needle'), audio=$('audio'), body=document.body;
+const NS='http://www.w3.org/2000/svg';
+const el=(tag,attrs,text)=>{const e=document.createElementNS(NS,tag);
+  for(const k in attrs)e.setAttribute(k,attrs[k]); if(text!=null)e.textContent=text; return e;};
+
+/* draw the scale */
+(function(){
+  const s=$('scale');
+  for(let f=LO;f<=HI+1e-6;f+=0.5){
+    const major=Math.abs(f%2)<1e-6, x=fx(f);
+    s.appendChild(el('line',{x1:x,x2:x,y1:18,y2:major?34:26,stroke:'var(--ink3)','stroke-width':major?1.4:1}));
+    if(major) s.appendChild(el('text',{x,y:48,'text-anchor':'middle',class:'num'},String(f)));
+  }
+  s.appendChild(el('text',{x:784,y:62,'text-anchor':'end',class:'num'},'fm'));
+  const m=$('marks');
+  STATIONS.forEach((st,i)=>{
+    const x=fx(st.f), g=el('g',{'data-i':i});
+    g.appendChild(el('path',{d:`M${x-5} 68 L${x+5} 68 L${x} 74 Z`,class:'mark'}));
+    g.appendChild(el('text',{x,y:90,'text-anchor':'middle',class:'st'},st.name));
+    g.appendChild(el('text',{x,y:108,'text-anchor':'middle',class:'sub'},st.sub));
+    g.addEventListener('click',e=>{e.stopPropagation(); if(!moved) glideTo(st.f,true);});
+    m.appendChild(g); st.g=g;
+  });
+})();
+
+/* ---------- state ---------- */
+let freq=STATIONS[0].f, on=false, locked=null, playing=null, switchT=0, moved=false;
+let vol=0.7;
+try{ const v=localStorage.getItem('live-vol'); if(v!=null) vol=+v; }catch(e){}
+$('vol').value=Math.round(vol*100);
+try{ const s=localStorage.getItem('live-station'); const st=STATIONS.find(x=>x.id===s); if(st) freq=st.f; }catch(e){}
+
+function nearest(f){
+  let best=null,d=1e9; for(const s of STATIONS){const dd=Math.abs(s.f-f); if(dd<d){d=dd;best=s;}}
+  return {s:best,d};
+}
+function setFreq(f){
+  freq=Math.max(LO,Math.min(HI,f));
+  const x=fx(freq);
+  needle.setAttribute('transform',`translate(${x} 0)`);
+  // the little radio on the desk follows along
+  const mx=744+(freq-LO)/(HI-LO)*54;
+  $('mini').setAttribute('x1',mx); $('mini').setAttribute('x2',mx);
+  dial.setAttribute('aria-valuenow',freq.toFixed(1));
+  const {s,d}=nearest(freq);
+  const now = d<=CAPTURE ? s : null;
+  STATIONS.forEach(st=>st.g.classList.toggle('lit',st===now));
+  dial.setAttribute('aria-valuetext', now ? now.name+', '+now.sub : freq.toFixed(1)+', static');
+  if(now!==locked){ locked=now; onTune(); }
+  hissLevel(d);
+}
+
+/* ---------- static between stations ---------- */
+let actx=null, hissGain=null;
+function ensureAudioCtx(){
+  if(actx) return;
+  try{
+    actx=new (window.AudioContext||window.webkitAudioContext)();
+    const len=actx.sampleRate*2, buf=actx.createBuffer(1,len,actx.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+    const src=actx.createBufferSource(); src.buffer=buf; src.loop=true;
+    const bp=actx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=2400; bp.Q.value=.6;
+    hissGain=actx.createGain(); hissGain.gain.value=0;
+    src.connect(bp).connect(hissGain).connect(actx.destination); src.start();
+  }catch(e){ actx=null; }
+}
+function hissLevel(d){
+  const hiss = on && !locked;
+  body.classList.toggle('hiss',hiss);
+  if(!hissGain) return;
+  const target = hiss ? Math.min(1,(d-CAPTURE)/1.2+.35)*0.05*vol : 0;
+  hissGain.gain.setTargetAtTime(target,actx.currentTime,.05);
+}
+
+/* ---------- sources ---------- */
+function stopAll(){
+  audio.pause(); audio.removeAttribute('src'); audio.load();
+  playing=null;
+}
+function playStation(st){
+  stopAll(); playing=st;
+  {
+    let i=0;
+    const go=()=>{ audio.src=st.urls[i]; audio.volume=vol;
+      audio.play().catch(()=>{}); };
+    audio.onerror=()=>{ if(playing!==st) return;
+      if(++i<st.urls.length) go(); else say('the signal dropped. try again, or use a link below.'); };
+    go();
+  }
+  mediaMeta(st);
+}
+function onTune(){
+  clearTimeout(switchT);
+  const st=locked;
+  $('station').textContent = st ? st.name : freq.toFixed(1)+' · static';
+  if(st){ try{localStorage.setItem('live-station',st.id);}catch(e){} }
+  if(!on){ say(st ? 'switch it on. '+st.idle : 'nothing here but weather.'); return; }
+  if(!st){ stopAll(); say('kssh. keep turning.'); return; }
+  say(st.idle);
+  // let the needle settle before we commit to a station
+  switchT=setTimeout(()=>{ if(on&&locked===st&&playing!==st) playStation(st); },dragging?400:60);
+}
+function say(t){ $('now').textContent=t; }
+
+
+function mediaMeta(st){
+  if(!('mediaSession' in navigator)) return;
+  navigator.mediaSession.metadata=new MediaMetadata({title:st.name+' · '+st.sub,
+    artist:'the aigs pod · on air',artwork:[{src:'../images/cover.png',sizes:'1400x1400',type:'image/png'}]});
+}
+if('mediaSession' in navigator){
+  navigator.mediaSession.setActionHandler('play',()=>{ if(!on) power(); });
+  navigator.mediaSession.setActionHandler('pause',()=>{ if(on) power(); });
+  try{
+    navigator.mediaSession.setActionHandler('nexttrack',()=>step(1));
+    navigator.mediaSession.setActionHandler('previoustrack',()=>step(-1));
+  }catch(e){}
+}
+
+/* ---------- power + volume ---------- */
+function power(){
+  on=!on;
+  body.classList.toggle('on',on);
+  $('power').textContent = on ? 'switch off' : 'switch on';
+  if(on){
+    ensureAudioCtx(); if(actx&&actx.state==='suspended') actx.resume();
+    if(locked){ say(locked.idle); playStation(locked); }
+  }else{
+    stopAll(); say('off. the robot keeps writing anyway.');
+  }
+  hissLevel(nearest(freq).d);
+}
+$('power').addEventListener('click',power);
+$('vol').addEventListener('input',e=>{
+  vol=e.target.value/100; audio.volume=vol;
+  hissLevel(nearest(freq).d);
+  try{localStorage.setItem('live-vol',vol);}catch(e){}
+});
+
+/* ---------- tuning by hand ---------- */
+let glideRAF=0;
+function glideTo(f,commit){
+  cancelAnimationFrame(glideRAF);
+  const from=freq, t0=performance.now(), dur=Math.min(900,240+Math.abs(f-from)*45);
+  const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  const frame=t=>{ const k=Math.min(1,(t-t0)/dur); setFreq(from+(f-from)*ease(k));
+    if(k<1) glideRAF=requestAnimationFrame(frame); };
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) setFreq(f);
+  else glideRAF=requestAnimationFrame(frame);
+}
+function step(dir){
+  const i=STATIONS.findIndex(s=>s===locked);
+  let j;
+  if(i<0){ j = dir>0 ? STATIONS.findIndex(s=>s.f>freq) : STATIONS.map(s=>s.f<freq).lastIndexOf(true);
+    if(j<0) j = dir>0 ? 0 : STATIONS.length-1; }
+  else j=(i+dir+STATIONS.length)%STATIONS.length;
+  glideTo(STATIONS[j].f);
+}
+$('prev').addEventListener('click',()=>step(-1));
+$('next').addEventListener('click',()=>step(1));
+
+let dragging=false, startX=0, startY=0, pid=null;
+const toX=e=>{ const p=dial.createSVGPoint(); p.x=e.clientX; p.y=e.clientY;
+  return p.matrixTransform(dial.getScreenCTM().inverse()).x; };
+dial.addEventListener('pointerdown',e=>{ pid=e.pointerId; startX=e.clientX; startY=e.clientY; moved=false; });
+dial.addEventListener('pointermove',e=>{
+  if(e.pointerId!==pid) return;
+  if(!dragging){
+    const dx=Math.abs(e.clientX-startX), dy=Math.abs(e.clientY-startY);
+    if(e.pointerType==='mouse' ? dx>2 : (dx>6&&dx>dy)){ dragging=moved=true;
+      cancelAnimationFrame(glideRAF); try{dial.setPointerCapture(pid);}catch(_){} }
+    else return;
+  }
+  setFreq(xf(toX(e)));
+});
+const release=e=>{
+  if(e.pointerId!==pid) return;
+  if(dragging){
+    dragging=false;
+    // a nudge from a station snaps onto it, like a real dial with a good detent
+    const {s,d}=nearest(freq); if(d<=CAPTURE*1.6) glideTo(s.f);
+    onTune();
+  }else if(e.type==='pointerup' && !e.target.closest('#marks')){
+    glideTo(xf(toX(e)));
+  }
+  pid=null;
+};
+dial.addEventListener('pointerup',release);
+dial.addEventListener('pointercancel',e=>{ dragging=false; pid=null; });
+dial.addEventListener('keydown',e=>{
+  const k=e.key;
+  if(k==='ArrowRight'||k==='ArrowUp'){ cancelAnimationFrame(glideRAF); setFreq(freq+.1); e.preventDefault(); }
+  else if(k==='ArrowLeft'||k==='ArrowDown'){ cancelAnimationFrame(glideRAF); setFreq(freq-.1); e.preventDefault(); }
+  else if(k==='PageUp'){ step(1); e.preventDefault(); }
+  else if(k==='PageDown'){ step(-1); e.preventDefault(); }
+  else if(k===' '||k==='Enter'){ power(); e.preventDefault(); }
+});
+
+setFreq(freq);
+
+/* ---------- today ---------- */
+(function(){
+  const d=new Date(), iso=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  if(iso!=='2026-09-25'){
+    $('todaytag').textContent='NO HACKATHON TODAY';
+    $('todaytext').innerHTML='the radio<br>still <u>works</u>';
+    $('today').href='../';
+    $('today').removeAttribute('target');
+  }
+})();
+
+/* ---------- day / lamplight ---------- */
+(function(){
+  const btn=$('themetoggle'), icon=$('themeicon'), label=$('themelabel');
+  const root=document.documentElement;
+  const sysDark=()=>matchMedia('(prefers-color-scheme: dark)').matches;
+  let saved=null;
+  try{ saved=localStorage.getItem('live-theme'); }catch(e){}
+  if(saved==='dark'||saved==='light') root.setAttribute('data-theme',saved);
+  const isDark=()=>(root.getAttribute('data-theme')||(sysDark()?'dark':'light'))==='dark';
+  const paint=()=>{
+    const dark=isDark();
+    icon.textContent = dark ? '☀' : '☾';
+    label.textContent = dark ? 'see daylight again' : 'stay past dark';
+    btn.setAttribute('aria-label', dark ? 'Switch to the daytime version' : 'Switch to the late-night version');
+  };
+  paint();
+  btn.addEventListener('click',()=>{
+    const next=isDark()?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{ localStorage.setItem('live-theme',next); }catch(e){}
+    paint();
+  });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',paint);
+})();
+</script>
+</body>
+</html>

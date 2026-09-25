@@ -309,6 +309,26 @@
     }
     .quiet-door span { font-size: 0.95rem; }
 
+    /* Fourth doorway, to /live/: the radio for working. */
+    .air-door {
+      margin-top: 0.55rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2e3d4a;
+      text-decoration: none;
+      transition: color 0.4s, text-shadow 0.4s;
+    }
+    .air-door:hover, .air-door:focus-visible {
+      color: #e07a68;
+      text-shadow: 0 0 14px rgba(224, 122, 104, 0.45);
+      outline: none;
+    }
+    .air-door span { font-size: 0.95rem; }
+
     /* Emergency broadcast bar — the loud doorway to /fun.
        Restrained until you touch it, then it goes full alert. */
     .eas {
@@ -502,6 +522,8 @@
     <a href="mood/" class="storm-door" title="You probably shouldn't."><span>⚡</span> Severe weather mode</a>
 
     <a href="morn/" class="quiet-door" title="She has been waiting."><span>☀</span> A quiet room</a>
+
+    <a href="live/" class="air-door" title="Something to work to."><span>♪</span> On air</a>
 
     <details class="cds">
       <summary>Code &amp; data availability</summary>
