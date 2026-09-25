@@ -196,6 +196,42 @@ footer{margin-top:clamp(3rem,7vw,5rem);padding:1.6rem 0 4rem;border-top:1px soli
 footer a{color:var(--ink2)}
 footer a:hover{color:var(--ink)}
 
+/* ---------- the brief ---------- */
+dialog.brief{margin:auto;width:min(680px,calc(100% - 24px));max-height:min(88vh,900px);padding:0;
+  border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);
+  box-shadow:0 30px 80px -30px rgba(10,14,30,.55)}
+dialog.brief::backdrop{background:rgba(19,26,38,.45);backdrop-filter:blur(2px)}
+dialog.brief[open]{animation:pop .38s cubic-bezier(.34,1.5,.64,1)}
+@keyframes pop{from{transform:translateY(14px) scale(.97);opacity:0}}
+.brief .in{padding:clamp(1.3rem,4vw,2.2rem);overflow:auto;max-height:inherit}
+.brief h2{font-family:"Shantell Sans",var(--hand);font-weight:700;font-size:clamp(1.6rem,4.6vw,2.3rem);
+  font-variation-settings:"BNCE" 50,"INFM" 60;margin:.2rem 0 .6rem}
+.brief p,.brief li{font-size:.95rem;color:var(--ink2)}
+.brief b{color:var(--ink);font-weight:600}
+.brief a{color:var(--ink);text-decoration-color:var(--accent);text-underline-offset:3px}
+.brief .track{margin-top:1.3rem;padding-top:1.1rem;border-top:1px solid var(--line)}
+.brief .track .eyebrow{margin-bottom:.5rem}
+.brief ul{margin:.5rem 0 0 1.1rem;display:grid;gap:.35rem}
+.brief .plea{margin-top:1.4rem;background:var(--blush);border-radius:10px;padding:1rem 1.1rem}
+.brief .plea p,.brief .plea li{color:var(--ink)}
+.brief .sig{font-family:var(--hand);font-size:1.4rem;color:var(--ink2);margin-top:1rem}
+.brief .x{position:sticky;top:0;float:right;margin:-.4rem -.4rem 0 0;border:1px solid var(--line);
+  background:var(--card);color:var(--ink2);border-radius:999px;padding:.3rem .8rem;cursor:pointer;
+  font-family:var(--hand);font-size:1.1rem}
+.brief .x:hover{color:var(--ink);border-color:var(--ink2)}
+
+/* ---------- reminders that drift in ---------- */
+.nudge{position:fixed;z-index:30;right:clamp(12px,3vw,32px);bottom:clamp(12px,3vw,32px);width:min(290px,calc(100% - 24px));
+  background:var(--note);color:var(--notefg);padding:.9rem 1rem 1rem;font-family:var(--hand);font-size:1.35rem;line-height:1.15;
+  box-shadow:2px 10px 26px rgba(30,48,80,.28);clip-path:polygon(0 0,100% 0,100% 88%,90% 100%,0 100%);
+  transform:translateY(calc(100% + 80px)) rotate(4deg);visibility:hidden;
+  transition:transform .6s cubic-bezier(.34,1.4,.64,1),visibility 0s .6s}
+.nudge.show{transform:translateY(0) rotate(-2deg);visibility:visible;transition-delay:0s}
+.nudge .tag{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--notetag);margin-bottom:.35rem}
+.nudge a{color:inherit}
+.nudge button{position:absolute;top:.35rem;right:.5rem;background:none;border:0;color:var(--notetag);
+  font-family:var(--mono);font-size:11px;cursor:pointer;padding:.2rem}
+
 @media(max-width:560px){
   .themetoggle{gap:.4rem;padding:.4rem .7rem;font-size:1rem}
   .vol{margin-left:0;width:100%}
@@ -455,6 +491,55 @@ footer a:hover{color:var(--ink)}
 
 </div>
 
+<dialog class="brief" id="brief" aria-labelledby="briefh">
+  <div class="in">
+    <button class="x" type="button" id="briefx">close</button>
+    <div class="eyebrow">today / <b>mini-hackathon</b> · the brief</div>
+    <h2 id="briefh">Two tracks, <em>one long day</em></h2>
+    <p>There are primarily two tracks today: <b>expedition</b> (analysis) and <b>building</b> (coding). Everything lives in the meta issue, <a href="https://github.com/E3SM-Project/aigroup/issues/44" target="_blank" rel="noopener">aigroup #44</a>.</p>
+
+    <div class="track">
+      <div class="eyebrow">01 / <b>expedition</b> · everyone should try it</div>
+      <p>If this is the only thing you do today, that's fine; it's worth it. It can easily take up the whole day, and each item in it can too. Two ways in:</p>
+      <ul>
+        <li><b>Meander.</b> Open the notebook provided (details in #44) and wander around. It works wherever you have Python and a network connection, but it will download a fair bit of data.</li>
+        <li><b>Follow a recipe.</b> Work through the five curated exercises in the sub-issues of #44, with or without your agents.</li>
+      </ul>
+    </div>
+
+    <div class="track">
+      <div class="eyebrow">02 / <b>building</b> · ideas, all documented</div>
+      <ul>
+        <li>A bigger SAE</li>
+        <li>CLT stuff</li>
+        <li>Refining the visualization capability (hint: cloudflared quick tunnels out of NERSC, http2 for compute nodes)</li>
+        <li>?? anything goes</li>
+      </ul>
+    </div>
+
+    <div class="track">
+      <div class="eyebrow">03 / <b>feeling super adventurous</b> · huggingface</div>
+      <p>The Hugging Face repos hold a lot beyond the obvious, including instructions to reproduce everything. There is a ~230 GB <a href="https://huggingface.co/datasets/E3SM-Project/aigs-hack-sep26-latents" target="_blank" rel="noopener">dataset of latent details</a> (it lets you do the expedition without ever touching the underlying models) and a few GB of <a href="https://huggingface.co/E3SM-Project/aigs-hack-sep26-models" target="_blank" rel="noopener">checkpoints</a> for two real models we are testing now. New to Hugging Face? Ask any time today, or ask your agent; it knows this stuff far better than any of us.</p>
+    </div>
+
+    <div class="plea">
+      <p><b>Most importantly: please help us improve the repo and the code.</b> Even half-baked thoughts or ranty complaints help a lot. Write down your impressions, your feelings, all of it.</p>
+      <ul>
+        <li>Find a bug? <a href="https://github.com/E3SM-Project/aigroup/issues/new" target="_blank" rel="noopener">Report it on GitHub</a>, even if unsure.</li>
+        <li>Have a feature request? File it on GitHub, even if unsure.</li>
+        <li>Any comment or concern at all? GitHub too. All feedback is good feedback.</li>
+      </ul>
+    </div>
+    <p class="sig">thank you · naser</p>
+  </div>
+</dialog>
+
+<div class="nudge" id="nudge" role="status" aria-live="polite">
+  <button type="button" id="nudgex" aria-label="Dismiss reminder">×</button>
+  <span class="tag">REMINDER</span>
+  <span id="nudgetext"></span>
+</div>
+
 <audio id="audio" preload="none"></audio>
 
 <script>
@@ -678,12 +763,48 @@ setFreq(freq);
 /* ---------- today ---------- */
 (function(){
   const d=new Date(), iso=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  if(iso!=='2026-09-25'){
+  const today = iso==='2026-09-25' || /[?&]brief\b/.test(location.search);
+  if(!today){
     $('todaytag').textContent='NO HACKATHON TODAY';
     $('todaytext').innerHTML='the radio<br>still <u>works</u>';
     $('today').href='../';
     $('today').removeAttribute('target');
+    return;
   }
+  const brief=$('brief');
+  $('todaytext').innerHTML='mini-hackathon<br><u>read the brief</u>';
+  $('today').removeAttribute('target');
+  $('today').href='#brief';
+  const open=()=>{ if(!brief.open) brief.showModal(); };
+  $('today').addEventListener('click',e=>{ e.preventDefault(); open(); });
+  $('briefx').addEventListener('click',()=>brief.close());
+  brief.addEventListener('click',e=>{ if(e.target===brief) brief.close(); });
+  // once per visitor per day, the brief finds you
+  let seen=false; try{ seen=localStorage.getItem('live-brief')===iso; }catch(e){}
+  if(!seen){ setTimeout(open,900); try{ localStorage.setItem('live-brief',iso); }catch(e){} }
+
+  // and then, now and again, a sticky drifts in
+  const ISSUES='https://github.com/E3SM-Project/aigroup/issues';
+  const NUDGES=[
+    `found a bug? <a href="${ISSUES}/new" target="_blank" rel="noopener">file it on github</a>, even if unsure.`,
+    `half-baked thoughts and ranty complaints help. <a href="${ISSUES}/new" target="_blank" rel="noopener">write them down</a>.`,
+    `wish it did something it doesn't? that's a <a href="${ISSUES}/new" target="_blank" rel="noopener">feature request</a>.`,
+    `lost? the expedition starts at <a href="${ISSUES}/44" target="_blank" rel="noopener">#44</a>.`,
+    `huggingface being strange? ask. or ask your agent.`,
+    `drink some water. the robot can't, but you can.`,
+    `all feedback is good feedback. <a href="#brief" data-brief>reread the brief</a>.`,
+  ];
+  const nudge=$('nudge'), text=$('nudgetext');
+  let n=0, hideT=0;
+  const show=()=>{
+    if(brief.open || document.hidden) return;
+    text.innerHTML=NUDGES[n++%NUDGES.length];
+    nudge.classList.add('show');
+    clearTimeout(hideT); hideT=setTimeout(()=>nudge.classList.remove('show'),30000);
+  };
+  $('nudgex').addEventListener('click',()=>nudge.classList.remove('show'));
+  nudge.addEventListener('click',e=>{ if(e.target.closest('[data-brief]')){ e.preventDefault(); nudge.classList.remove('show'); open(); } });
+  setTimeout(()=>{ show(); setInterval(show,20*60*1000); },4*60*1000);
 })();
 
 /* ---------- day / lamplight ---------- */
