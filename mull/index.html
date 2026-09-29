@@ -461,19 +461,25 @@ $('books').innerHTML = books.map(b => { const [t, ...sub] = b.title.split(':'); 
 
 /* ---------- the desk: feed items gathered into papers; only the papers are shown ---------- */
 const ITUNES = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
-async function loadPapers(){
+const paperLink = desc => { const l = [...desc.matchAll(/(?:Paper|Preprint|Link):\s*(https?:\/\/\S+)/g)].map(m => m[1].replace(/[.,;)]+$/, '')); return l.length ? l[l.length - 1] : ''; };
+async function feedEpisodes(){
   const xml = await fetch(FEED, { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('feed.xml ' + r.status); return r.text(); });
   const doc = new DOMParser().parseFromString(xml, 'application/xml');
   if (doc.querySelector('parsererror')) throw new Error('feed.xml is not valid XML');
-  const eps = [...doc.querySelectorAll('item')].map(it => {
+  return [...doc.querySelectorAll('item')].map(it => {
     const txt = t => (it.querySelector(t)?.textContent || '').trim();
-    const n = parseInt(it.getElementsByTagNameNS(ITUNES, 'episode')[0]?.textContent || '0', 10);
-    const desc = txt('description');
-    const links = [...desc.matchAll(/(?:Paper|Preprint|Link):\s*(https?:\/\/\S+)/g)].map(m => m[1].replace(/[.,;)]+$/, ''));
-    const link = links.length ? links[links.length - 1] : '';
-    return { n, title: txt('title'), date: new Date(txt('pubDate')),
-      key: link ? link.replace(/v\d+$/, '') : 'ep' + n, link };
-  }).filter(e => e.n && !isNaN(e.date)).sort((a, b) => a.n - b.n);
+    return { n: parseInt(it.getElementsByTagNameNS(ITUNES, 'episode')[0]?.textContent || '0', 10),
+      title: txt('title'), date: txt('pubDate'), link: paperLink(txt('description')) };
+  });
+}
+/* opened straight from disk (file://), browsers refuse to fetch feed.xml, so the page falls back to the
+   snapshot at the bottom of this file. tools/mull_snapshot.py rewrites it from feed.xml. */
+function snapshotEpisodes(){ return JSON.parse(document.getElementById('feed-snapshot').textContent); }
+async function loadPapers(){
+  let raw;
+  try { raw = await feedEpisodes(); } catch (err) { raw = snapshotEpisodes(); }
+  const eps = raw.map(e => ({ ...e, date: new Date(e.date), key: e.link ? e.link.replace(/v\d+$/, '') : 'ep' + e.n }))
+    .filter(e => e.n && !isNaN(e.date)).sort((a, b) => a.n - b.n);
   const papers = [];
   eps.forEach(e => {
     let p = papers.find(q => q.key === e.key);
@@ -620,5 +626,139 @@ $('nudge-x').addEventListener('click', () => { $('nudge').hidden = true; });
   });
 })();
 </script>
+<script type="application/json" id="feed-snapshot">[
+{
+"n": 1,
+"title": "AI weather models are stuck in 1998",
+"date": "Sat, 29 Mar 2025 00:00:00 +0000",
+"link": "https://doi.org/10.1029/2025GL119740"
+},
+{
+"n": 2,
+"title": "Why Tunnel Vision Fixes Climate AI",
+"date": "Mon, 31 Mar 2025 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2602.16090"
+},
+{
+"n": 3,
+"title": "AI fixes systematic climate model bias",
+"date": "Sat, 05 Apr 2025 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2512.03309v1"
+},
+{
+"n": 4,
+"title": "AI fixes climate model blind spots",
+"date": "Tue, 28 Apr 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2510.22676"
+},
+{
+"n": 5,
+"title": "Why AI weather models fail climate emulation",
+"date": "Tue, 26 May 2026 00:00:00 +0000",
+"link": ""
+},
+{
+"n": 6,
+"title": "AI learns physics from Frankenstein climates",
+"date": "Tue, 30 Jun 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2606.07928"
+},
+{
+"n": 7,
+"title": "Solving climate emulator physics with random CO2",
+"date": "Tue, 30 Jun 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2606.07928"
+},
+{
+"n": 8,
+"title": "The Tebaldi Test For Climate Emulators",
+"date": "Sun, 06 Jul 2026 00:00:00 +0000",
+"link": "https://www.annualreviews.org/content/journals/10.1146/annurev-environ-012125-085838"
+},
+{
+"n": 9,
+"title": "Why climate AI needs synthetic data",
+"date": "Tue, 15 Jul 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2606.19302v1"
+},
+{
+"n": 10,
+"title": "NVIDIA ATLAS beats global weather supercomputers",
+"date": "Tue, 21 Jul 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2601.18111"
+},
+{
+"n": 11,
+"title": "NVIDIA ATLAS beats supercomputers on one GPU",
+"date": "Tue, 21 Jul 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2601.18111"
+},
+{
+"n": 12,
+"title": "Aurora AI beats multi-billion dollar supercomputers",
+"date": "Sun, 26 Jul 2026 00:00:00 +0000",
+"link": "https://www.microsoft.com/en-us/research/project/aurora-forecasting/"
+},
+{
+"n": 13,
+"title": "Microsoft Aurora outperforms traditional weather models",
+"date": "Sun, 26 Jul 2026 00:00:00 +0000",
+"link": "https://www.microsoft.com/en-us/research/project/aurora-forecasting/"
+},
+{
+"n": 14,
+"title": "Aurora AI beats traditional weather models",
+"date": "Sun, 26 Jul 2026 00:00:00 +0000",
+"link": "https://www.microsoft.com/en-us/research/project/aurora-forecasting/"
+},
+{
+"n": 15,
+"title": "Teaching AI the laws of physics",
+"date": "Sun, 02 Aug 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2511.15684"
+},
+{
+"n": 16,
+"title": "Walrus AI unifies nineteen physics scenarios",
+"date": "Sun, 09 Aug 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2511.15684"
+},
+{
+"n": 17,
+"title": "Walrus masters physics from stars to oceans",
+"date": "Sun, 16 Aug 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2511.15684"
+},
+{
+"n": 18,
+"title": "GraphCast learns the laws of physics",
+"date": "Sat, 29 Aug 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2512.24440"
+},
+{
+"n": 19,
+"title": "AI weather models independently learned physics",
+"date": "Sun, 30 Aug 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2512.24440"
+},
+{
+"n": 20,
+"title": "How AI weather models understand physics",
+"date": "Tue, 08 Sep 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2605.17493"
+},
+{
+"n": 21,
+"title": "How AI weather models actually think",
+"date": "Sat, 12 Sep 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2604.20467"
+},
+{
+"n": 22,
+"title": "How AI predicts weather without physics",
+"date": "Sun, 13 Sep 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2604.20467"
+}
+]</script>
 </body>
 </html>

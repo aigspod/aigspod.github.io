@@ -329,6 +329,26 @@
     }
     .air-door span { font-size: 0.95rem; }
 
+    /* Fifth doorway, to /mull/: the study, where the lamp is left on. */
+    .study-door {
+      margin-top: 0.55rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2e3d4a;
+      text-decoration: none;
+      transition: color 0.5s, text-shadow 0.5s;
+    }
+    .study-door:hover, .study-door:focus-visible {
+      color: #f2c27d;
+      text-shadow: 0 0 18px rgba(242, 194, 125, 0.5);
+      outline: none;
+    }
+    .study-door span { font-size: 0.95rem; }
+
     /* Emergency broadcast bar — the loud doorway to /fun.
        Restrained until you touch it, then it goes full alert. */
     .eas {
@@ -524,6 +544,8 @@
     <a href="morn/" class="quiet-door" title="She has been waiting."><span>☀</span> A quiet room</a>
 
     <a href="live/" class="air-door" title="Something to work to."><span>♪</span> On air</a>
+
+    <a href="mull/" class="study-door" title="She is still reading."><span>☾</span> The study</a>
 
     <details class="cds">
       <summary>Code &amp; data availability</summary>
