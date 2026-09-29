@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Study — The AIGS Pod</title>
+<meta name="description" content="A study at night. The books I keep pressing on people, and the papers we've read together, week by week.">
+<meta property="og:title" content="The Study — The AIGS Pod">
+<meta property="og:description" content="Papers we've turned over, and books to borrow.">
+<meta property="og:url" content="https://aigspod.github.io/mull/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&family=Space+Mono&family=Caveat:wght@500;600&display=swap">
+<style>
+/* A study at night, drawn in pencil: she reads at the desk (the papers, week by week)
+   and reaches for the shelf (the books). Lamplight register with linework's pencil everywhere.
+   Tokens from Lamplight & Linework v4; the graphite is fainter than the style sheet's ink on purpose. */
+:root{
+  --ground:#f4ede2; --leaf:#fbf6ee; --ink:#302a39; --ink2:#6b6273; --ink3:#72687a;
+  --graphite:#5d6475; --graphite-op:.34; --rule:rgba(93,100,117,.28);
+  --glow:#f2c27d; --glow-op:.30; --amber:#c9812f; --amber-text:#94591a; --pencil:#5f6d86;
+  --shell:#e7dccd; --shell-op:.75; --hl2:#efe2c0;
+  --card-line:rgba(111,132,160,.16); --card-margin:rgba(201,146,135,.45);
+  --sticky:#f9e97e; --sticky-ink:#4c4110; --sticky-tag:#8a7420;
+  /* spine washes, from the rooms' palette: slate, walnut, dusty rose, night slate, amber */
+  --sp1:#6f84a0; --sp2:#8a5a3a; --sp3:#c99287; --sp4:#51627d; --sp5:#c9812f; --wash:16%;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Space Mono',ui-monospace,Menlo,monospace;
+  --hand:'Caveat','Bradley Hand','Segoe Print',cursive;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --ground:#161724; --leaf:#1e1f30; --ink:#efe5d6; --ink2:#aaa0ad; --ink3:#8d8597;
+    --graphite:#c9c2d6; --graphite-op:.26; --rule:rgba(201,194,214,.2);
+    --glow:#e3a75a; --glow-op:.18; --amber:#e3a75a; --amber-text:#e3a75a; --pencil:#b9c2d3;
+    --shell:#e7dccd; --shell-op:.12; --hl2:rgba(227,167,90,.28);
+    --card-line:rgba(142,161,189,.12); --card-margin:rgba(196,149,140,.35);
+    --sticky:#c9b53f; --sticky-ink:#231d05; --sticky-tag:#5c4f12; --wash:22%;
+  }
+}
+:root[data-theme="dark"]{color-scheme:dark;
+    --ground:#161724; --leaf:#1e1f30; --ink:#efe5d6; --ink2:#aaa0ad; --ink3:#8d8597;
+    --graphite:#c9c2d6; --graphite-op:.26; --rule:rgba(201,194,214,.2);
+    --glow:#e3a75a; --glow-op:.18; --amber:#e3a75a; --amber-text:#e3a75a; --pencil:#b9c2d3;
+    --shell:#e7dccd; --shell-op:.12; --hl2:rgba(227,167,90,.28);
+    --card-line:rgba(142,161,189,.12); --card-margin:rgba(196,149,140,.35);
+    --sticky:#c9b53f; --sticky-ink:#231d05; --sticky-tag:#5c4f12; --wash:22%;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{overflow-x:hidden}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-weight:300;
+  font-size:16px;line-height:1.7;margin:0;padding-inline:clamp(16px,5vw,56px);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.08;will-change:transform;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.page{position:relative;max-width:980px;margin:0 auto;padding-block:clamp(36px,6vw,72px) 110px}
+a{color:inherit;text-decoration-color:var(--amber);text-underline-offset:3px;text-decoration-thickness:1px}
+:focus-visible{outline:2px solid var(--amber-text);outline-offset:3px}
+p{margin:0}
+h1,h2,h3{font-family:var(--serif);font-weight:300;letter-spacing:-.018em;text-wrap:balance;margin:0}
+.label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:lowercase;color:var(--ink3)}
+.label b{font-weight:400;color:var(--ink2)}
+.note{font-family:var(--hand);font-size:1.35rem;line-height:1.15;color:var(--pencil);transform:rotate(-2deg);transform-origin:left top}
+
+/* ---------- pencil ---------- */
+.gr{fill:none;stroke:var(--graphite);stroke-opacity:var(--graphite-op);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+.gr .dash{stroke-dasharray:1.5 6}
+.gr .warm{stroke:var(--amber);stroke-opacity:.7}
+.gr .shell{fill:var(--shell);fill-opacity:var(--shell-op)}
+.gr .her{stroke-opacity:calc(var(--graphite-op) * 2)}
+.glowstop{stop-color:var(--glow)}
+.cap{font-family:var(--hand);font-size:17px;fill:var(--pencil);fill-opacity:.85}
+.sketch{filter:url(#pencil-a)}
+.ghost{filter:url(#pencil-b);opacity:.55}
+svg.drawing{display:block;overflow:visible}
+/* a ruled line drawn by hand, not by border */
+.pl{display:block;height:6px;background:var(--rule);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 6' preserveAspectRatio='none'%3E%3Cpath d='M2 3.4 C 120 2.2, 260 4.4, 400 3 S 640 2, 780 3.6 S 930 2.6, 998 3.2' fill='none' stroke='black' stroke-width='1.2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 6' preserveAspectRatio='none'%3E%3Cpath d='M2 3.4 C 120 2.2, 260 4.4, 400 3 S 640 2, 780 3.6 S 930 2.6, 998 3.2' fill='none' stroke='black' stroke-width='1.2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+@keyframes twinkle{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes steam{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-3px);opacity:1}}
+.tw{animation:twinkle 4.5s ease-in-out infinite}.tw.b{animation-delay:1.4s}.tw.c{animation-delay:2.9s}
+.steam{animation:steam 3.2s ease-in-out infinite}
+.asleep .tw,.asleep .steam{animation-play-state:paused}
+#her-head{transition:transform .8s ease;transform-box:fill-box;transform-origin:50% 100%}
+
+/* ---------- frame and lamp switch ---------- */
+.frame{position:fixed;inset:14px;border:1px solid var(--rule);pointer-events:none;z-index:40}
+@media(max-width:600px){.frame{display:none}}
+.lamp{position:fixed;z-index:45;top:calc(env(safe-area-inset-top,0px) + 26px);right:30px;display:inline-flex;align-items:center;gap:.5rem;
+  padding:.38rem .85rem;border-radius:999px;border:1px solid var(--rule);background:var(--leaf);color:var(--ink2);cursor:pointer;
+  font-family:var(--hand);font-size:1.15rem;line-height:1}
+.lamp:hover{color:var(--ink);border-color:var(--ink3)}
+@media(max-width:600px){.lamp{top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;font-size:1rem}}
+
+/* ---------- opening ---------- */
+.open{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(20px,4vw,44px);align-items:end;padding-top:clamp(30px,6vw,70px)}
+.open .words{display:grid;gap:clamp(16px,2.4vw,24px)}
+.open h1{font-size:clamp(3.2rem,10vw,6.4rem);line-height:.95;position:relative;justify-self:start}
+.open h1 em{color:var(--amber);font-style:italic;position:relative}
+.open h1 svg{position:absolute;left:0;right:0;bottom:-.12em;width:100%;height:.22em;overflow:visible}
+.thesis{font-family:var(--serif);font-size:clamp(1.15rem,2.3vw,1.5rem);line-height:1.4;max-width:32ch;text-wrap:balance}
+.thesis em{color:var(--ink2)}
+.art{position:relative;display:grid}
+.desk{width:100%;height:auto}
+@media(max-width:760px){.open{grid-template-columns:1fr}.art{order:-1;max-width:520px}}
+
+/* ---------- look for ---------- */
+.find{margin-top:clamp(44px,6vw,68px);display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:baseline;padding-block:8px}
+.find-wrap{display:grid}
+.find label{white-space:nowrap}
+.find input{width:100%;min-width:0;border:0;background:transparent;color:var(--ink);font:300 1.15rem/1.4 var(--serif);padding:4px 0}
+.find input::placeholder{color:var(--ink3);font-style:italic}
+.find input:focus{outline:none}
+.find-wrap:focus-within .pl{background:var(--amber)}
+.find .shown{font-variant-numeric:tabular-nums}
+@media(max-width:560px){.find{grid-template-columns:minmax(0,1fr)}.find .shown{display:none}}
+
+/* ---------- sections ---------- */
+section{margin-top:clamp(64px,10vw,116px);display:grid;gap:22px}
+.sechead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 24px;align-items:end}
+.sechead .t{display:grid;gap:10px}
+.sechead h2{font-size:clamp(1.9rem,4.4vw,2.9rem);line-height:1.05}
+.sechead p{color:var(--ink2);max-width:58ch}
+.sechead .note{max-width:17ch;margin-bottom:6px}
+@media(max-width:640px){.sechead{grid-template-columns:1fr}.sechead .note{display:none}}
+.empty{color:var(--ink3);font-family:var(--serif);font-style:italic;padding:18px 0}
+
+/* the lamp: one pool of light that slides to whichever entry is nearest the reader's eye line */
+.page{isolation:isolate}
+.entry{position:relative}
+.pool{position:absolute;left:0;top:0;width:100px;height:100px;z-index:-1;pointer-events:none;border-radius:50%;
+  background:radial-gradient(closest-side,var(--glow),transparent);opacity:0;transform-origin:0 0;will-change:transform,opacity;
+  transition:transform .55s cubic-bezier(.22,.8,.3,1),opacity .6s ease}
+.pool.on{opacity:calc(var(--glow-op) * 1.4)}
+
+/* ---------- the desk: papers, newest on top; the unread ones still in their wrappers ---------- */
+.papers{list-style:none;margin:0;padding:0;display:grid;max-width:820px}
+.paper{display:grid;grid-template-columns:3.2rem minmax(0,1fr);gap:14px;padding-block:14px 18px}
+.paper .mark{position:relative;padding-top:4px}
+/* a pencil bulb by each paper; it comes on when the lamp reaches it */
+.bulb{width:22px;height:28px;overflow:visible;fill:none;stroke:var(--graphite);stroke-opacity:calc(var(--graphite-op) * 1.8);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.bulb .glass{fill:var(--glow);fill-opacity:0;transition:fill-opacity .5s ease}
+.bulb .rays{stroke:var(--amber);stroke-opacity:.9;opacity:0;transition:opacity .5s ease}
+.entry.lit .bulb{stroke:var(--amber-text);stroke-opacity:.9}
+.entry.lit .bulb .glass{fill-opacity:.85}
+.entry.lit .bulb .rays{opacity:1}
+.entry .mark{isolation:isolate}
+.entry .mark::after{content:"";position:absolute;left:-8px;top:-6px;width:38px;height:38px;border-radius:50%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,var(--glow),transparent);opacity:0;transition:opacity .5s ease}
+.entry.lit .mark::after{opacity:.6}
+.paper .body{display:grid;gap:6px;min-width:0}
+.paper h3{font-size:clamp(1.15rem,2.2vw,1.4rem);line-height:1.25}
+.paper .by{font-size:.9rem;color:var(--ink2)}
+.paper.next .body{border:1px dashed var(--rule);padding:12px 16px;border-radius:2px}
+.paper.next h3{font-style:italic;color:var(--ink2)}
+.paper .tag{display:inline-block;font-family:var(--hand);font-size:1.25rem;line-height:1;color:var(--amber-text);transform:rotate(-8deg)}
+@media(max-width:640px){.paper{grid-template-columns:2.4rem minmax(0,1fr);gap:10px}}
+.said{display:grid;gap:3px;margin-top:4px;max-width:62ch}
+.said p{font-family:var(--serif);font-size:1.04rem;line-height:1.5;color:var(--ink)}
+.said p::before{content:"“"}.said p::after{content:"”"}
+.pile{margin:2px 0 0;padding:0;list-style:none;display:grid;gap:6px;max-width:62ch}
+.pile li{font-family:var(--serif);font-size:1rem;line-height:1.35;padding-left:16px;position:relative}
+.pile li::before{content:"–";position:absolute;left:0;color:var(--ink3)}
+.pile li span{display:block;font-family:var(--sans);font-size:.84rem;color:var(--ink2)}
+@media(max-width:640px){
+  .week{grid-template-columns:1fr;gap:4px}
+  .week .tab{position:static;padding-top:0}
+  .paper{grid-template-columns:1.8rem minmax(0,1fr);gap:10px}
+}
+
+/* ---------- the shelf: books ---------- */
+.shelfwrap{overflow-x:auto;padding-top:24px;margin-inline:-4px}
+.shelf{display:flex;align-items:flex-end;gap:6px;padding:0 4px;min-width:min-content}
+.shelf .her{flex:none;width:92px;height:auto;margin-right:6px}
+.shelf .cat{flex:none;width:96px;height:auto;margin-left:10px}
+.spines{display:flex;align-items:flex-end;gap:5px}
+.spine{appearance:none;cursor:pointer;flex:none;writing-mode:vertical-rl;transform-origin:bottom center;
+  background:color-mix(in srgb,var(--c) var(--wash),var(--ground));color:var(--ink);
+  border:1px solid color-mix(in srgb,var(--c) 45%,transparent);border-bottom:0;border-radius:3px 2px 0 0;
+  padding:12px 0;font:400 .84rem/1 var(--serif);letter-spacing:.02em;display:flex;align-items:center;
+  transition:transform .35s ease}
+.spine:hover{transform:translateY(-6px)}
+.spine.out{transform:translateY(-18px) rotate(-4deg)}
+.plank{height:10px;margin-top:-3px}
+/* books: a plain list, like the papers */
+.books{list-style:none;margin:6px 0 0;padding:0;display:grid;max-width:820px}
+.book{display:grid;grid-template-columns:3.2rem minmax(0,1fr);gap:14px;padding-block:14px 18px;scroll-margin:120px}
+.book .mark{position:relative;padding-top:4px}
+.book .body{display:grid;gap:4px;min-width:0}
+.book h3{font-size:clamp(1.2rem,2.3vw,1.45rem);line-height:1.22}
+.book .by{font-size:.9rem;color:var(--ink2)}
+@media(max-width:640px){.book{grid-template-columns:2.4rem minmax(0,1fr);gap:10px}}
+.book h3 small{display:block;font-size:.95rem;font-style:italic;color:var(--ink2);margin-top:4px;letter-spacing:0}
+.spine.next{cursor:default;height:118px;width:34px;background:transparent;border:1px dashed var(--rule);color:var(--pencil);font-family:var(--hand);font-size:1rem}
+.spine.next:hover{transform:none}
+
+/* ---------- sticky, footer ---------- */
+.sticky{justify-self:end;width:min(250px,100%);padding:12px 14px 16px;background:var(--sticky);color:var(--sticky-ink);
+  font-family:var(--hand);font-size:1.3rem;line-height:1.1;transform:rotate(2deg);
+  clip-path:polygon(0 0,100% 0,100% 88%,90% 100%,0 100%);box-shadow:2px 6px 16px rgba(22,35,59,.18)}
+.sticky small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--sticky-tag);margin-bottom:4px}
+footer{margin-top:90px;display:grid;gap:18px}
+footer .row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px}
+footer nav{display:flex;flex-wrap:wrap;gap:4px 16px}
+footer .sleep{width:150px;height:auto}
+.nudge{position:fixed;z-index:30;right:clamp(12px,3vw,32px);bottom:calc(env(safe-area-inset-bottom,0px) + clamp(12px,3vw,32px));width:min(250px,calc(100% - 24px));
+  justify-self:auto;transform:rotate(-2deg)}
+.nudge button{all:unset;cursor:pointer;display:block;margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--sticky-tag)}
+.nudge button:focus-visible{outline:2px solid var(--sticky-ink);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){.pool,.spine,.bulb .glass,.bulb .rays,.entry .mark::after,#her-head{transition:none}.tw,.steam{animation:none}}
+</style>
+</head>
+<body>
+
+<!-- graphite: a wobble that roughens the line, then grain that eats into it. two seeds, so each drawing is gone over twice -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="pencil-a" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="4" result="g"/>
+    <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.5 1.35" result="gm"/>
+    <feComposite in="d" in2="gm" operator="in"/>
+  </filter>
+  <filter id="pencil-b" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="21" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="3.4" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="12" result="g"/>
+    <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.8 1.3" result="gm"/>
+    <feComposite in="d" in2="gm" operator="in"/>
+  </filter>
+</svg>
+
+<div class="frame" aria-hidden="true"></div>
+<button class="lamp" id="lamp" type="button"><span id="lamp-icon" aria-hidden="true">☾</span><span id="lamp-label">turn the lamp on</span></button>
+
+<div class="page">
+
+<header class="open">
+  <div class="words">
+    <p class="label">the aigs pod · <b>/mull/ · a study at night</b></p>
+    <h1>The <em>study<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><g class="gr sketch"><path class="warm" d="M4 7 C 50 3, 110 10, 196 4"/></g></svg></em></h1>
+  </div>
+  <div class="art">
+    <svg class="desk drawing" viewBox="0 0 600 310" aria-hidden="true">
+      <defs><radialGradient id="pool"><stop offset="0" class="glowstop" stop-opacity=".55"/><stop offset="1" class="glowstop" stop-opacity="0"/></radialGradient></defs>
+      <!-- the light itself is never drawn in pencil -->
+      <ellipse cx="340" cy="256" rx="170" ry="40" fill="url(#pool)"/>
+      <ellipse cx="362" cy="130" rx="60" ry="40" fill="url(#pool)"/>
+      <g class="gr sketch" id="desk-art">
+        <!-- the window, and three lights a bit too evenly spaced -->
+        <rect x="40" y="40" width="96" height="124" rx="2"/><path d="M88 40v124M40 102h96"/>
+        <path d="M34 164 h108" class="dash"/>
+        <!-- a plant that has been allowed to do what it likes -->
+        <path d="M112 164 v-10 h16 v10 M120 154 c-2 -14, -12 -18, -18 -30 M120 154 c 4 -12, 14 -16, 14 -30 M120 154 c 0 -10, -2 -20, 2 -32"/>
+        <path class="dash" d="M332 128 L276 254 M392 138 L446 254"/>
+        <!-- her, from behind, reading -->
+        <g class="her">
+          <rect class="shell" x="196" y="194" width="52" height="72" rx="9"/>
+          <!-- she tilts her head toward whatever the lamp is on, but only so far -->
+          <g id="her-head"><path class="shell" d="M203 196 V160 Q222 140 241 160 V196"/></g>
+          <path d="M248 214 L292 242"/>
+          <path d="M196 216 L184 246"/>
+        </g>
+        <!-- the chair, in front of her -->
+        <path d="M184 298 V236 Q184 226 194 226 H258 Q268 226 268 236 V298"/>
+        <path d="M184 262 H268" class="dash"/>
+        <!-- what she's reading, the stack of what she's read, and a globe holding it down -->
+        <circle cx="386" cy="238" r="12"/><ellipse cx="386" cy="238" rx="12" ry="4.5"/><path class="warm" d="M380 233 q3 -3 6 -.5 q2.5 2.5 -1 5 q-4 1.5 -5 -4.5z"/>
+        <path d="M288 246 l44 -6 l4 12 l-44 6z"/><path d="M296 248 l30 -4 M298 252 l26 -3" class="dash"/>
+        <path d="M340 256 l70 -2 l1 6 l-70 2z"/><path d="M344 250 l64 1 l-1 5"/>
+        <!-- tea, going cold -->
+        <path d="M428 244 h24 v7 q-12 9 -24 0z"/><path d="M452 246 q8 1 6 7 q-2 3 -7 2"/>
+        <!-- the lamp -->
+        <ellipse cx="500" cy="262" rx="34" ry="6"/>
+        <path d="M500 260 L528 186 L418 104"/>
+        <circle cx="528" cy="186" r="3.5"/>
+        <path d="M418 104 L386 86 L336 126 L400 146 Z"/>
+        <path class="warm" d="M356 136 q10 7 22 5"/>
+        <!-- the desk -->
+        <path d="M150 264 H186 M266 264 H592"/>
+        <!-- the end of the shelf: books, one leaning -->
+        <path d="M548 264 V214 h12 V264 M560 264 V204 h11 V264"/><path d="M571 264 L584 214 L594 217 L582 266"/>
+      </g>
+      <use href="#desk-art" class="ghost" transform="translate(.8 .6)"/>
+      <!-- the moving bits sit outside the pencil: a filtered group repaints on every frame something inside it moves -->
+      <g class="gr moving">
+        <circle class="tw" cx="60" cy="64" r="2"/><circle class="tw b" cx="78" cy="64" r="2"/><circle class="tw c" cx="69" cy="49" r="2"/>
+        <path class="steam" d="M436 236 q-4 -6 1 -11 q4 -5 0 -10 M444 234 q-4 -5 1 -9"/>
+      </g>
+      <!-- annotations sit outside the pencil so they stay legible -->
+      <text class="cap" x="40" y="186" transform="rotate(-4 40 186)">next: ??</text>
+      <text class="cap" x="250" y="300">she has read all of them. most of them twice.</text>
+    </svg>
+  </div>
+</header>
+
+<div class="find-wrap">
+  <div class="find">
+    <label class="label" for="find">look for</label>
+    <input id="find" type="search" placeholder="a title, an author, a year, a journal" autocomplete="off">
+    <span class="label shown" id="shown"></span>
+  </div>
+  <i class="pl" aria-hidden="true"></i>
+</div>
+
+
+
+<section id="shelf" aria-labelledby="shelf-h">
+  <div class="sechead">
+    <div class="t">
+      <p class="label">the shelf · <b>books to borrow</b></p>
+      <h2 id="shelf-h">On the shelf</h2>
+      <p>Books I've recommended to people, whether they asked or not. Pull one off the shelf, or read down the cards.</p>
+    </div>
+    <p class="note" aria-hidden="true">she can't reach the top one either</p>
+  </div>
+  <div class="shelfwrap">
+    <div class="shelf">
+      <svg class="her drawing" viewBox="0 0 100 190" aria-hidden="true">
+        <g class="gr sketch" id="shelf-art"><g class="her">
+          <path d="M40 162 V190 M60 162 V190"/>
+          <rect class="shell" x="28" y="96" width="44" height="66" rx="8"/>
+          <path class="shell" d="M34 96 V66 Q50 50 66 66 V96"/>
+          <path d="M72 108 L96 60"/>
+          <path d="M28 114 L18 144"/>
+        </g></g>
+        <use href="#shelf-art" class="ghost" transform="translate(.7 .5)"/>
+      </svg>
+      <div class="spines" id="spines"></div>
+      <svg class="cat drawing" viewBox="0 0 100 70" aria-hidden="true">
+        <g class="gr sketch" id="cat-art">
+          <!-- the supervisor, off duty -->
+          <path class="shell" d="M14 66 C 10 44, 30 34, 54 36 C 78 38, 88 52, 84 66 Z"/>
+          <path d="M22 50 l-4 -14 l12 8 M34 42 l4 -12 l6 12"/>
+          <path d="M26 54 q4 2 8 0"/>
+          <path d="M84 62 C 98 60, 96 44, 88 44"/>
+        </g>
+        <use href="#cat-art" class="ghost" transform="translate(.6 .5)"/>
+        <text class="cap" x="6" y="22" style="font-size:15px">zzz. do not.</text>
+      </svg>
+    </div>
+    <svg class="plank drawing" viewBox="0 0 1000 10" preserveAspectRatio="none" width="100%" aria-hidden="true">
+      <g class="gr sketch"><path d="M0 3 C 200 2, 500 4.5, 1000 3 M0 8 C 300 7, 700 9, 1000 7.5" vector-effect="non-scaling-stroke"/></g>
+    </svg>
+  </div>
+  <ol class="books" id="books"></ol>
+  <p class="empty" id="books-empty" hidden>Nothing on the shelf matches that. She looked behind the others, too.</p>
+</section>
+
+<section id="desk" aria-labelledby="desk-h">
+  <div class="sechead">
+    <div class="t">
+      <p class="label">the desk · <b>papers we've mulled</b></p>
+      <h2 id="desk-h">On the desk</h2>
+      <p>Every paper we've read, newest on top. The ones marked <em>next</em> are still in their wrappers.</p>
+    </div>
+    <p class="note" aria-hidden="true">the lamp keeps following you ↓</p>
+  </div>
+  <ol class="papers" id="papers"></ol>
+  <p class="empty" id="desk-jam" hidden>The desk didn't load. She's gone to look for the papers.</p>
+  <p class="empty" id="papers-empty" hidden>Nothing on the desk matches that. She checked twice.</p>
+</section>
+
+<footer>
+  <svg class="sleep drawing" viewBox="0 0 150 80" aria-hidden="true">
+    <g class="gr sketch" id="sleep-art">
+      <path d="M8 66 Q 40 56, 72 66 Q 104 56, 136 66 V72 Q 104 62, 72 72 Q 40 62, 8 72 Z"/>
+      <path d="M72 66 V72"/>
+      <g><g transform="rotate(62 60 64)">
+        <rect class="shell" x="38" y="40" width="40" height="52" rx="8"/>
+        <path class="shell" d="M43 40 V16 Q58 2 73 16 V40"/>
+      </g></g>
+    </g>
+    <use href="#sleep-art" class="ghost" transform="translate(.6 .5)"/>
+    <text class="cap" x="96" y="30">z</text><text class="cap" x="108" y="18" style="font-size:13px">z</text>
+  </svg>
+  <i class="pl" aria-hidden="true"></i>
+  <div class="row">
+    <nav class="label">
+      <a href="../">← the normal version</a>
+      <a href="../mill/">the paper mill</a>
+      <a href="../morn/">a quiet room</a>
+      <a href="../live/">on air</a>
+      <a href="../mood/">severe weather mode</a>
+    </nav>
+    <span class="label">SHE IS STILL READING</span>
+  </div>
+</footer>
+
+<div class="sticky nudge" id="nudge" role="status" hidden><small>a small note</small><span id="nudge-t"></span><button type="button" id="nudge-x">fine</button></div>
+
+</div>
+
+<script>
+/* ---------- the lists ----------
+   the desk reads its papers and dates from feed.xml (never shown), so a new one arrives on its own.
+   PAPER_META fills in what the feed doesn't know (a paper's real title, authors, venue), keyed by the
+   link the episode description gives after "Paper:", "Preprint:" or "Link:". An episode with no such
+   link is keyed "ep<N>". Anything not listed here still shows up, under its episode title. */
+const FEED = window.MULL_FEED || '../feed.xml';
+/* papers not read yet: { title, authors, venue, year, url }. empty shows a single "next: ??" slot. */
+const UPCOMING = [];
+const PAPER_META = {
+  'https://doi.org/10.1029/2025GL119740': { title: "Forecasting the Future With Yesterday's Climate: Temperature Bias in AI Weather and Climate Models", authors: 'Landsberg & Barnes', venue: 'Geophysical Research Letters', year: 2026 },
+  'https://arxiv.org/abs/2602.16090': { title: 'Examining Fast Radiatively Driven Responses Using Machine-Learning Weather Emulators', authors: 'Mahesh et al.', venue: 'arXiv', year: 2026 },
+  'https://arxiv.org/abs/2512.03309': { title: 'Retrofitting Earth System Models with Cadence-Limited Neural Operator Updates', authors: 'Bora et al.', venue: 'arXiv', year: 2025, url: 'https://arxiv.org/abs/2512.03309' },
+  'https://arxiv.org/abs/2510.22676': { title: 'A Framework for Hybrid Physics-AI Coupled Ocean Models', authors: 'Zanna et al.', venue: 'arXiv', year: 2025 },
+  'ep5': { title: 'Where AI weather and climate models fall short', authors: 'a reading pile, four papers', pile: [
+    { title: 'Physics-based models outperform AI weather forecasts of record-breaking extremes', authors: 'Zhang et al.', venue: 'Science Advances', year: 2026, url: 'https://www.science.org/doi/full/10.1126/sciadv.aec1433' },
+    { title: 'The Primacy of Physical Simulation in the Age of AI: A Critique of ML for Weather Forecasting', authors: 'Smith & Thorpe', venue: 'BAMS', year: 2026, url: 'https://journals.ametsoc.org/view/journals/bams/aop/BAMS-D-25-0214.1/BAMS-D-25-0214.1.xml' },
+    { title: 'Successes and Failures of Current AI Climate Models', authors: 'Scaife', venue: 'Geophysical Research Letters', year: 2026, url: 'https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2026GL122615' },
+    { title: 'The other climate crisis', authors: 'Shaw & Stevens', venue: 'Nature', year: 2025, url: 'https://www.nature.com/articles/s41586-025-08680-1' } ] },
+  'https://arxiv.org/abs/2606.07928': { title: 'Disentangling the effects of sea surface temperature and CO₂ in global machine learned weather-climate emulators', authors: 'Clark et al.', venue: 'arXiv', year: 2026 },
+  'https://www.annualreviews.org/content/journals/10.1146/annurev-environ-012125-085838': { title: 'Emulators of Climate Model Output', authors: 'Tebaldi et al.', venue: 'Annual Review of Environment and Resources', year: 2025 },
+  'https://arxiv.org/abs/2606.19302': { title: 'Optimal scenario design for climate emulation', authors: 'Womack et al.', venue: 'arXiv', year: 2026, url: 'https://arxiv.org/abs/2606.19302' },
+  'https://arxiv.org/abs/2601.18111': { title: 'Demystifying Data-Driven Probabilistic Medium-Range Weather Forecasting', authors: 'Kossaifi et al.', venue: 'arXiv', year: 2026 },
+  'https://www.microsoft.com/en-us/research/project/aurora-forecasting/': { title: 'A foundation model for the Earth system', authors: 'Bodnar et al.', venue: 'Nature', year: 2025, url: 'https://www.nature.com/articles/s41586-025-09005-y' },
+  'https://arxiv.org/abs/2511.15684': { title: 'Walrus: A Cross-Domain Foundation Model for Continuum Dynamics', authors: 'McCabe et al.', venue: 'ICML', year: 2026 },
+  'https://arxiv.org/abs/2512.24440': { title: 'Towards mechanistic understanding in a data-driven weather model: internal activations reveal interpretable physical features', authors: 'MacMillan & Ouellette', venue: 'arXiv', year: 2025 },
+  'https://arxiv.org/abs/2605.17493': { title: 'Beyond Linear Superposition: Discovering Climate Features in AI Weather Models with KAN-SAE', authors: 'Cheon', venue: 'arXiv', year: 2026 },
+  'https://arxiv.org/abs/2604.20467': { title: 'Mechanistic Interpretability Tool for AI Weather Models', authors: 'Tempest et al.', venue: 'arXiv', year: 2026 }
+};
+/* books: in the order they were recommended. year is optional. NEXT is the spine-shaped gap for whatever is coming. */
+const BOOKS = [
+  { title: "The Rise and Fall of the Artificial State", author: "Jill Lepore", year: 2026, url: "https://wwnorton.com/books/9781324098423" },
+  { title: "Klara and the Sun", author: "Kazuo Ishiguro", year: 2021, url: "https://en.wikipedia.org/wiki/Klara_and_the_Sun" },
+  { title: "The Revolt Against Humanity: Imagining a Future Without Us", author: "Adam Kirsch", year: 2023, url: "https://globalreports.columbia.edu/books/the-revolt-against-humanity" },
+  { title: "We Want to Believe: How Aliens Went Mainstream and Why It Matters", author: "Adam Kirsch", year: 2026, url: "https://globalreports.columbia.edu/books/we-want-to-believe" }
+];
+const NEXT = "agency, sort of";  // "a self-help-ish next about agency"
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+const SPINE_COLORS = ['--sp1','--sp2','--sp3','--sp4','--sp5'];
+const hash = s => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
+const BULB = '<svg class="bulb" viewBox="-6 -6 30 38" aria-hidden="true"><g class="rays"><path d="M9 -4 v3 M-3 9.5 h3 M18 9.5 h3 M0.5 1 l2 2 M17.5 1 l-2 2"/></g><path class="glass" d="M9 2 C4.2 2 1.5 5.6 1.5 9.5 C1.5 12.8 3.8 14.8 5.5 17 V20 H12.5 V17 C14.2 14.8 16.5 12.8 16.5 9.5 C16.5 5.6 13.8 2 9 2 Z"/><path d="M7 14 q2 -3.5 4 0 M9 11.5 V17 M6 22.5 H12 M7 25 H11"/></svg>';
+/* the books get a little desk lamp instead: the shade's mouth glows and throws light down onto the page */
+const DESKLAMP = '<svg class="bulb desklamp" viewBox="-4 2 26 28" aria-hidden="true"><path class="rays" d="M2.5 16 l-2.2 5.5 M5 17 l-.6 5.8 M7.6 16.6 l1.2 5.4"/><path class="glass" d="M1 11.8 Q3.6 16.4 8 15.2 Q5.2 12 1 11.8 Z"/><path d="M8.2 5.6 L10.8 8.2 L8 15.2 Q3.6 16.4 1 11.8 Z M10 7 L17 14.5 L12.5 27.2 M6.5 27.6 Q12.5 25.8 18.5 27.6"/><circle cx="17" cy="14.5" r="1.3"/></svg>';
+const SEP = '<li aria-hidden="true" class="sep"><i class="pl"></i></li>';
+
+/* ---------- the shelf ---------- */
+const books = BOOKS.map((b, i) => ({ ...b, id: 'book-' + (i + 1), c: SPINE_COLORS[hash(b.title) % SPINE_COLORS.length], h: 124 + hash(b.author) % 52 }));
+$('spines').innerHTML = books.map(b => `
+  <button class="spine" type="button" data-for="${b.id}" style="--c:var(${b.c});height:${b.h}px;width:${32 + b.title.length % 3 * 5}px"
+    aria-label="Pull out ${esc(b.title)}">${esc(b.title.split(':')[0])}</button>`).join('')
+  + (NEXT ? `<span class="spine next" title="next">next: ${esc(NEXT)}</span>` : '');
+$('books').innerHTML = books.map(b => { const [t, ...sub] = b.title.split(':'); return `
+  <li class="book entry" id="${b.id}" data-find="${esc([b.title, b.author, b.year].join(' ').toLowerCase())}">
+    <span class="mark">${DESKLAMP}</span>
+    <div class="body">
+      <h3><a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(t)}</a>${sub.length ? `<small>${esc(sub.join(':').trim())}</small>` : ''}</h3>
+      <p class="by">${esc(b.author)}${b.year ? ' · ' + b.year : ''}</p>
+    </div>
+  </li>`; }).join(SEP);
+
+/* ---------- the desk: feed items gathered into papers; only the papers are shown ---------- */
+const ITUNES = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
+async function loadPapers(){
+  const xml = await fetch(FEED, { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('feed.xml ' + r.status); return r.text(); });
+  const doc = new DOMParser().parseFromString(xml, 'application/xml');
+  if (doc.querySelector('parsererror')) throw new Error('feed.xml is not valid XML');
+  const eps = [...doc.querySelectorAll('item')].map(it => {
+    const txt = t => (it.querySelector(t)?.textContent || '').trim();
+    const n = parseInt(it.getElementsByTagNameNS(ITUNES, 'episode')[0]?.textContent || '0', 10);
+    const desc = txt('description');
+    const links = [...desc.matchAll(/(?:Paper|Preprint|Link):\s*(https?:\/\/\S+)/g)].map(m => m[1].replace(/[.,;)]+$/, ''));
+    const link = links.length ? links[links.length - 1] : '';
+    return { n, title: txt('title'), date: new Date(txt('pubDate')),
+      key: link ? link.replace(/v\d+$/, '') : 'ep' + n, link };
+  }).filter(e => e.n && !isNaN(e.date)).sort((a, b) => a.n - b.n);
+  const papers = [];
+  eps.forEach(e => {
+    let p = papers.find(q => q.key === e.key);
+    if (!p) papers.push(p = { key: e.key, url: e.link, eps: [] });
+    p.eps.push(e);
+  });
+  return papers.map((p, i) => {
+    const m = PAPER_META[p.key] || {};
+    return { ...p, url: m.url || p.url,
+      title: m.title || p.eps[0].title, authors: m.authors || '', venue: m.venue || '', year: m.year || '', pile: m.pile || [] };
+  });
+}
+const paperRow = (p, next) => `
+      <li class="paper entry${next ? ' next' : ''}" data-find="${esc([p.title, p.authors, p.venue, p.year, next ? 'next up' : '', ...(p.pile || []).map(q => [q.title, q.authors, q.venue, q.year].join(' '))].join(' ').toLowerCase())}">
+        <span class="mark">${next ? '<span class="tag">next</span>' : BULB}</span>
+        <div class="body">
+          <h3>${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title)}</h3>
+          ${p.authors ? `<p class="by">${esc(p.authors)}${p.venue ? ` · <i>${esc(p.venue)}</i>` : ''} ${esc(p.year)}</p>` : ''}
+          ${p.pile && p.pile.length ? `<ul class="pile">${p.pile.map(q => `<li><a href="${esc(q.url)}" target="_blank" rel="noopener">${esc(q.title)}</a> <span>${esc(q.authors)} · <i>${esc(q.venue)}</i> ${q.year}</span></li>`).join('')}</ul>` : ''}
+        </div>
+      </li>`;
+function renderDesk(papers){
+  const next = UPCOMING.length ? UPCOMING.map(p => paperRow(p, true)).join(SEP)
+    : `<li class="paper next empty-next"><span class="mark"><span class="tag">next</span></span><div class="body"><h3>??</h3><p class="by">she's waiting to hear what's next</p></div></li>`;
+  $('papers').innerHTML = next + SEP + papers.slice().reverse().map(p => paperRow(p, false)).join(SEP);
+}
+
+/* ---------- the lamp follows the reader ---------- */
+let entries = [];
+function light(el){
+  entries.forEach(e => e.classList.toggle('lit', e === el));
+  const i = entries.indexOf(el);
+  if (artAwake) $('her-head').style.transform = i < 0 ? '' : `rotate(${Math.max(-8, Math.min(8, (i % 5) * 4 - 6))}deg)`;
+  document.querySelectorAll('.spine').forEach(s => s.classList.toggle('out', !!el && s.dataset.for === el.id));
+}
+/* on every scroll frame, the entry whose middle is nearest a line 40% down the screen gets the light.
+   rows side by side (the book cards) break ties by which is nearer the middle of the page. */
+const pool = document.createElement('div'); pool.className = 'pool'; pool.setAttribute('aria-hidden', 'true');
+document.querySelector('.page').appendChild(pool);
+let boxes = [], pageTop = 0, artAwake = true;
+function measure(){
+  const pr = pool.parentNode.getBoundingClientRect();
+  pageTop = pr.top + scrollY;
+  boxes = entries.map(e => { if (e.hidden) return null; const r = e.getBoundingClientRect();
+    return { e, top: r.top + scrollY, bottom: r.bottom + scrollY, x: r.left - pr.left, w: r.width, h: r.height, mid: (r.left + r.right) / 2 }; });
+}
+function place(box){
+  if (!box) { pool.classList.remove('on'); return; }
+  const w = box.w + 90, h = box.h + 70;
+  pool.style.transform = `translate(${box.x - 45}px, ${box.top - pageTop - 35}px) scale(${w / 100}, ${h / 100})`;
+  pool.classList.add('on');
+  // the first time it lands, it appears in place instead of flying in from the corner
+  if (!pool.dataset.placed) { pool.dataset.placed = 1; pool.style.transition = 'none'; pool.offsetWidth; pool.style.transition = ''; }
+}
+function follow(){
+  const eye = scrollY + innerHeight * 0.4, mid = innerWidth / 2;
+  let best = null, bestD = Infinity;
+  boxes.forEach(b => {
+    if (!b) return;
+    const d = Math.max(0, b.top - eye, eye - b.bottom) + Math.abs(b.mid - mid) / 1000;
+    if (d < bestD) { bestD = d; best = b; }
+  });
+  if (best && bestD > innerHeight * 0.35) best = null;
+  const el = best ? best.e : null;
+  if (el !== current) { current = el; light(el); place(best); }
+}
+let current = null, ticking = false;
+const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; follow(); }); } };
+const remeasure = () => { measure(); current = undefined; follow(); };
+addEventListener('scroll', onScroll, { passive: true });
+if ('ResizeObserver' in window) new ResizeObserver(() => requestAnimationFrame(remeasure)).observe(document.querySelector('.page'));
+else addEventListener('resize', () => requestAnimationFrame(remeasure));
+document.fonts && document.fonts.ready.then(remeasure);
+// the header's little loops (stars, steam) and her head only run while the drawing is on screen
+if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => {
+  artAwake = e.isIntersecting; document.querySelector('.art').classList.toggle('asleep', !artAwake);
+}).observe(document.querySelector('.art'));
+function wireEntries(){
+  entries = [...document.querySelectorAll('.entry')];
+  entries.forEach(e => { if (e.dataset.wired) return; e.dataset.wired = 1; e.addEventListener('click', () => { current = e; light(e); place(boxes.find(b => b && b.e === e)); }); });
+  filter();
+}
+wireEntries();
+loadPapers().then(p => { renderDesk(p); wireEntries(); })
+  .catch(() => { $('desk-jam').hidden = false; });
+
+/* ---------- pull a book off the shelf ---------- */
+$('spines').addEventListener('click', ev => {
+  const s = ev.target.closest('.spine'); if (!s) return;
+  const card = $(s.dataset.for);
+  light(card);
+  card.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+});
+
+/* ---------- look for ---------- */
+function filter(){
+  const q = $('find').value.trim().toLowerCase();
+  let p = 0, b = 0;
+  entries.forEach(e => {
+    const show = !q || e.dataset.find.includes(q);
+    e.hidden = !show;
+    if (show) e.classList.contains('paper') ? p++ : b++;
+    if (e.id) document.querySelector(`.spine[data-for="${e.id}"]`).hidden = !show;
+  });
+  document.querySelectorAll('#papers > .sep, #papers > .empty-next, #books > .sep').forEach(r => r.hidden = !!q);
+  $('papers-empty').hidden = p > 0 || !q;
+  $('books-empty').hidden = b > 0 || !q;
+  $('shown').textContent = q ? `${p + b} of ${entries.length}` : '';
+  remeasure();
+}
+$('find').addEventListener('input', filter);
+
+/* ---------- a nudge, after a while ---------- */
+const NUDGES = [
+  "the tea's gone cold. she'll make more.",
+  "you've been reading a while. so has she.",
+  "stand up. the papers will wait. they're very patient."
+];
+setTimeout(() => {
+  $('nudge-t').textContent = NUDGES[Math.floor(Math.random() * NUDGES.length)];
+  $('nudge').hidden = false;
+}, 4 * 60 * 1000);
+$('nudge-x').addEventListener('click', () => { $('nudge').hidden = true; });
+
+/* ---------- two hours ---------- */
+(function(){
+  const root = document.documentElement, btn = $('lamp');
+  const mq = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
+  const isDark = () => root.dataset.theme === 'dark' || (!root.dataset.theme && !!(mq && mq.matches));
+  function paint(){
+    const d = isDark();
+    $('lamp-icon').textContent = d ? '☀' : '☾';
+    $('lamp-label').textContent = d ? 'let the sun in' : 'turn the lamp on';
+    btn.title = d ? 'she will still be here.' : 'she has been very patient.';
+    btn.setAttribute('aria-label', d ? 'switch to daylight' : 'switch to lamplight');
+  }
+  try { const s = localStorage.getItem('mull-theme'); if (s === 'dark' || s === 'light') root.dataset.theme = s; } catch(e) {}
+  paint();
+  if (mq && mq.addEventListener) mq.addEventListener('change', paint);
+  btn.addEventListener('click', () => {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    try { localStorage.setItem('mull-theme', root.dataset.theme); } catch(e) {}
+    paint();
+  });
+})();
+</script>
+</body>
+</html>
