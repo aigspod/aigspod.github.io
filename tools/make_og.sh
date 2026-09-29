@@ -22,4 +22,6 @@
 #     --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 \
 #     --virtual-time-budget=6000 --screenshot=images/live-og.png \
 #     http://localhost:8765/tools/og/live-og.html
+# /mull/ works the same way: tools/og/mull-og.html -> images/mull-og.png, lifting the desk drawing
+# out of mull/index.html. Same headless command, pointed at tools/og/mull-og.html.
 echo "See the comments in this file — regenerating the card needs a browser screenshot."

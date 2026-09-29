@@ -9,6 +9,12 @@
 <meta property="og:description" content="Papers we've turned over, and books to borrow.">
 <meta property="og:url" content="https://aigspod.github.io/mull/">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://aigspod.github.io/images/mull-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A pencil drawing of a study at night: a small boxy figure reads at a desk under a lamp, a window with three lights beside her.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aigspod.github.io/images/mull-og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&family=Space+Mono&family=Caveat:wght@500;600&display=swap">
@@ -519,10 +525,10 @@ function light(el){
    rows side by side (the book cards) break ties by which is nearer the middle of the page. */
 const pool = document.createElement('div'); pool.className = 'pool'; pool.setAttribute('aria-hidden', 'true');
 document.querySelector('.page').appendChild(pool);
-let boxes = [], pageTop = 0, artAwake = true;
+let boxes = [], pageTop = 0, pageLeft = 0, artAwake = true;
 function measure(){
   const pr = pool.parentNode.getBoundingClientRect();
-  pageTop = pr.top + scrollY;
+  pageTop = pr.top + scrollY; pageLeft = pr.left + scrollX;
   boxes = entries.map(e => { if (e.hidden) return null; const r = e.getBoundingClientRect();
     return { e, top: r.top + scrollY, bottom: r.bottom + scrollY, x: r.left - pr.left, w: r.width, h: r.height, mid: (r.left + r.right) / 2 }; });
 }
@@ -547,8 +553,41 @@ function follow(){
   if (el !== current) { current = el; light(el); place(best); }
 }
 let current = null, ticking = false;
-const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; follow(); }); } };
-const remeasure = () => { measure(); current = undefined; follow(); };
+
+/* with a mouse, the lamp is in your hand: a round pool trails the pointer, and whichever row it
+   is over lights up. the pool eases toward the pointer and the loop stops the moment it arrives,
+   so a still mouse costs nothing. touch screens (and a mouse that has left the window) go back to
+   the reading line above. */
+const HAND = { w: 520, h: 360 };
+let hand = false, px = 0, py = 0, ax = 0, ay = 0, easing = false, cx = 0, cy = 0;
+function handTarget(){ ax = cx + scrollX - pageLeft; ay = cy + scrollY - pageTop; }
+function handPick(){
+  const y = cy + scrollY;
+  let best = null, bestD = Infinity;
+  boxes.forEach(b => { if (!b) return; const d = Math.max(0, b.top - y, y - b.bottom); if (d < bestD) { bestD = d; best = b; } });
+  const el = best && bestD < 24 ? best.e : null;
+  if (el !== current) { current = el; light(el); }
+}
+function ease(){
+  px += (ax - px) * 0.18; py += (ay - py) * 0.18;
+  pool.style.transform = `translate(${px - HAND.w / 2}px, ${py - HAND.h / 2}px) scale(${HAND.w / 100}, ${HAND.h / 100})`;
+  if (Math.abs(ax - px) + Math.abs(ay - py) > 0.5) requestAnimationFrame(ease); else easing = false;
+}
+function toHand(){ if (!easing) { easing = true; requestAnimationFrame(ease); } }
+addEventListener('pointermove', e => {
+  if (e.pointerType !== 'mouse' || reduceMotion) return;
+  cx = e.clientX; cy = e.clientY; handTarget();
+  if (!hand) { hand = true; px = ax; py = ay; pool.style.transition = 'opacity .6s ease'; pool.classList.add('on'); }
+  handPick(); toHand();
+}, { passive: true });
+document.documentElement.addEventListener('mouseleave', () => {
+  if (!hand) return;
+  hand = false; pool.style.transition = ''; current = undefined; follow();
+});
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; if (hand) { handTarget(); handPick(); toHand(); } else follow(); }); } };
+const remeasure = () => { measure(); current = undefined; if (hand) { handTarget(); handPick(); toHand(); } else follow(); };
 addEventListener('scroll', onScroll, { passive: true });
 if ('ResizeObserver' in window) new ResizeObserver(() => requestAnimationFrame(remeasure)).observe(document.querySelector('.page'));
 else addEventListener('resize', () => requestAnimationFrame(remeasure));
@@ -559,7 +598,7 @@ if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => {
 }).observe(document.querySelector('.art'));
 function wireEntries(){
   entries = [...document.querySelectorAll('.entry')];
-  entries.forEach(e => { if (e.dataset.wired) return; e.dataset.wired = 1; e.addEventListener('click', () => { current = e; light(e); place(boxes.find(b => b && b.e === e)); }); });
+  entries.forEach(e => { if (e.dataset.wired) return; e.dataset.wired = 1; e.addEventListener('click', () => { current = e; light(e); if (!hand) place(boxes.find(b => b && b.e === e)); }); });
   filter();
 }
 wireEntries();

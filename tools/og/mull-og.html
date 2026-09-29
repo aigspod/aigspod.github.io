@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>mull og card</title>
+<!-- 1200x630 link-preview card for /mull/. The desk drawing, its pencil filters and the page's
+     styles are lifted out of mull/index.html at load time, so the card can't drift from the page. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&family=Space+Mono&family=Caveat:wght@500;600&display=swap">
+<style id="lifted"></style>
+<style>
+html,body{margin:0;width:1200px;height:630px;overflow:hidden;padding:0!important}
+body::before{opacity:.06}
+.card{position:relative;width:1200px;height:630px;box-sizing:border-box}
+.card .edge{position:absolute;inset:18px;border:1px solid var(--rule)}
+.words{position:absolute;left:78px;top:0;bottom:0;width:430px;z-index:3;display:flex;flex-direction:column;justify-content:center;gap:26px}
+.words h1{font-size:112px;line-height:.95;margin:0}
+.words h1 em{color:var(--amber);font-style:italic}
+.words .sub{font-family:var(--mono);font-size:14px;line-height:1.9;letter-spacing:.16em;color:var(--ink2);text-transform:lowercase}
+.scene{position:absolute;right:44px;top:50%;transform:translateY(-46%);width:590px}
+.scene svg.desk{width:100%;height:auto;display:block}
+/* hold one quiet frame */
+*{animation:none!important;transition:none!important}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="edge"></div>
+  <div class="words">
+    <p class="label">the aigs pod · <b>/mull/ · a study at night</b></p>
+    <h1>The <em>study</em></h1>
+    <p class="sub">books on the shelf<br>papers on the desk<br>the lamp left on</p>
+  </div>
+  <div class="scene" id="scene"></div>
+</div>
+<script>
+fetch('../../mull/index.html').then(r => r.text()).then(t => {
+  const doc = new DOMParser().parseFromString(t, 'text/html');
+  document.getElementById('lifted').textContent = doc.querySelector('style').textContent;
+  const filters = doc.querySelector('body > svg');          // the pencil filters
+  document.body.prepend(document.importNode(filters, true));
+  const desk = doc.querySelector('svg.desk');
+  document.getElementById('scene').appendChild(document.importNode(desk, true));
+  document.fonts.ready.then(() => document.body.setAttribute('data-ready', '1'));
+});
+</script>
+</body>
+</html>
