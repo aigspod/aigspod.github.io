@@ -183,14 +183,39 @@ section{margin-top:clamp(64px,10vw,116px);display:grid;gap:22px}
 .shelf{display:flex;align-items:flex-end;gap:6px;padding:0 4px;min-width:min-content}
 .shelf .her{flex:none;width:92px;height:auto;margin-right:6px}
 .shelf .cat{flex:none;width:96px;height:auto;margin-left:10px}
-.spines{display:flex;align-items:flex-end;gap:5px}
-.spine{appearance:none;cursor:pointer;flex:none;writing-mode:vertical-rl;transform-origin:bottom center;
+.spines{display:flex;align-items:flex-end;gap:5px;perspective:1100px}
+/* a book is a spine with a front cover hinged behind it, edge-on until the book is pulled out and turned.
+   --w is its thickness (from the page count), --h its height; the pose is three variables so states can layer. */
+.bk{flex:none;position:relative;width:var(--w);height:var(--h);transform-style:preserve-3d;transform-origin:left bottom;
+  --ty:0px;--rz:0deg;--ry:0deg;transform:translateY(var(--ty)) rotateZ(var(--rz)) rotateY(var(--ry));
+  transition:transform .55s cubic-bezier(.3,.9,.3,1),margin .55s cubic-bezier(.3,.9,.3,1)}
+.bk:has(+ .bk:hover){--rz:-1.5deg}
+.bk:hover + .bk{--rz:1.5deg}
+.bk.lean{--rz:-5deg;margin-left:calc(var(--h)*.09)}
+.bk:hover{--ty:-6px}
+.bk.out{--ty:-14px;--rz:-3deg}
+.bk.pulled{--ty:-10px;--rz:0deg;--ry:-62deg;margin-left:0;margin-right:calc(var(--h)*.65 - var(--w)*.5 + 8px)}
+.spine{appearance:none;cursor:pointer;flex:none;writing-mode:vertical-rl;width:100%;height:100%;
   background:color-mix(in srgb,var(--c) var(--wash),var(--ground));color:var(--ink);
   border:1px solid color-mix(in srgb,var(--c) 45%,transparent);border-bottom:0;border-radius:3px 2px 0 0;
   padding:12px 0;font:italic 400 .84rem/1 var(--serif);letter-spacing:.02em;display:flex;align-items:center;
-  transition:transform .35s ease}
-.spine:hover{transform:translateY(-6px)}
-.spine.out{transform:translateY(-18px) rotate(-4deg)}
+  transition:filter .55s ease}
+.bk.pulled .spine{filter:brightness(.93)}
+.bk.slim .spine{white-space:nowrap}
+.cover{position:absolute;left:100%;top:0;width:calc(var(--h)*.72);height:100%;transform-origin:left center;transform:rotateY(90deg);
+  display:flex;flex-direction:column;gap:6px;padding:14px 10px 10px 12px;text-decoration:none;color:var(--ink);overflow:hidden;
+  background:color-mix(in srgb,var(--c) 26%,var(--leaf));border:1px solid color-mix(in srgb,var(--c) 45%,transparent);border-left:0;border-bottom:0;
+  border-radius:0 3px 0 0;box-shadow:inset 7px 0 8px -7px color-mix(in srgb,var(--ink) 35%,transparent)}
+/* shelved, the cover is put away entirely (perspective would otherwise show a sliver of it on books left of centre) */
+.bk:not(.pulled) .cover{pointer-events:none;visibility:hidden;transition:visibility 0s .55s}
+.cover b{font:italic 400 .92rem/1.14 var(--serif);overflow-wrap:break-word}
+.cover b::after{content:"";display:block;width:22px;border-top:1px solid color-mix(in srgb,var(--c) 70%,transparent);margin-top:8px}
+.cover span{font-size:.68rem;line-height:1.25;color:var(--ink2);margin-top:auto}
+.cover small{font:400 8.5px/1 var(--mono);letter-spacing:.08em;color:var(--ink3)}
+/* the books arrive one by one the first time the shelf comes into view */
+.spines.wait .bk{opacity:0}
+.spines.in .bk{animation:shelve .6s cubic-bezier(.3,1.25,.5,1) backwards;animation-delay:calc(var(--i)*90ms)}
+@keyframes shelve{from{opacity:0;transform:translateY(-46px) rotateZ(calc(var(--rz) + 5deg))}}
 .plank{height:10px;margin-top:-3px}
 /* books: a plain list, like the papers */
 .books{list-style:none;margin:6px 0 0;padding:0;display:grid;max-width:820px}
@@ -202,7 +227,6 @@ section{margin-top:clamp(64px,10vw,116px);display:grid;gap:22px}
 @media(max-width:640px){.book{grid-template-columns:2.4rem minmax(0,1fr);gap:10px}}
 .book h3 small{display:block;font-size:.95rem;font-style:italic;color:var(--ink2);margin-top:4px;letter-spacing:0}
 .spine.next{cursor:default;height:118px;width:34px;background:transparent;border:1px dashed var(--rule);color:var(--pencil);font-family:var(--hand);font-size:1rem}
-.spine.next:hover{transform:none}
 
 /* ---------- sticky, footer ---------- */
 .sticky{justify-self:end;width:min(250px,100%);padding:12px 14px 16px;background:var(--sticky);color:var(--sticky-ink);
@@ -217,7 +241,7 @@ footer .sleep{width:150px;height:auto}
   justify-self:auto;transform:rotate(-2deg)}
 .nudge button{all:unset;cursor:pointer;display:block;margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--sticky-tag)}
 .nudge button:focus-visible{outline:2px solid var(--sticky-ink);outline-offset:2px}
-@media (prefers-reduced-motion: reduce){.pool,.spine,.bulb .glass,.bulb .rays,.entry .mark::after,#her-head{transition:none}.tw,.steam{animation:none}}
+@media (prefers-reduced-motion: reduce){.pool,.spine,.bk,.bulb .glass,.bulb .rays,.entry .mark::after,#her-head{transition:none}.tw,.steam{animation:none}}
 </style>
 </head>
 <body>
@@ -431,15 +455,16 @@ const PAPER_META = {
   'https://arxiv.org/abs/2604.20467': { title: 'Mechanistic Interpretability Tool for AI Weather Models', authors: 'Tempest et al.', venue: 'arXiv', year: 2026 },
   'https://arxiv.org/abs/2605.23778': { title: 'The physics of AI weather models', authors: 'Craig et al.', venue: 'arXiv', year: 2026 }
 };
-/* books: in the order they were recommended. year is optional. NEXT is the spine-shaped gap for whatever is coming. */
+/* books: in the order they were recommended. year is optional. pages sets how thick the spine is (and shows on the
+   cover); without it the book gets a middling thickness. NEXT is the spine-shaped gap for whatever is coming. */
 const BOOKS = [
-  { title: "The Rise and Fall of the Artificial State", author: "Jill Lepore", year: 2026, url: "https://wwnorton.com/books/9781324098423" },
-  { title: "Klara and the Sun", author: "Kazuo Ishiguro", year: 2021, url: "https://en.wikipedia.org/wiki/Klara_and_the_Sun" },
-  { title: "The Revolt Against Humanity: Imagining a Future Without Us", author: "Adam Kirsch", year: 2023, url: "https://globalreports.columbia.edu/books/the-revolt-against-humanity" },
-  { title: "We Want to Believe: How Aliens Went Mainstream and Why It Matters", author: "Adam Kirsch", year: 2026, url: "https://globalreports.columbia.edu/books/we-want-to-believe" },
+  { title: "The Rise and Fall of the Artificial State", author: "Jill Lepore", year: 2026, pages: 336, url: "https://wwnorton.com/books/9781324098423" },
+  { title: "Klara and the Sun", author: "Kazuo Ishiguro", year: 2021, pages: 307, url: "https://en.wikipedia.org/wiki/Klara_and_the_Sun" },
+  { title: "The Revolt Against Humanity: Imagining a Future Without Us", author: "Adam Kirsch", year: 2023, pages: 104, url: "https://globalreports.columbia.edu/books/the-revolt-against-humanity" },
+  { title: "We Want to Believe: How Aliens Went Mainstream and Why It Matters", author: "Adam Kirsch", year: 2026, pages: 128, url: "https://globalreports.columbia.edu/books/we-want-to-believe" },
   { title: "Agency: The Psychological History of Human Progress", author: "Martin Seligman", year: 2026, url: "https://www.simonandschuster.com/books/Agency/Martin-E-P-Seligman/9781982190644" },
-  { title: "Fake Work: How I Began to Suspect Capitalism Is a Joke", author: "Leigh Claire La Berge", year: 2025, url: "https://www.haymarketbooks.org/books/2534-fake-work" },
-  { title: "Language Machines: Cultural AI and the End of Remainder Humanism", author: "Leif Weatherby", year: 2025, url: "https://www.upress.umn.edu/9781517919320/language-machines/" }
+  { title: "Fake Work: How I Began to Suspect Capitalism Is a Joke", author: "Leigh Claire La Berge", year: 2025, pages: 232, url: "https://www.haymarketbooks.org/books/2534-fake-work" },
+  { title: "Language Machines: Cultural AI and the End of Remainder Humanism", author: "Leif Weatherby", year: 2025, pages: 264, url: "https://www.upress.umn.edu/9781517919320/language-machines/" }
 ];
 const NEXT = "";
 
@@ -455,10 +480,16 @@ const DESKLAMP = '<svg class="bulb desklamp" viewBox="-4 2 26 28" aria-hidden="t
 const SEP = '<li aria-hidden="true" class="sep"><i class="pl"></i></li>';
 
 /* ---------- the shelf ---------- */
-const books = BOOKS.map((b, i) => ({ ...b, id: 'book-' + (i + 1), c: SPINE_COLORS[hash(b.title) % SPINE_COLORS.length], h: 124 + hash(b.author) % 52 }));
-$('spines').innerHTML = books.map(b => `
-  <button class="spine" type="button" data-for="${b.id}" style="--c:var(${b.c});height:${b.h}px;width:${32 + b.title.length % 3 * 5}px"
-    aria-label="Pull out ${esc(b.title)}">${esc(b.title.split(':')[0])}</button>`).join('')
+/* a thin spine only has room for one line, so a slim book stands at least as tall as its title is long */
+const books = BOOKS.map((b, i) => {
+  const w = Math.max(22, Math.min(64, Math.round(14 + (b.pages || 280) * .095))), slim = w < 34;
+  return { ...b, id: 'book-' + (i + 1), c: SPINE_COLORS[hash(b.title) % SPINE_COLORS.length], w, slim,
+    h: Math.max(124 + hash(b.author) % 52, slim ? Math.round(b.title.split(':')[0].length * 6.5 + 30) : 0) }; });
+$('spines').innerHTML = books.map((b, i) => `
+  <div class="bk${b.slim ? ' slim' : ''}${i === books.length - 1 ? ' lean' : ''}" data-for="${b.id}" style="--c:var(${b.c});--h:${b.h}px;--w:${b.w}px;--i:${i}">
+    <button class="spine" type="button" aria-pressed="false" aria-label="Pull out ${esc(b.title)}">${esc(b.title.split(':')[0])}</button>
+    <a class="cover" href="${esc(b.url)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><b>${esc(b.title.split(':')[0])}</b><span>${esc(b.author)}</span><small>${[b.year, b.pages && b.pages + ' pp'].filter(Boolean).join(' · ')}</small></a>
+  </div>`).join('')
   + (NEXT ? `<span class="spine next" title="next">next: ${esc(NEXT)}</span>` : '');
 $('books').innerHTML = books.map(b => { const [t, ...sub] = b.title.split(':'); return `
   <li class="book entry" id="${b.id}" data-find="${esc([b.title, b.author, b.year].join(' ').toLowerCase())}">
@@ -523,7 +554,7 @@ function light(el){
   entries.forEach(e => e.classList.toggle('lit', e === el));
   const i = entries.indexOf(el);
   if (artAwake) $('her-head').style.transform = i < 0 ? '' : `rotate(${Math.max(-8, Math.min(8, (i % 5) * 4 - 6))}deg)`;
-  document.querySelectorAll('.spine').forEach(s => s.classList.toggle('out', !!el && s.dataset.for === el.id));
+  document.querySelectorAll('.bk').forEach(b => b.classList.toggle('out', !!el && b.dataset.for === el.id));
 }
 /* on every scroll frame, the entry whose middle is nearest a line 40% down the screen gets the light.
    rows side by side (the book cards) break ties by which is nearer the middle of the page. */
@@ -610,12 +641,29 @@ loadPapers().then(p => { renderDesk(p); wireEntries(); })
   .catch(() => { $('desk-jam').hidden = false; });
 
 /* ---------- pull a book off the shelf ---------- */
+/* a click slides the book out and turns it to show its cover (which opens the book's page); the others close
+   up around it. one at a time: another click, another book, or Escape puts it back. */
+const putBack = () => document.querySelectorAll('.bk.pulled').forEach(b => {
+  b.classList.remove('pulled'); b.querySelector('.spine').setAttribute('aria-pressed', 'false'); });
 $('spines').addEventListener('click', ev => {
-  const s = ev.target.closest('.spine'); if (!s) return;
-  const card = $(s.dataset.for);
-  light(card);
-  card.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  const s = ev.target.closest('.bk .spine'); if (!s) return;
+  const bk = s.parentElement, was = bk.classList.contains('pulled');
+  putBack();
+  if (was) return;
+  bk.classList.add('pulled'); s.setAttribute('aria-pressed', 'true');
+  light($(bk.dataset.for));
 });
+addEventListener('keydown', ev => { if (ev.key === 'Escape') putBack(); });
+/* the books drop onto the shelf one by one the first time it scrolls into view */
+if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const sp = $('spines'); sp.classList.add('wait');
+  const io = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    io.disconnect(); sp.classList.replace('wait', 'in');
+    setTimeout(() => sp.classList.remove('in'), books.length * 90 + 700);
+  }, { threshold: .4 });
+  io.observe(sp);
+}
 
 /* ---------- look for ---------- */
 function filter(){
@@ -625,7 +673,7 @@ function filter(){
     const show = !q || e.dataset.find.includes(q);
     e.hidden = !show;
     if (show) e.classList.contains('paper') ? p++ : b++;
-    if (e.id) document.querySelector(`.spine[data-for="${e.id}"]`).hidden = !show;
+    if (e.id) document.querySelector(`.bk[data-for="${e.id}"]`).hidden = !show;
   });
   document.querySelectorAll('#papers > .sep, #papers > .empty-next, #books > .sep').forEach(r => r.hidden = !!q);
   $('papers-empty').hidden = p > 0 || !q;
