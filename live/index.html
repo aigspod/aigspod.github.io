@@ -261,7 +261,7 @@ dialog.brief[open]{animation:pop .38s cubic-bezier(.34,1.5,.64,1)}
 <header>
   <div class="eyebrow">00 / <b>the aigs pod</b> · on air</div>
   <h1>Something to <span class="hl">work to</span></h1>
-  <p class="lede">Three stations for the long middle of a hackathon: <b>Pittsburgh classical</b>, <b>lofi beats to study to</b>, and <b>quiet ambient</b> for when even beats feel like too many opinions. Turn the dial. The robot has headphones on and will not notice.</p>
+  <p class="lede">Five stations for the long middle of a hackathon: <b>Pittsburgh classical</b>, <b>Pittsburgh indie</b>, <b>Pittsburgh jazz</b>, <b>lofi beats to study to</b>, and <b>quiet ambient</b> for when even beats feel like too many opinions. Turn the dial. The robot has headphones on and will not notice.</p>
 </header>
 
 <section>
@@ -472,6 +472,16 @@ dialog.brief[open]{animation:pop .38s cubic-bezier(.34,1.5,.64,1)}
       <div class="links"><a href="https://www.wqed.org/listen-live-wqed-fm-89-3/" target="_blank" rel="noopener">listen at wqed.org</a><a href="https://ice-1.streamhoster.com/lv_wqed--893" target="_blank" rel="noopener">raw stream</a></div>
     </div>
     <div class="station">
+      <h3>WYEP 91.3</h3>
+      <p>Indie, roots and whatever the host fell for this week, live from Pittsburgh's South Side.</p>
+      <div class="links"><a href="https://www.wyep.org/" target="_blank" rel="noopener">wyep.org</a><a href="https://ais-sa3.cdnstream1.com/2557_128.mp3" target="_blank" rel="noopener">raw stream</a></div>
+    </div>
+    <div class="station">
+      <h3>JazzWorks</h3>
+      <p>Jazz at every hour, out of Pittsburgh. Good company for a long-running job.</p>
+      <div class="links"><a href="http://jazzworks.net/" target="_blank" rel="noopener">jazzworks.net</a><a href="https://ais-sa3.cdnstream1.com/2558_128.mp3" target="_blank" rel="noopener">raw stream</a></div>
+    </div>
+    <div class="station">
       <h3>I♥CHILLHOP</h3>
       <p>Chillhop and lofi beats from ilovemusic.de. The cat approves, as far as anyone can tell.</p>
       <div class="links"><a href="https://ilovemusic.de/" target="_blank" rel="noopener">ilovemusic.de</a><a href="https://streams.ilovemusic.de/iloveradio17.mp3" target="_blank" rel="noopener">raw stream</a></div>
@@ -552,7 +562,13 @@ const STATIONS=[
   {id:'wqed', f:89.3, name:'89.3 · wqed', sub:'classical, pittsburgh', kind:'stream',
    urls:['https://ice-1.streamhoster.com/lv_wqed--893'],
    idle:'live classical from pittsburgh. no track list, just trust.'},
-  {id:'lofi', f:97.9, name:'lofi', sub:'beats to study to', kind:'stream',
+  {id:'wyep', f:93.5, name:'wyep', sub:'indie, pittsburgh', kind:'stream',
+   urls:['https://ais-sa3.cdnstream1.com/2557_128.mp3'],
+   idle:'wyep, from the south side. new records and old favourites, picked by people.'},
+  {id:'jazz', f:97.7, name:'jazzworks', sub:'jazz, pittsburgh', kind:'stream',
+   urls:['https://ais-sa3.cdnstream1.com/2558_128.mp3'],
+   idle:'jazzworks, around the clock. brushes on a snare, somebody thinking out loud on a horn.'},
+  {id:'lofi', f:101.8, name:'lofi', sub:'beats to study to', kind:'stream',
    urls:['https://streams.ilovemusic.de/iloveradio17.mp3','https://live.hunter.fm/lofi_high'],
    idle:'chillhop, soft and slightly dusty. good for refactoring.'},
   {id:'quiet', f:105.9, name:'quiet', sub:'ambient, no drums', kind:'stream',
