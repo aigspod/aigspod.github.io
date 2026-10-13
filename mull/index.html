@@ -654,6 +654,8 @@ $('spines').addEventListener('click', ev => {
   light($(bk.dataset.for));
 });
 addEventListener('keydown', ev => { if (ev.key === 'Escape') putBack(); });
+/* so does a click anywhere else on the shelf: her, the cat, the bare plank */
+document.querySelector('.shelfwrap').addEventListener('click', ev => { if (!ev.target.closest('.bk')) putBack(); });
 /* the books drop onto the shelf one by one the first time it scrolls into view */
 if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const sp = $('spines'); sp.classList.add('wait');
