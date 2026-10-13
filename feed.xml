@@ -35,6 +35,23 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 23 -->
+    <item>
+      <title>How AI weather models reinvented physics</title>
+      <description>Could it be that AI weather models are solving physical equations, although they may not be the equations used by conventional NWP models? The authors compute correlations of forecast skill and Centered Kernel Alignment, providing evidence that different AI weather models represent the atmosphere in similar ways, despite differences in architecture and capacity. They argue that the architecture and training of the AI models constrains the form of the physical laws that they might simulate. In particular, they propose that the models implement a particle description of the atmosphere, where the latent variables at each mesh point correspond to the position of a particle in the high dimensional latent space. They hypothesize that the movement of the particles follows a gradient flow in the latent space towards a minimum of a learned free energy functional. Analysis of the GraphCast and Aurora models show that they make changes on large spatial scales in the early processor layers and move to smaller scale with increasing layer depth, consistent with the gradient flow hypothesis. Paper: https://arxiv.org/abs/2605.23778</description>
+      <enclosure url="https://archive.org/download/how-ai-weather-models-reinvented-physics/how-ai-weather-models-reinvented-physics.mp3"
+                 length="41301933"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep023-how-ai-weather-models-reinvented-physics</guid>
+      <pubDate>Tue, 13 Oct 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep023.png"/>
+      <itunes:duration>43:01</itunes:duration>
+      <itunes:summary>What if AI weather models are solving physical equations after all, just not the ones in conventional NWP? Different models turn out to represent the atmosphere in strikingly similar ways, and the authors propose why: each mesh point is a particle in latent space, sliding down a learned free energy landscape - with GraphCast and Aurora working from large scales to small as the layers deepen.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>23</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 22 -->
     <item>
       <title>How AI predicts weather without physics</title>
