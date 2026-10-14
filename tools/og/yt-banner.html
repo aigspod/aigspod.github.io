@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>youtube banner</title>
+<!-- 2560x1440 YouTube channel banner, set over the show's painting (images/cover-art.png).
+     YouTube shows all of it only on TVs; desktops show a 2560x423 strip through the middle, and phones
+     only the centre 1546x423, so the title and the robot, radio and sphere all sit inside that centre. -->
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;width:2560px;height:1440px;overflow:hidden;background:#0c0f19}
+/* a faint warmth around the painting, and a band of low mist along the grass line, so the dark isn't flat */
+.glow{position:absolute;left:1000px;top:200px;width:1400px;height:1000px;background:radial-gradient(closest-side,rgba(227,167,90,.10),transparent)}
+.mist{position:absolute;left:0;right:0;top:820px;height:260px;background:radial-gradient(50% 50% at 50% 50%,rgba(120,110,120,.10),transparent);filter:blur(10px)}
+.art{position:absolute;left:1360px;top:391px;width:620px;height:620px;background:url(../../images/cover-art.png) center/cover;
+  -webkit-mask:radial-gradient(closest-side,#000 52%,transparent 100%);mask:radial-gradient(closest-side,#000 52%,transparent 100%)}
+.w{position:absolute;left:600px;top:508px;height:423px;width:800px;display:flex;flex-direction:column;justify-content:center;gap:26px;color:#f3e9d8}
+h1{margin:0;font:300 76px/1 'Josefin Sans',sans-serif;letter-spacing:.28em;white-space:nowrap}
+p{margin:0;font:400 21px/1.7 'Space Mono',monospace;letter-spacing:.2em;color:#aaa0ad}
+/* guides, only with ?guides */
+.g{position:absolute;border:2px dashed;display:none}
+.guides .g{display:block}
+</style>
+</head>
+<body>
+<div class="glow"></div><div class="mist"></div>
+<div class="art"></div>
+<div class="w"><h1>THE AIGS POD</h1><p>ai · earth system science<br>one paper at a time, argued over</p></div>
+<div class="g" style="left:0;top:508px;width:2556px;height:423px;border-color:#6cf"></div>
+<div class="g" style="left:507px;top:508px;width:1546px;height:423px;border-color:#f6c"></div>
+<script>if (location.search.includes('guides')) document.body.classList.add('guides');</script>
+</body>
+</html>
