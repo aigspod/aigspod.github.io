@@ -7,586 +7,485 @@
   <meta name="description" content="The podcast at the intersection of artificial intelligence and Earth system science.">
   <meta property="og:title" content="The AIGS Pod">
   <meta property="og:description" content="The podcast at the intersection of artificial intelligence and Earth system science.">
-  <meta property="og:image" content="https://aigspod.github.io/images/cover.png">
+  <meta property="og:image" content="https://aigspod.github.io/images/home-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A small felt robot sits in tall grass at night beside an old radio, looking up at a glowing golden lattice sphere.">
   <meta property="og:url" content="https://aigspod.github.io">
   <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://aigspod.github.io/images/home-og.png">
+  <link rel="icon" href="images/thumbs/cover.jpg">
+  <link rel="apple-touch-icon" href="images/thumbs/cover.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&family=Space+Mono&family=Caveat:wght@500;600&display=swap">
+<style>
+/* the front door, in the house style (Lamplight & Linework, as in /mull/): pencil, lamplight, the robot and the cat */
+:root{
+  --ground:#f4ede2; --leaf:#fbf6ee; --ink:#302a39; --ink2:#6b6273; --ink3:#72687a;
+  --graphite:#5d6475; --graphite-op:.34; --rule:rgba(93,100,117,.28);
+  --glow:#f2c27d; --glow-op:.30; --amber:#c9812f; --amber-text:#94591a; --pencil:#5f6d86;
+  --shell:#e7dccd; --shell-op:.75; --storm:#5b6f8f; --sky:#dfe3ea;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Space Mono',ui-monospace,Menlo,monospace;
+  --hand:'Caveat','Bradley Hand','Segoe Print',cursive;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --ground:#161724; --leaf:#1e1f30; --ink:#efe5d6; --ink2:#aaa0ad; --ink3:#8d8597;
+    --graphite:#c9c2d6; --graphite-op:.26; --rule:rgba(201,194,214,.2);
+    --glow:#e3a75a; --glow-op:.18; --amber:#e3a75a; --amber-text:#e3a75a; --pencil:#b9c2d3;
+    --shell:#e7dccd; --shell-op:.12; --storm:#8fa3c4; --sky:#1b1d2e;
+  }
+}
+:root[data-theme="dark"]{color-scheme:dark;
+    --ground:#161724; --leaf:#1e1f30; --ink:#efe5d6; --ink2:#aaa0ad; --ink3:#8d8597;
+    --graphite:#c9c2d6; --graphite-op:.26; --rule:rgba(201,194,214,.2);
+    --glow:#e3a75a; --glow-op:.18; --amber:#e3a75a; --amber-text:#e3a75a; --pencil:#b9c2d3;
+    --shell:#e7dccd; --shell-op:.12; --storm:#8fa3c4; --sky:#1b1d2e;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{overflow-x:hidden}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.65;
+  margin:0;padding-inline:clamp(16px,5vw,56px);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.page{position:relative;max-width:1000px;margin:0 auto;padding-block:clamp(28px,5vw,60px) 140px}
+a{color:inherit;text-decoration-color:var(--amber);text-underline-offset:3px;text-decoration-thickness:1px}
+:focus-visible{outline:2px solid var(--amber-text);outline-offset:3px}
+p{margin:0}
+h1,h2,h3{font-family:var(--serif);font-weight:300;letter-spacing:-.018em;text-wrap:balance;margin:0}
+.label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:lowercase;color:var(--ink3)}
+.label b{font-weight:400;color:var(--ink2)}
+.note{font-family:var(--hand);font-size:1.35rem;line-height:1.15;color:var(--pencil)}
+.frame{position:fixed;inset:14px;border:1px solid var(--rule);pointer-events:none;z-index:40}
+@media(max-width:600px){.frame{display:none}}
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #060709;
-      color: #e0e0e0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+/* pencil */
+.gr{fill:none;stroke:var(--graphite);stroke-opacity:var(--graphite-op);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+.gr .dash{stroke-dasharray:1.5 6}
+.gr .warm{stroke:var(--amber);stroke-opacity:.75}
+.gr .shell{fill:var(--shell);fill-opacity:var(--shell-op)}
+.gr .her{stroke-opacity:calc(var(--graphite-op) * 2)}
+.gr .firm{stroke-opacity:calc(var(--graphite-op) * 1.8)}
+.glowstop{stop-color:var(--glow)}
+.cap{font-family:var(--hand);font-size:17px;fill:var(--pencil);fill-opacity:.9}
+.sketch{filter:url(#pencil-a)}
+.ghost{filter:url(#pencil-b);opacity:.55}
+svg.drawing{display:block;overflow:visible;width:100%;height:auto}
+.pl{display:block;height:6px;background:var(--rule);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 6' preserveAspectRatio='none'%3E%3Cpath d='M2 3.4 C 120 2.2, 260 4.4, 400 3 S 640 2, 780 3.6 S 930 2.6, 998 3.2' fill='none' stroke='black' stroke-width='1.2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 6' preserveAspectRatio='none'%3E%3Cpath d='M2 3.4 C 120 2.2, 260 4.4, 400 3 S 640 2, 780 3.6 S 930 2.6, 998 3.2' fill='none' stroke='black' stroke-width='1.2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center/100% 100% no-repeat}
 
-    main {
-      max-width: 420px;
-      width: 100%;
-      padding: 4.5rem 1.5rem 2.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
+/* the emergency broadcast stays, quieter: a strip of tape across the top */
+.eas{display:flex;justify-content:center;gap:.6rem;align-items:center;margin:0 auto;max-width:1000px;padding:.35rem .8rem;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber-text);text-decoration:none;
+  border:1px dashed color-mix(in srgb,var(--amber) 55%,transparent);border-radius:2px;transform:rotate(-.4deg)}
+.eas:hover{background:color-mix(in srgb,var(--amber) 10%,transparent)}
 
-    .cover-wrap {
-      width: 100%;
-      max-width: 260px;
-      margin-bottom: 1.75rem;
-    }
+/* buttons */
+.btn{appearance:none;display:inline-flex;align-items:center;gap:.55rem;border:1px solid var(--rule);background:var(--leaf);color:var(--ink);
+  border-radius:999px;padding:.5rem 1.05rem;font:400 .92rem/1 var(--sans);cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--ink3)}
+.btn svg{width:16px;height:16px;flex:none}
+.play{appearance:none;flex:none;width:44px;height:44px;border-radius:50%;border:1px solid color-mix(in srgb,var(--amber) 60%,transparent);
+  background:color-mix(in srgb,var(--glow) 22%,var(--leaf));color:var(--amber-text);cursor:pointer;display:grid;place-items:center}
+.play svg{width:16px;height:16px}
+.play.small{width:32px;height:32px}.play.small svg{width:12px;height:12px}
+.play:hover{background:color-mix(in srgb,var(--glow) 40%,var(--leaf))}
+.play .i-pause{display:none}.play.on .i-play{display:none}.play.on .i-pause{display:block}
 
-    .cover {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 18px;
-      box-shadow:
-        0 8px 40px rgba(0, 160, 255, 0.2),
-        0 2px 12px rgba(0, 0, 0, 0.6);
-      display: block;
-      object-fit: cover;
-    }
+/* the episode list, shared shape */
+.eps{list-style:none;margin:0;padding:0;display:grid}
+.ep{display:grid;grid-template-columns:3rem 52px minmax(0,1fr) auto;gap:14px;align-items:center;padding-block:12px}
+.ep .n{font-family:var(--mono);font-size:12px;color:var(--ink3);letter-spacing:.06em}
+.ep img{width:52px;height:52px;border-radius:3px;object-fit:cover;display:block;filter:saturate(.85)}
+.ep h3{font-size:1.12rem;line-height:1.25}
+.ep .meta{font-size:.82rem;color:var(--ink2)}
+.ep.on h3{color:var(--amber-text)}
+@media(max-width:560px){.ep{grid-template-columns:44px minmax(0,1fr) auto}.ep .n{display:none}.ep img{width:44px;height:44px}}
+.more{appearance:none;border:0;background:none;color:var(--ink2);font:400 1.25rem/1 var(--hand);cursor:pointer;padding:12px 0;justify-self:start}
+.more:hover{color:var(--amber-text)}
 
-    h1 {
-      font-size: 1.9rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
-    }
+/* listen */
+.listen{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.listen details{flex-basis:100%}
+.listen summary{cursor:pointer;font-family:var(--hand);font-size:1.2rem;color:var(--ink2);list-style:none;width:max-content}
+.listen summary::-webkit-details-marker{display:none}
+.listen .others{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:8px;font-size:.92rem}
 
-    .tagline {
-      font-size: 1rem;
-      color: #8aabb8;
-      margin-bottom: 0.75rem;
-      line-height: 1.55;
-      max-width: 340px;
-    }
+/* the now-playing strip */
+.np{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translate(-50%,140%);z-index:45;width:min(640px,calc(100% - 28px));
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 14px;border-radius:12px;
+  background:var(--leaf);border:1px solid var(--rule);box-shadow:0 10px 30px rgba(20,18,30,.18);transition:transform .45s cubic-bezier(.3,.9,.3,1)}
+.np.show{transform:translate(-50%,0)}
+.np .t{font-family:var(--serif);font-size:.98rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.np .bar{height:3px;background:var(--rule);border-radius:2px;margin-top:6px;cursor:pointer;position:relative}
+.np .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--amber);border-radius:2px;width:0}
+.np .time{font-family:var(--mono);font-size:11px;color:var(--ink3);font-variant-numeric:tabular-nums}
 
-    /* The methodology is, of course, a hand-cranked mill */
-    .methods {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 1.6rem;
-      padding: 0.6rem 1.15rem;
-      border: 1px solid rgba(255, 255, 255, 0.11);
-      border-radius: 24px;
-      font-size: 0.95rem;
-      color: #8aabb8;
-      text-decoration: none;
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
-    }
-    .methods .clown {
-      width: 21px;
-      height: 21px;
-      flex-shrink: 0;
-      transition: transform 0.25s cubic-bezier(0.34, 1.6, 0.64, 1);
-    }
-    .methods:hover .clown { transform: rotate(-12deg) scale(1.12); }
-    .methods .arr { transition: transform 0.2s; }
-    .methods:hover, .methods:focus-visible {
-      color: #cfe2ea;
-      border-color: rgba(217, 154, 31, 0.45);
-      background: rgba(217, 154, 31, 0.06);
-      outline: none;
-    }
-    .methods:hover .arr { transform: translateX(3px); }
+/* code & data availability, as before */
+.cds{max-width:62ch}
+.cds summary{cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:lowercase;color:var(--ink3);list-style:none}
+.cds summary::-webkit-details-marker{display:none}
+.cds .body{display:grid;gap:12px;margin-top:14px;font-size:.92rem;color:var(--ink2)}
+.cds b{color:var(--ink);font-weight:500}
 
-    .meta {
-      font-size: 0.8rem;
-      color: #4a6070;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-weight: 500;
-      margin-bottom: 2rem;
-    }
+/* typing "storm" pulls the whole page into the weather; "warm" brings the light up until it is all there is */
+@keyframes storm-out{0%{filter:none;transform:none;opacity:1}35%{filter:invert(1) hue-rotate(90deg)}45%{filter:none}60%{filter:invert(1) hue-rotate(200deg)}70%{filter:none}100%{filter:brightness(3);transform:scale(1.35) rotate(-4deg);opacity:0}}
+body.storming{animation:storm-out 1.1s ease-in forwards}
+@keyframes warm-out{0%{filter:none;opacity:1}100%{filter:sepia(.5) brightness(2.4);opacity:0}}
+body.warming{animation:warm-out 1.4s ease-in-out forwards}
+@media (prefers-reduced-motion: reduce){.np{transition:none}body.storming,body.warming{animation:none}}
 
-    .links {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-      margin-bottom: 2rem;
-    }
+/* the front door opens onto a hallway: every room of the house is a door along it, and the latest episode is on in the hall */
+.open{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 40px;align-items:end;padding-top:clamp(36px,6vw,64px)}
+.open .words{display:grid;gap:16px}
+.open h1{font-size:clamp(3.2rem,9vw,6rem);line-height:.95}
+.open h1 em{color:var(--amber);font-style:italic}
+.thesis{font-family:var(--serif);font-size:clamp(1.1rem,2.2vw,1.4rem);line-height:1.4;max-width:34ch;color:var(--ink2)}
+.methods{font-family:var(--hand);font-size:1.3rem;color:var(--pencil);text-decoration:none;transform:rotate(-3deg);display:inline-block;margin-bottom:10px}
+.methods:hover{color:var(--amber-text)}
+@media(max-width:700px){.open{grid-template-columns:1fr}.methods{justify-self:start}}
 
-    /* Base button style */
-    .links a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.55rem;
-      padding: 0.9rem 1.2rem;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #e8e8e8;
-      text-decoration: none;
-      font-size: 0.975rem;
-      font-weight: 500;
-      transition: background 0.2s ease, border-color 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease;
-    }
+.hall{margin-top:clamp(30px,5vw,50px);overflow-x:auto;overflow-y:visible;padding-bottom:6px;margin-inline:-8px}
+.hall svg{min-width:760px;padding-inline:8px}
+.hall-hint{display:none;margin-top:4px;font-size:1.15rem}
+@media(max-width:780px){.hall-hint{display:block}}
+.door .leaf{transform-box:fill-box;transform-origin:0 50%;transition:transform .6s cubic-bezier(.3,.9,.3,1)}
+.door .inside{opacity:0;transition:opacity .5s ease}
+.door .spill{opacity:.55;transition:opacity .5s ease}
+.door:hover .leaf,.door:focus-visible .leaf{transform:scaleX(.68)}
+.door:hover .inside,.door:focus-visible .inside{opacity:1}
+.door:hover .spill,.door:focus-visible .spill{opacity:1}
+.door:focus-visible{outline:none}
+.door:focus-visible .cap{text-decoration:underline}
+.door .cap{font-size:19px;fill:var(--ink2)}
+.door:hover .cap{fill:var(--amber-text)}
+.door.storm:hover .rattle{animation:rattle .09s linear infinite}
+@keyframes rattle{0%,100%{transform:translate(0,0)}50%{transform:translate(1.2px,-.6px)}}
+.onair{font:700 10px/1 var(--mono);letter-spacing:.2em;fill:var(--ink3);transition:fill .3s}
+.door:hover .onair{fill:var(--amber-text)}
+.onairbox{fill:transparent;transition:fill .3s}
+.door:hover .onairbox{fill:color-mix(in srgb,var(--glow) 35%,transparent)}
+.bulbglow{opacity:.75}
+@keyframes sway{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.2deg)}}
+.lamp-sway{transform-box:view-box;animation:sway 7s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.door .leaf,.door .inside,.door .spill{transition:none}.lamp-sway{animation:none}}
 
-    .links a:hover {
-      background: rgba(0, 160, 255, 0.1);
-      border-color: rgba(0, 160, 255, 0.4);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(0, 160, 255, 0.15);
-    }
+section{margin-top:clamp(56px,9vw,100px);display:grid;gap:20px}
+.sechead{display:grid;gap:8px}
+.sechead h2{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.05}
 
-    /* Primary CTAs — Apple & Spotify */
-    .links a.primary {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      font-weight: 600;
-    }
-
-    .links a.primary:hover {
-      background: rgba(0, 160, 255, 0.14);
-      border-color: rgba(0, 160, 255, 0.55);
-      box-shadow: 0 8px 28px rgba(0, 160, 255, 0.2);
-    }
-
-    .links a svg {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
-
-    /* Separator between primary and secondary links */
-    .links .divider {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      color: #2e3d4a;
-      font-size: 0.72rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .links .divider::before,
-    .links .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    /* RSS link */
-    .rss {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      color: #5a9e6f;
-      font-size: 0.875rem;
-      font-weight: 500;
-      text-decoration: none;
-      padding: 0.3rem 0.75rem;
-      border-radius: 20px;
-      border: 1px solid rgba(90, 158, 111, 0.25);
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
-    }
-
-    .rss:hover {
-      color: #7ac78f;
-      border-color: rgba(90, 158, 111, 0.5);
-      background: rgba(90, 158, 111, 0.08);
-    }
-
-    /* Code & data availability — a journal statement, on a podcast website */
-    .cds {
-      width: 100%;
-      margin-top: 1.6rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.07);
-      padding-top: 1.1rem;
-      text-align: left;
-    }
-    .cds > summary {
-      list-style: none;
-      cursor: pointer;
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #3f5666;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.45rem;
-      transition: color 0.2s;
-    }
-    .cds > summary::-webkit-details-marker { display: none; }
-    .cds > summary::before {
-      content: '+';
-      font-size: 0.85rem;
-      line-height: 1;
-      color: #2e3d4a;
-      transition: transform 0.2s, color 0.2s;
-    }
-    .cds[open] > summary::before { transform: rotate(45deg); }
-    .cds > summary:hover, .cds > summary:focus-visible {
-      color: #8aabb8;
-      outline: none;
-    }
-    .cds > summary:hover::before { color: #5a9e6f; }
-    .cds .body {
-      font-size: 0.78rem;
-      line-height: 1.75;
-      color: #6b8592;
-      padding: 0.9rem 0 0.2rem;
-      display: grid;
-      gap: 0.75rem;
-    }
-    .cds .body a { color: #5a9e6f; }
-    .cds .body a:hover { color: #7ac78f; }
-    .cds .apparatus-row { text-align: center; }
-    .cds .apparatus {
-      display: inline-block;
-      border: 1px solid rgba(217, 154, 31, 0.3);
-      border-radius: 4px;
-      padding: 0.4rem 0.8rem;
-      color: #d99a1f;
-      font-size: 0.75rem;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
-    }
-    .cds .apparatus:hover {
-      background: rgba(217, 154, 31, 0.1);
-      border-color: rgba(217, 154, 31, 0.6);
-      color: #f0bd4e;
-    }
-    .cds .sig {
-      font-size: 0.68rem;
-      color: #3f5666;
-      border-left: 2px solid rgba(90, 158, 111, 0.3);
-      padding-left: 0.75rem;
-    }
-
-    /* Quiet second doorway to /fun — findable if you look, invisible if you don't */
-    .storm-door {
-      margin-top: 1.25rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #2e3d4a;
-      text-decoration: none;
-      transition: color 0.25s, text-shadow 0.25s;
-    }
-    .storm-door:hover, .storm-door:focus-visible {
-      color: #c6ff2e;
-      text-shadow: 0 0 14px rgba(198, 255, 46, 0.6);
-      outline: none;
-    }
-    .storm-door span { font-size: 0.95rem; }
-
-    /* Third doorway, to /morn/. Same shape as the storm door, opposite temperament. */
-    .quiet-door {
-      margin-top: 0.55rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #2e3d4a;
-      text-decoration: none;
-      transition: color 0.5s, text-shadow 0.5s;
-    }
-    .quiet-door:hover, .quiet-door:focus-visible {
-      color: #e2a35c;
-      text-shadow: 0 0 18px rgba(226, 163, 92, 0.45);
-      outline: none;
-    }
-    .quiet-door span { font-size: 0.95rem; }
-
-    /* Fourth doorway, to /live/: the radio for working. */
-    .air-door {
-      margin-top: 0.55rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #2e3d4a;
-      text-decoration: none;
-      transition: color 0.4s, text-shadow 0.4s;
-    }
-    .air-door:hover, .air-door:focus-visible {
-      color: #e07a68;
-      text-shadow: 0 0 14px rgba(224, 122, 104, 0.45);
-      outline: none;
-    }
-    .air-door span { font-size: 0.95rem; }
-
-    /* Fifth doorway, to /mull/: the study, where the lamp is left on. */
-    .study-door {
-      margin-top: 0.55rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #2e3d4a;
-      text-decoration: none;
-      transition: color 0.5s, text-shadow 0.5s;
-    }
-    .study-door:hover, .study-door:focus-visible {
-      color: #f2c27d;
-      text-shadow: 0 0 18px rgba(242, 194, 125, 0.5);
-      outline: none;
-    }
-    .study-door span { font-size: 0.95rem; }
-
-    /* Emergency broadcast bar — the loud doorway to /fun.
-       Restrained until you touch it, then it goes full alert. */
-    .eas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 20;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 0.35rem 0.6rem;
-      padding: 0.6rem 1rem;
-      background: #140d02;
-      border-bottom: 1px solid rgba(255, 179, 0, 0.35);
-      box-shadow: 0 1px 0 rgba(255, 179, 0, 0.12), 0 8px 30px rgba(0, 0, 0, 0.6);
-      color: #ffb300;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      text-decoration: none;
-      overflow: hidden;
-      transition: background 0.22s, color 0.22s, border-color 0.22s;
-    }
-    .eas::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(100deg, transparent 35%, rgba(255, 179, 0, 0.16) 50%, transparent 65%);
-      transform: translateX(-100%);
-      animation: eas-sweep 5.5s ease-in-out infinite;
-    }
-    @keyframes eas-sweep { 0%, 55% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
-    /* Drawn rather than emoji, so they take the amber type colour
-       and flip to dark along with the text on hover. */
-    .eas .emo {
-      width: 15px;
-      height: 15px;
-      flex: 0 0 auto;
-      color: inherit;
-      animation: eas-blink 0.85s steps(2) infinite;
-    }
-    @keyframes eas-blink { 50% { opacity: 0.12; } }
-
-    .eas:hover, .eas:focus-visible {
-      background: #ffb300;
-      color: #140d02;
-      border-color: #ffb300;
-      outline: none;
-    }
-    @media (max-width: 620px) {
-      .eas { font-size: 0.58rem; letter-spacing: 0.09em; gap: 0.4rem; padding: 0.5rem 0.6rem; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .eas::before, .eas .emo { animation: none; opacity: 1; }
-    }
-
-    /* Typing "storm" pulls the whole page into the weather */
-    @keyframes storm-out {
-      0%   { filter: none; transform: none; opacity: 1; }
-      35%  { filter: invert(1) hue-rotate(90deg); }
-      45%  { filter: none; }
-      60%  { filter: invert(1) hue-rotate(200deg); }
-      70%  { filter: none; }
-      100% { filter: brightness(3); transform: scale(1.35) rotate(-4deg); opacity: 0; }
-    }
-    body.storming { animation: storm-out 1.1s ease-in forwards; }
-    @media (prefers-reduced-motion: reduce) { body.storming { animation: none; } }
-
-    /* Typing "warm" does the opposite: the light just comes up until it is all there is */
-    @keyframes warm-out {
-      0%   { filter: none; opacity: 1; }
-      100% { filter: sepia(0.5) brightness(2.4); opacity: 0; }
-    }
-    body.warming { animation: warm-out 1.4s ease-in-out forwards; }
-    @media (prefers-reduced-motion: reduce) { body.warming { animation: none; } }
-
-    /* Mobile adjustments */
-    @media (max-width: 480px) {
-      main {
-        padding: 4rem 1.25rem 2rem;
-      }
-
-      .cover-wrap {
-        max-width: 200px;
-      }
-
-      h1 {
-        font-size: 1.6rem;
-      }
-    }
-  </style>
+.latest{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,4vw,44px);align-items:center}
+.latest .cover{position:relative}
+.latest .cover img{width:100%;display:block;border-radius:3px;box-shadow:0 18px 40px rgba(20,18,30,.25)}
+.latest .cover::after{content:"";position:absolute;inset:-30px;z-index:-1;border-radius:50%;background:radial-gradient(closest-side,var(--glow),transparent);opacity:calc(var(--glow-op)*1.6)}
+.latest .body{display:grid;gap:12px}
+.latest h3{font-size:clamp(1.6rem,3.6vw,2.3rem);line-height:1.1}
+.latest .sum{font-family:var(--serif);font-size:1.08rem;line-height:1.5;color:var(--ink2);max-width:56ch}
+.latest .row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:6px}
+.latest .row .play{width:54px;height:54px}.latest .row .play svg{width:20px;height:20px}
+.latest .row a{font-size:.92rem}
+.latest .note{transform:rotate(-2deg)}
+@media(max-width:680px){.latest{grid-template-columns:1fr}.latest .cover{max-width:260px}}
+footer{margin-top:90px;display:grid;gap:16px;color:var(--ink3);font-size:.85rem}
+</style>
 </head>
 <body>
-  <a href="mood/" class="eas" title="You probably shouldn't.">
-    <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M3.5 10v4a1 1 0 0 0 1 1H7l7 4V5L7 9H4.5a1 1 0 0 0-1 1Z"/>
-      <path d="M17.6 9.4a4 4 0 0 1 0 5.2"/>
-    </svg>
-    <span>AIGS Emergency Broadcast</span>
-    <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-         stroke-linejoin="round" aria-hidden="true">
-      <path d="M12 3 2.5 20h19L12 3Z"/>
-      <path d="M12 9.5v4" stroke-linecap="round"/>
-      <circle cx="12" cy="16.6" r="1.15" fill="currentColor" stroke="none"/>
-    </svg>
-    <span>The Climate Crisis</span>
-    <svg class="emo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M6.5 17a5.5 5.5 0 0 1 11 0Z" fill="currentColor"/>
-      <path d="M3.5 20h17"/>
-      <path d="M12 2.5v2.2M4.6 5.6l1.6 1.6M19.4 5.6l-1.6 1.6"/>
-    </svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="pencil-a" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="4" result="g"/>
+    <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.5 1.35" result="gm"/>
+    <feComposite in="d" in2="gm" operator="in"/></filter>
+  <filter id="pencil-b" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="21" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="3.4" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="12" result="g"/>
+    <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.8 1.3" result="gm"/>
+    <feComposite in="d" in2="gm" operator="in"/></filter></svg>
+<div class="frame" aria-hidden="true"></div>
+<div class="page">
+
+<a class="eas" href="mood/">⚠ aigs emergency broadcast · the climate crisis · ⚠</a>
+
+<header class="open">
+  <div class="words">
+    <p class="label">the aigs pod · <b>a podcast, and a house</b></p>
+    <h1>The AIGS <em>Pod</em></h1>
+    <p class="thesis">The podcast at the intersection of artificial intelligence and Earth system science. One paper at a time, argued over.</p>
+  </div>
+  <a class="methods" href="mill/">to reproduce, see methods →</a>
+</header>
+
+<div class="hall" role="navigation" aria-label="Rooms of the house">
+<svg class="drawing" viewBox="0 0 1000 340">
+  <defs><radialGradient id="pool"><stop offset="0" class="glowstop" stop-opacity=".7"/><stop offset="1" class="glowstop" stop-opacity="0"/></radialGradient>
+    <radialGradient id="cold"><stop offset="0" stop-color="var(--storm)" stop-opacity=".55"/><stop offset="1" stop-color="var(--storm)" stop-opacity="0"/></radialGradient></defs>
+  <!-- ceiling, skirting, floor -->
+  <g class="gr sketch" id="hall-art">
+    <path d="M10 22 C 300 20, 700 24, 990 21" class="dash"/>
+    <path d="M10 300 C 300 299, 700 301.5, 990 300"/>
+    <path d="M10 290 H52 M156 290 H242 M346 290 H432 M536 290 H622 M726 290 H812 M916 290 H990" class="dash"/>
+    <path d="M30 318 C 300 316, 700 319, 970 317" class="dash"/>
+    <!-- a picture on the wall, slightly crooked: the first cover, in pencil -->
+    <g transform="rotate(-3 470 70)"><rect x="452" y="50" width="38" height="38"/><circle cx="471" cy="69" r="11"/><path d="M462 66 q9 -6 18 2"/></g>
+  </g>
+  <use href="#hall-art" class="ghost" transform="translate(.8 .6)"/>
+
+  <!-- pendant lamps between the doors -->
+  <g class="lamp-sway" style="transform-origin:199px 22px">
+    <ellipse cx="199" cy="66" rx="40" ry="26" fill="url(#pool)" class="bulbglow"/>
+    <g class="gr sketch"><path d="M199 22 V52 M187 62 L199 52 L211 62 Z"/></g>
+  </g>
+  <g class="lamp-sway" style="transform-origin:769px 22px;animation-delay:-3s">
+    <ellipse cx="769" cy="66" rx="40" ry="26" fill="url(#pool)" class="bulbglow"/>
+    <g class="gr sketch"><path d="M769 22 V52 M757 62 L769 52 L781 62 Z"/></g>
+  </g>
+
+  <!-- 1. the study -->
+  <a class="door" href="mull/" aria-label="The study: books and papers">
+    <rect class="inside" x="60" y="110" width="96" height="190" fill="var(--glow)" fill-opacity=".55"/>
+    <ellipse class="spill" cx="108" cy="303" rx="70" ry="6" fill="url(#pool)"/>
+    <g class="gr sketch">
+      <path d="M54 300 V104 H162 V300"/>
+      <g class="leaf"><rect x="60" y="110" width="96" height="190" fill="var(--ground)"/><rect x="72" y="124" width="72" height="70"/><rect x="72" y="206" width="72" height="80"/><circle cx="144" cy="210" r="3"/>
+        <!-- a little shelf of spines on the top panel -->
+        <path d="M84 190 V158 h6 V190 M92 190 V152 h7 V190 M101 190 V162 h5 V190 M108 190 L116 160 L121 162 L113 191" class="firm"/></g>
+      <!-- a sconce -->
+      <path d="M170 140 h8 M178 132 v16 M178 132 l10 -8 h8 l-4 12 z" class="warm"/>
+    </g>
+    <text class="cap" x="108" y="334" text-anchor="middle">the study</text>
   </a>
 
-  <main>
-    <div class="cover-wrap">
-      <img src="images/cover.png" alt="The AIGS Pod cover art" class="cover">
-    </div>
+  <!-- 2. on air -->
+  <a class="door" href="live/" aria-label="On air: a radio to work to">
+    <rect class="inside" x="250" y="110" width="96" height="190" fill="var(--glow)" fill-opacity=".45"/>
+    <ellipse class="spill" cx="298" cy="303" rx="70" ry="6" fill="url(#pool)"/>
+    <rect class="onairbox" x="258" y="74" width="80" height="22" rx="4"/>
+    <text class="onair" x="298" y="89" text-anchor="middle">ON AIR</text>
+    <g class="gr sketch">
+      <rect x="258" y="74" width="80" height="22" rx="4" class="firm"/><path d="M280 74 l-8 -10 M316 74 l8 -10" class="dash"/>
+      <path d="M244 300 V104 H352 V300"/>
+      <g class="leaf"><rect x="250" y="110" width="96" height="190" fill="var(--ground)"/><rect x="262" y="124" width="72" height="70"/><rect x="262" y="206" width="72" height="80"/><circle cx="334" cy="210" r="3"/>
+        <!-- headphones hung on the door -->
+        <path d="M282 178 q16 -36 32 0" class="firm"/><rect x="278" y="174" width="8" height="14" rx="3"/><rect x="310" y="174" width="8" height="14" rx="3"/></g>
+    </g>
+    <text class="cap" x="298" y="334" text-anchor="middle">on air</text>
+  </a>
 
-    <h1>The AIGS Pod</h1>
-    <p class="tagline">The podcast at the intersection of artificial intelligence and Earth system science.</p>
+  <!-- her, walking down the hall with her headphones on, between the second and third doors -->
+  <g class="gr sketch">
+    <g class="her">
+      <rect class="shell" x="372" y="228" width="44" height="60" rx="8"/>
+      <path class="shell" d="M378 230 V200 Q394 182 410 200 V230"/>
+      <path d="M375 206 q19 -34 38 0" class="warm"/><rect x="372" y="204" width="7" height="12" rx="3"/><rect x="409" y="204" width="7" height="12" rx="3"/>
+      <path d="M384 288 L380 300 M404 288 L410 300"/>
+      <path d="M416 244 L428 268 M372 244 L362 266"/>
+    </g>
+  </g>
+  <text class="cap" x="394" y="172" text-anchor="middle" style="font-size:15px" id="hall-on">♪ something is on</text>
 
-    <a class="methods" href="mill/">
-      <svg class="clown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M6 6.6h12v7.6a6 6 0 0 1-12 0Z"/>
-        <path d="M6 9.6h12"/>
-        <path d="M9 6.6v3M12 6.6v3M15 6.6v3"/>
-        <path d="M4.1 12.2h1.9M18 12.2h1.9"/>
-        <circle cx="9.5" cy="12.2" r=".95" fill="currentColor" stroke="none"/>
-        <circle cx="14.5" cy="12.2" r=".95" fill="currentColor" stroke="none"/>
-        <path d="M9.7 16.4h4.6"/>
-      </svg>
-      to reproduce, see methods
-      <span class="arr">&rarr;</span>
-    </a>
+  <!-- 3. a quiet room -->
+  <a class="door" href="morn/" aria-label="A quiet room: every episode arrives with the light">
+    <rect class="inside" x="440" y="110" width="96" height="190" fill="#f6d27a" fill-opacity=".6"/>
+    <ellipse class="spill" cx="488" cy="303" rx="70" ry="6" fill="url(#pool)"/>
+    <g class="gr sketch">
+      <path d="M434 300 V104 H542 V300"/>
+      <g class="leaf"><rect x="440" y="110" width="96" height="190" fill="var(--ground)"/><rect x="452" y="124" width="72" height="70"/><rect x="452" y="206" width="72" height="80"/><circle cx="524" cy="210" r="3"/>
+        <circle cx="488" cy="159" r="12" class="warm"/><path d="M488 139 v-6 M488 179 v6 M468 159 h-6 M508 159 h6 M474 145 l-4 -4 M502 145 l4 -4 M474 173 l-4 4 M502 173 l4 4" class="warm"/></g>
+    </g>
+    <text class="cap" x="488" y="334" text-anchor="middle">a quiet room</text>
+  </a>
 
-    <div class="links">
-      <a href="https://podcasts.apple.com/us/podcast/the-aigs-pod/id1889040734" target="_blank" rel="noopener" class="primary">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.34 0A5.328 5.328 0 000 5.34v13.32A5.328 5.328 0 005.34 24h13.32A5.328 5.328 0 0024 18.66V5.34A5.328 5.328 0 0018.66 0zm6.525 2.568c2.336 0 4.448.902 6.056 2.587 1.224 1.272 1.912 2.619 2.264 4.392.12.59.12 2.2.007 2.864a8.506 8.506 0 01-3.24 5.296c-.608.46-2.096 1.261-2.336 1.261-.088 0-.096-.091-.056-.46.072-.592.144-.715.48-.856.536-.224 1.448-.874 2.008-1.435a7.644 7.644 0 002.008-3.536c.208-.824.184-2.656-.048-3.504-.728-2.696-2.928-4.792-5.624-5.352-.784-.16-2.208-.16-3 0-2.728.56-4.984 2.76-5.672 5.528-.184.752-.184 2.584 0 3.336.456 1.832 1.64 3.512 3.192 4.512.304.2.672.408.824.472.336.144.408.264.472.856.04.36.03.464-.056.464-.056 0-.464-.176-.896-.384l-.04-.03c-2.472-1.216-4.056-3.274-4.632-6.012-.144-.706-.168-2.392-.03-3.04.36-1.74 1.048-3.1 2.192-4.304 1.648-1.737 3.768-2.656 6.128-2.656zm.134 2.81c.409.004.803.04 1.106.106 2.784.62 4.76 3.408 4.376 6.174-.152 1.114-.536 2.03-1.216 2.88-.336.43-1.152 1.15-1.296 1.15-.023 0-.048-.272-.048-.603v-.605l.416-.496c1.568-1.878 1.456-4.502-.256-6.224-.664-.67-1.432-1.064-2.424-1.246-.64-.118-.776-.118-1.448-.008-1.02.167-1.81.562-2.512 1.256-1.72 1.704-1.832 4.342-.264 6.222l.413.496v.608c0 .336-.027.608-.06.608-.03 0-.264-.16-.512-.36l-.034-.011c-.832-.664-1.568-1.842-1.872-2.997-.184-.698-.184-2.024.008-2.72.504-1.878 1.888-3.335 3.808-4.019.41-.145 1.133-.22 1.814-.211zm-.13 2.99c.31 0 .62.06.844.178.488.253.888.745 1.04 1.259.464 1.578-1.208 2.96-2.72 2.254h-.015c-.712-.331-1.096-.956-1.104-1.77 0-.733.408-1.371 1.112-1.745.224-.117.534-.176.844-.176zm-.011 4.728c.988-.004 1.706.349 1.97.97.198.464.124 1.932-.218 4.302-.232 1.656-.36 2.074-.68 2.356-.44.39-1.064.498-1.656.288h-.003c-.716-.257-.87-.605-1.164-2.644-.341-2.37-.416-3.838-.218-4.302.262-.616.974-.966 1.97-.97z"/></svg>
-        Apple Podcasts
-      </a>
-      <a href="https://open.spotify.com/show/31CkWW6MrZ2c6EX4pNOLLe" target="_blank" rel="noopener" class="primary">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-        Spotify
-      </a>
+  <!-- 4. the millworks -->
+  <a class="door" href="mill/" aria-label="The millworks: paper in, podcast out">
+    <rect class="inside" x="630" y="110" width="96" height="190" fill="var(--glow)" fill-opacity=".4"/>
+    <ellipse class="spill" cx="678" cy="303" rx="70" ry="6" fill="url(#pool)"/>
+    <g class="gr sketch">
+      <path d="M624 300 V104 H732 V300"/>
+      <g class="leaf"><rect x="630" y="110" width="96" height="190" fill="var(--ground)"/><rect x="642" y="124" width="72" height="70"/><rect x="642" y="206" width="72" height="80"/><circle cx="714" cy="210" r="3"/>
+        <circle cx="678" cy="159" r="13" class="firm"/><circle cx="678" cy="159" r="5"/>
+        <path d="M678 140 v6 M678 172 v6 M659 159 h6 M691 159 h6 M665 146 l4 4 M691 146 l-4 4 M665 172 l4 -4 M691 172 l-4 -4" class="firm"/>
+        <text x="678" y="250" text-anchor="middle" style="font:11px var(--mono);fill:var(--ink3);stroke:none;letter-spacing:.1em">FIG. 1</text></g>
+    </g>
+    <text class="cap" x="678" y="334" text-anchor="middle">the millworks</text>
+  </a>
 
-      <a href="https://www.youtube.com/@aigspod" target="_blank" rel="noopener" class="primary">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        YouTube
-      </a>
+  <!-- the supervisor, asleep on the runner -->
+  <g class="gr sketch" transform="translate(744 268) scale(.5)">
+    <path class="shell" d="M14 66 C 10 44, 30 34, 54 36 C 78 38, 88 52, 84 66 Z"/>
+    <path d="M22 50 l-4 -14 l12 8 M34 42 l4 -12 l6 12"/><path d="M26 54 q4 2 8 0"/><path d="M84 62 C 98 60, 96 44, 88 44"/>
+  </g>
+  <text class="cap" x="770" y="262" text-anchor="middle" style="font-size:14px">zzz</text>
 
-      <div class="divider">more apps</div>
+  <!-- 5. severe weather -->
+  <a class="door storm" href="mood/" aria-label="Severe weather mode: you probably shouldn't">
+    <rect class="inside" x="820" y="110" width="96" height="190" fill="var(--storm)" fill-opacity=".55"/>
+    <ellipse class="spill" cx="868" cy="303" rx="70" ry="6" fill="url(#cold)"/>
+    <g class="gr sketch">
+      <path d="M814 300 V104 H922 V300"/>
+      <g class="rattle"><g class="leaf"><rect x="820" y="110" width="96" height="190" fill="var(--ground)"/><rect x="832" y="124" width="72" height="70"/><rect x="832" y="206" width="72" height="80"/><circle cx="904" cy="210" r="3"/>
+        <path d="M872 134 l-14 26 h12 l-8 22 l20 -30 h-12 l8 -18 z" class="firm"/></g></g>
+      <!-- the draught under it -->
+      <path d="M820 306 q14 -4 26 0 t26 0 M846 312 q12 -3 22 0 t22 0" class="dash"/>
+    </g>
+    <text x="900" y="96" text-anchor="middle" class="cap" style="font-size:16px" transform="rotate(6 900 96)">do not.</text>
+    <text class="cap" x="868" y="334" text-anchor="middle">severe weather</text>
+  </a>
+</svg>
+</div>
+<p class="note hall-hint" aria-hidden="true">the hall goes on, scroll it sideways →</p>
 
-      <a href="https://overcast.fm/p5667866-pLSxDi" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 24C5.389 24.018.017 18.671 0 12.061V12C0 5.35 5.351 0 12 0s12 5.35 12 12c0 6.649-5.351 12-12 12zm0-4.751l.9-.899-.9-3.45-.9 3.45.9.899zm-1.15-.05L10.4 20.9l1.05-1.052-.6-.649zm2.3 0l-.6.601 1.05 1.051-.45-1.652zm.85 3.102L12 20.3l-2 2.001c.65.1 1.3.199 2 .199s1.35-.05 2-.199zM12 1.5C6.201 1.5 1.5 6.201 1.5 12c-.008 4.468 2.825 8.446 7.051 9.899l2.25-8.35c-.511-.372-.809-.968-.801-1.6 0-1.101.9-2.001 2-2.001s2 .9 2 2.001c0 .649-.301 1.2-.801 1.6l2.25 8.35c4.227-1.453 7.06-5.432 7.051-9.899 0-5.799-4.701-10.5-10.5-10.5zm6.85 15.7c-.255.319-.714.385-1.049.15-.313-.207-.4-.628-.194-.941.014-.021.028-.04.044-.06 0 0 1.35-1.799 1.35-4.35s-1.35-4.35-1.35-4.35c-.239-.289-.198-.719.091-.957.02-.016.039-.031.06-.044.335-.235.794-.169 1.049.15.1.101 1.65 2.15 1.65 5.2S18.949 17.1 18.85 17.2zm-3.651-1.95c-.3-.3-.249-.85.051-1.15 0 0 .75-.799.75-2.1s-.75-2.051-.75-2.1c-.3-.301-.3-.801-.051-1.15.232-.303.666-.357.969-.125.029.022.056.047.082.074C16.301 8.75 17.5 10 17.5 12s-1.199 3.25-1.25 3.301c-.301.299-.75.25-1.051-.051zm-6.398 0c-.301.301-.75.35-1.051.051C7.699 15.199 6.5 14 6.5 12s1.199-3.199 1.25-3.301c.301-.299.801-.299 1.051.051.3.3.249.85-.051 1.15 0 .049-.75.799-.75 2.1s.75 2.1.75 2.1c.3.3.351.799.051 1.15zm-2.602 2.101c-.335.234-.794.169-1.05-.15C5.051 17.1 3.5 15.05 3.5 12s1.551-5.1 1.649-5.2c.256-.319.715-.386 1.05-.15.313.206.4.628.194.941-.013.02-.028.04-.043.059C6.35 7.65 5 9.449 5 12s1.35 4.35 1.35 4.35c.25.3.15.75-.151 1.001z"/></svg>
-        Overcast
-      </a>
-      <a href="https://pca.st/nd87z4rq" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12,0C5.372,0,0,5.372,0,12c0,6.628,5.372,12,12,12c6.628,0,12-5.372,12-12 C24,5.372,18.628,0,12,0z M15.564,12c0-1.968-1.596-3.564-3.564-3.564c-1.968,0-3.564,1.595-3.564,3.564 c0,1.968,1.595,3.564,3.564,3.564V17.6c-3.093,0-5.6-2.507-5.6-5.6c0-3.093,2.507-5.6,5.6-5.6c3.093,0,5.6,2.507,5.6,5.6H15.564z M19,12c0-3.866-3.134-7-7-7c-3.866,0-7,3.134-7,7c0,3.866,3.134,7,7,7v2.333c-5.155,0-9.333-4.179-9.333-9.333 c0-5.155,4.179-9.333,9.333-9.333c5.155,0,9.333,4.179,9.333,9.333H19z"/></svg>
-        Pocket Casts
-      </a>
-      <a href="https://podcastaddict.com/podcast/the-aigs-pod/6899043" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.36.037C2.41.037 0 2.447 0 5.397v13.207c0 2.95 2.41 5.36 5.36 5.36h13.28c2.945 0 5.36-2.41 5.36-5.36V5.396c0-2.95-2.415-5.36-5.36-5.36zm6.585 4.285a7.72 7.72 0 017.717 7.544l.005 7.896h-3.39v-1.326a7.68 7.68 0 01-4.327 1.326 7.777 7.777 0 01-2.384-.378v-4.63a3.647 3.647 0 002.416.91 3.666 3.666 0 003.599-2.97h-1.284a2.416 2.416 0 01-4.73-.66v-.031c0-1.095.728-2.023 1.728-2.316V8.403a3.67 3.67 0 00-2.975 3.6v6.852a7.72 7.72 0 013.625-14.533zm.031 1.87V7.43h.006a4.575 4.575 0 014.573 4.574v.01h1.237v-.01a5.81 5.81 0 00-5.81-5.81zm0 2.149v1.246h.006a2.413 2.413 0 012.415 2.416v.01h1.247v-.01a3.662 3.662 0 00-3.662-3.662zm0 2.252c-.78 0-1.409.629-1.409 1.41 0 .78.629 1.409 1.41 1.409.78 0 1.409-.629 1.409-1.41 0-.78-.629-1.409-1.41-1.409z"/></svg>
-        Podcast Addict
-      </a>
-      <a href="https://podcastindex.org/podcast/7789674" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.0056.0056c-.2362.0208-.4667.1034-.6462.2366C1.7274 2.2537.1728 4.9759.2924 8.289c.1197 3.1949 1.6743 6.2709 4.067 8.0458.2393.1183.4795.2366.7188.2366.3589 0 .7172-.1182.9564-.4732.4786-.5917.3594-1.3013-.2388-1.6563-1.9142-1.3016-3.1105-3.7863-3.1105-6.1529 0-2.4848 1.0767-4.6157 3.1105-6.154.5982-.355.5977-1.183.2388-1.6562-.2243-.3698-.6353-.508-1.029-.4732Zm13.7533 0c-.314.0295-.613.1774-.7924.4732-.3589.4733-.3593 1.3012.2389 1.6562 2.0338 1.5383 3.1105 3.6692 3.1105 6.154 0 2.3666-1.1964 4.8513-3.1105 6.153-.5982.355-.7174 1.0645-.2389 1.6562.2393.355.5987.4732.9576.4732.2393 0 .4784-.1183.7176-.2366 2.5124-1.775 4.067-4.851 4.067-8.0458.1077-3.3131-1.435-6.0353-4.067-8.0468-.2392-.1775-.5687-.2662-.8828-.2366ZM16.4944 3.558c-.3065.0118-.609.1395-.8303.3761-.4546.4733-.4183 1.2307.0602 1.6686 1.5314 1.408 1.6627 3.7978-.0122 5.3716-.4666.4615-.4904 1.2075-.0357 1.6808.4546.4733 1.2078.4965 1.6863.0469 2.7158-2.5559 2.4881-6.5196-.0122-8.827-.2393-.2248-.5495-.3288-.856-.317zm-8.9933.0067c-.305-.0118-.6167.0914-.856.3103-2.5004 2.3074-2.7269 6.2711-.0111 8.827.4785.4496 1.2317.4264 1.6863-.0469.4547-.4733.4306-1.2189-.048-1.6685-1.6749-1.5738-1.5316-3.9647-.0122-5.3728.4785-.4496.5148-1.194.0602-1.6674-.2153-.2426-.514-.3699-.8192-.3817Zm4.499 2.1496a2.5714 2.5714 0 0 0-2.5715 2.5714 2.5714 2.5714 0 0 0 1.193 2.1696L7.7144 24h2.5246l2.8772-13.4018a2.5714 2.5714 0 0 0 1.4553-2.3125A2.5714 2.5714 0 0 0 12 5.7143Z"/></svg>
-        Podcast Index
-      </a>
-      <a href="antennapod-subscribe://aigspod.github.io/feed.xml" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 7.188 10.98l3.339-9.459a2.118 2.118 0 1 1 2.946 0l3.339 9.46A12 12 0 0 0 24 12 12 12 0 0 0 12 0m0 2.824a9.177 9.177 0 0 1 4.969 16.892l-.486-1.376a7.765 7.765 0 1 0-8.967 0l-.485 1.376A9.177 9.177 0 0 1 12 2.824m0 3.529a5.647 5.647 0 0 1 3.739 9.879l-.521-1.478a4.235 4.235 0 1 0-6.436 0l-.522 1.478A5.647 5.647 0 0 1 12 6.353m0 8.298-1.618 4.584a7.4 7.4 0 0 0 3.236 0zm-2.21 6.258-.937 2.656A12 12 0 0 0 12 24a12 12 0 0 0 3.146-.435l-.937-2.656a9.2 9.2 0 0 1-2.209.267 9.2 9.2 0 0 1-2.21-.267"/></svg>
-        AntennaPod
-      </a>
-      <a href="https://iheart.com/podcast/328627475/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.152 0c-1.727 0-3.27.915-4.164 2.252C11.094.915 9.55 0 7.823 0A4.982 4.982 0 002.84 4.983c0 1.746 1.106 3.005 2.261 4.17l4.518 4.272a.371.371 0 00.626-.27V9.827c0-.963.78-1.743 1.743-1.745a1.745 1.745 0 011.742 1.745v3.328c0 .326.39.493.626.27l4.518-4.272c1.155-1.165 2.261-2.424 2.261-4.17A4.982 4.982 0 0016.152 0"/></svg>
-        iHeartRadio
-      </a>
-    </div>
+<section aria-labelledby="latest-h">
+  <div class="sechead"><p class="label" id="latest-h">in the hall · <b>the latest</b></p></div>
+  <div class="latest" id="latest"><noscript><p class="note">the episodes are listed with javascript on; without it, every app below has them all.</p></noscript></div>
+</section>
 
-    <a href="feed.xml" class="rss">
-      <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M6.18 15.64a2.18 2.18 0 110 4.36 2.18 2.18 0 010-4.36zM4 4.44A15.56 15.56 0 0119.56 20h-2.83A12.73 12.73 0 004 7.27V4.44zm0 5.66a9.9 9.9 0 019.9 9.9h-2.83A7.07 7.07 0 004 12.93V10.1z"/></svg>
-      RSS Feed
-    </a>
+<section aria-labelledby="all-h">
+  <div class="sechead"><p class="label">the whole run · <b>every episode, newest first</b></p><h2 id="all-h">Every episode</h2></div>
+  <ol class="eps" id="eps"></ol>
+</section>
 
-    <a href="mood/" class="storm-door" title="You probably shouldn't."><span>⚡</span> Severe weather mode</a>
+<section aria-labelledby="listen-h">
+  <div class="sechead"><p class="label">take it with you · <b>subscribe</b></p><h2 id="listen-h">Listen somewhere else</h2></div>
+  <div class="listen">
+  <a class="btn" href="https://podcasts.apple.com/us/podcast/the-aigs-pod/id1889040734" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.34 0A5.328 5.328 0 000 5.34v13.32A5.328 5.328 0 005.34 24h13.32A5.328 5.328 0 0024 18.66V5.34A5.328 5.328 0 0018.66 0zm6.525 2.568c2.336 0 4.448.902 6.056 2.587 1.224 1.272 1.912 2.619 2.264 4.392.12.59.12 2.2.007 2.864a8.506 8.506 0 01-3.24 5.296c-.608.46-2.096 1.261-2.336 1.261-.088 0-.096-.091-.056-.46.072-.592.144-.715.48-.856.536-.224 1.448-.874 2.008-1.435a7.644 7.644 0 002.008-3.536c.208-.824.184-2.656-.048-3.504-.728-2.696-2.928-4.792-5.624-5.352-.784-.16-2.208-.16-3 0-2.728.56-4.984 2.76-5.672 5.528-.184.752-.184 2.584 0 3.336.456 1.832 1.64 3.512 3.192 4.512.304.2.672.408.824.472.336.144.408.264.472.856.04.36.03.464-.056.464-.056 0-.464-.176-.896-.384l-.04-.03c-2.472-1.216-4.056-3.274-4.632-6.012-.144-.706-.168-2.392-.03-3.04.36-1.74 1.048-3.1 2.192-4.304 1.648-1.737 3.768-2.656 6.128-2.656zm.134 2.81c.409.004.803.04 1.106.106 2.784.62 4.76 3.408 4.376 6.174-.152 1.114-.536 2.03-1.216 2.88-.336.43-1.152 1.15-1.296 1.15-.023 0-.048-.272-.048-.603v-.605l.416-.496c1.568-1.878 1.456-4.502-.256-6.224-.664-.67-1.432-1.064-2.424-1.246-.64-.118-.776-.118-1.448-.008-1.02.167-1.81.562-2.512 1.256-1.72 1.704-1.832 4.342-.264 6.222l.413.496v.608c0 .336-.027.608-.06.608-.03 0-.264-.16-.512-.36l-.034-.011c-.832-.664-1.568-1.842-1.872-2.997-.184-.698-.184-2.024.008-2.72.504-1.878 1.888-3.335 3.808-4.019.41-.145 1.133-.22 1.814-.211zm-.13 2.99c.31 0 .62.06.844.178.488.253.888.745 1.04 1.259.464 1.578-1.208 2.96-2.72 2.254h-.015c-.712-.331-1.096-.956-1.104-1.77 0-.733.408-1.371 1.112-1.745.224-.117.534-.176.844-.176zm-.011 4.728c.988-.004 1.706.349 1.97.97.198.464.124 1.932-.218 4.302-.232 1.656-.36 2.074-.68 2.356-.44.39-1.064.498-1.656.288h-.003c-.716-.257-.87-.605-1.164-2.644-.341-2.37-.416-3.838-.218-4.302.262-.616.974-.966 1.97-.97z"/></svg>Apple Podcasts</a>
+  <a class="btn" href="https://open.spotify.com/show/31CkWW6MrZ2c6EX4pNOLLe" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>Spotify</a>
+  <a class="btn" href="https://www.youtube.com/@aigspod" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>YouTube</a>
+  <details><summary>or another app, or the feed itself</summary><div class="others">
+    <a href="https://pca.st/nd87z4rq" target="_blank" rel="noopener">Pocket Casts</a>
+    <a href="https://podcastaddict.com/podcast/the-aigs-pod/6899043" target="_blank" rel="noopener">Podcast Addict</a>
+    <a href="antennapod-subscribe://aigspod.github.io/feed.xml">AntennaPod</a>
+    <a href="https://iheart.com/podcast/328627475/" target="_blank" rel="noopener">iHeartRadio</a>
+    <a href="feed.xml">RSS feed</a></div></details>
+  </div>
+</section>
 
-    <a href="morn/" class="quiet-door" title="She has been waiting."><span>☀</span> A quiet room</a>
+<section>
+  <details class="cds"><summary>code &amp; data availability +</summary><div class="body">
+  <p><b>Methods.</b> The full pipeline is documented in <a href="mill/">Fig. 1: the millworks</a>. One paper is tipped into the hopper, the crank is turned, the paper is conveyed into the transformer, and a podcast comes off the other end. The apparatus is open to inspection and may be cranked by any reader.</p>
+  <p>No data were withheld. There is no secret sauce. There is barely a sauce. The recommendation engine is two people arguing about which paper annoyed them most this week, and it is not available under any licence.</p>
+  <p><b>To reproduce:</b> turn the crank yourself, then listen to every episode in order. Results should agree with ours to within floating-point differences in enthusiasm. If your findings differ materially, the discrepancy is interesting and we would like to hear about it.</p>
+  <p>Conflicts of interest: we like this stuff. Funding: none, alarmingly. Ethics approval: not sought, arguably needed.</p></div></details>
+</section>
 
-    <a href="live/" class="air-door" title="Something to work to."><span>♪</span> On air</a>
+<footer><i class="pl"></i><p>Type <i>storm</i> or <i>warm</i> anywhere on this page. Or don't.</p></footer>
+</div>
 
-    <a href="mull/" class="study-door" title="She is still reading."><span><svg viewBox="0 0 16 16" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-.12em"><path d="M8 4.2C6 3 3.6 2.8 1.6 3.2v9.6c2-.4 4.4-.2 6.4 1 2-1.2 4.4-1.4 6.4-1V3.2C12.4 2.8 10 3 8 4.2zM8 4.2v9.6"/></svg></span> The study</a>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+const ITUNES = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
+const pad = n => String(n).padStart(3, '0');
+const ICON = {
+  play: '<svg class="i-play" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9.5-5.5z"/></svg><svg class="i-pause" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z"/></svg>',
+};
+const fmtDate = d => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).toLowerCase();
+const mins = s => { const [a, b, c] = s.split(':').map(Number); return c === undefined ? a + Math.round(b / 60) : a * 60 + b + Math.round(c / 60); };
 
-    <details class="cds">
-      <summary>Code &amp; data availability</summary>
-      <div class="body">
-        <p><b>Methods.</b> The full pipeline is documented in
-        <a href="mill/">Fig. 1: the millworks</a>. One paper is tipped into the
-        hopper, the crank is turned, the paper is conveyed into the transformer, and a
-        podcast comes off the other end. The apparatus is open to inspection and may be
-        cranked by any reader.</p>
+async function loadEpisodes(){
+  const xml = await fetch('feed.xml', { cache: 'no-cache' }).then(r => r.text());
+  const doc = new DOMParser().parseFromString(xml, 'application/xml');
+  return [...doc.querySelectorAll('item')].map(it => {
+    const t = s => (it.querySelector(s)?.textContent || '').trim();
+    const ns = s => (it.getElementsByTagNameNS(ITUNES, s)[0]?.textContent || '').trim();
+    const n = parseInt(ns('episode') || '0', 10), desc = t('description');
+    const links = [...desc.matchAll(/(?:Paper|Preprint|Link):\s*(https?:\/\/\S+)/g)].map(m => m[1].replace(/[.,;)]+$/, ''));
+    return { n, title: t('title'), summary: ns('summary') || desc, date: new Date(t('pubDate')), dur: ns('duration'),
+      url: it.querySelector('enclosure')?.getAttribute('url'), img: `images/thumbs/ep${pad(n)}.jpg`,
+      big: `images/ep${pad(n)}.png`, paper: links[links.length - 1] || '' };
+  }).filter(e => e.n).sort((a, b) => b.n - a.n);
+}
 
-        <p class="apparatus-row"><a class="apparatus" href="mill/">&#9881; Inspect the apparatus &rarr;</a></p>
+function epRow(e){
+  return `<li class="ep" data-n="${e.n}">
+    <span class="n">ep ${String(e.n).padStart(2, '0')}</span>
+    <img src="${e.img}" alt="" loading="lazy">
+    <div><h3>${esc(e.title)}</h3><p class="meta">${fmtDate(e.date)} · ${mins(e.dur)} min</p></div>
+    <button class="play small" type="button" data-play="${e.n}" aria-label="Play episode ${e.n}">${ICON.play}</button>
+  </li>`;
+}
 
-        <p>No data were withheld. There is no secret sauce. There is barely a sauce.
-        The recommendation engine is two people arguing about which paper annoyed them
-        most this week, and it is not available under any licence.</p>
+/* one audio element for the whole page, and a strip at the bottom while it plays */
+const audio = new Audio(); audio.preload = 'none';
+let EPS = [], current = null;
+function np(){
+  let el = $('np');
+  if (!el) {
+    el = document.createElement('div'); el.className = 'np'; el.id = 'np';
+    el.innerHTML = `<button class="play small" type="button" id="np-play" aria-label="Play or pause">${ICON.play}</button>
+      <div><div class="t" id="np-t"></div><div class="bar" id="np-bar"><i id="np-i"></i></div></div><span class="time" id="np-time">0:00</span>`;
+    document.body.append(el);
+    $('np-play').onclick = () => audio.paused ? audio.play() : audio.pause();
+    $('np-bar').onclick = ev => { const r = ev.currentTarget.getBoundingClientRect(); if (audio.duration) audio.currentTime = (ev.clientX - r.left) / r.width * audio.duration; };
+  }
+  return el;
+}
+const clock = s => isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}` : '0:00';
+audio.addEventListener('timeupdate', () => { if (!$('np')) return;
+  $('np-i').style.width = (audio.currentTime / audio.duration * 100 || 0) + '%'; $('np-time').textContent = clock(audio.currentTime); });
+const sync = () => document.querySelectorAll('[data-play],#np-play').forEach(b =>
+  b.classList.toggle('on', !audio.paused && (b.id === 'np-play' || +b.dataset.play === current?.n)));
+audio.addEventListener('play', sync); audio.addEventListener('pause', sync);
+function play(n){
+  const e = EPS.find(x => x.n === n); if (!e) return;
+  if (current === e) { audio.paused ? audio.play() : audio.pause(); return; }
+  current = e; audio.src = e.url; audio.play().catch(() => {});
+  np().classList.add('show'); $('np-t').textContent = `ep ${e.n} · ${e.title}`;
+  document.querySelectorAll('.ep').forEach(r => r.classList.toggle('on', +r.dataset.n === n));
+  document.dispatchEvent(new CustomEvent('nowplaying', { detail: e }));
+}
+document.addEventListener('click', ev => { const b = ev.target.closest('[data-play]'); if (b) play(+b.dataset.play); });
 
-        <p><b>To reproduce:</b> turn the crank yourself, then listen to every episode
-        in order. Results should agree with ours to within floating-point differences in
-        enthusiasm. If your findings differ materially, the discrepancy is interesting
-        and we would like to hear about it.</p>
+/* a list with the first few shown, and a "the rest" button */
+function renderList(el, eps, first = 6){
+  el.innerHTML = eps.map(epRow).join('<li aria-hidden="true"><i class="pl"></i></li>');
+  const rows = [...el.children];
+  if (rows.length > first * 2) {
+    rows.slice(first * 2 - 1).forEach(r => r.hidden = true);
+    const b = document.createElement('button'); b.className = 'more'; b.type = 'button';
+    b.textContent = `and ${eps.length - first} more, all the way back to ep 1 →`;
+    b.onclick = () => { rows.forEach(r => r.hidden = false); b.remove(); };
+    el.after(b);
+  }
+}
 
-        <p class="sig">Conflicts of interest: we like this stuff. Funding: none, alarmingly.
-        Ethics approval: not sought, arguably needed.</p>
-      </div>
-    </details>
-  </main>
+/* type "storm" to be taken by the weather, or "warm" to be taken by the light (as on the current page) */
+let buf = '';
+const DOORS = { storm: ['storming', 'mood/', 1000], warm: ['warming', 'morn/', 1250] };
+addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest('input,textarea')) return;
+  buf = (buf + e.key.toLowerCase()).slice(-5);
+  const door = DOORS[buf.slice(-5)] || DOORS[buf.slice(-4)];
+  if (!door) return;
+  const [cls, url, wait] = door;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { location.href = url; return; }
+  document.body.classList.add(cls); setTimeout(() => location.href = url, wait);
+});
 
-  <script>
-    // Type "storm" to be taken by the weather, or "warm" to be taken by the light.
-    let buf = '';
-    const DOORS = { storm: ['storming', 'mood/', 1000], warm: ['warming', 'morn/', 1250] };
-    addEventListener('keydown', e => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      buf = (buf + e.key.toLowerCase()).slice(-5);
-      const door = DOORS[buf.slice(-5)] || DOORS[buf.slice(-4)];
-      if (!door) return;
-      const [cls, url, wait] = door;
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { location.href = url; return; }
-      document.body.classList.add(cls);
-      setTimeout(() => location.href = url, wait);
-    });
-  </script>
+loadEpisodes().then(eps => {
+  EPS = eps; const e = eps[0];
+  $('latest').innerHTML = `
+    <div class="cover"><img src="${e.big}" alt="Cover of episode ${e.n}"></div>
+    <div class="body">
+      <p class="label">ep ${e.n} · <b>${fmtDate(e.date)} · ${mins(e.dur)} min</b></p>
+      <h3>${esc(e.title)}</h3>
+      <p class="sum">${esc(e.summary)}</p>
+      <div class="row"><button class="play" type="button" data-play="${e.n}" aria-label="Play episode ${e.n}">${ICON.play}</button>
+        <span class="note">press play, the robot already has</span>
+        ${e.paper ? `<a href="${e.paper}" target="_blank" rel="noopener">read the paper ↗</a>` : ''}</div>
+    </div>`;
+  renderList($('eps'), eps.slice(1));
+  $('hall-on').textContent = `♪ ep ${e.n} is on`;
+}).catch(() => {
+  $('latest').innerHTML = `<p class="note">the episodes didn't load. they're all in the apps below, or <a href="feed.xml">the feed</a>.</p>`;
+});
+</script>
 </body>
 </html>
