@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>home og card</title>
+<!-- 1200x630 link-preview card for the front page -> images/home-og.png: the wordmark on the left,
+     the show's painting (images/cover-art.png) coming out of the dark on the right. -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=Space+Mono&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:#0e1018}
+.art{position:absolute;right:0;top:-40px;width:710px;height:710px;background:url(../../images/cover-art.png) center/cover;
+  -webkit-mask:linear-gradient(90deg,transparent 0,#000 34%);mask:linear-gradient(90deg,transparent 0,#000 34%)}
+.frame{position:absolute;inset:18px;border:1px solid rgba(201,194,214,.2)}
+.w{position:absolute;left:78px;top:0;bottom:0;width:470px;display:flex;flex-direction:column;justify-content:center;gap:24px;color:#efe5d6}
+.e{font:400 13px/1 'Space Mono',monospace;letter-spacing:.18em;color:#8d8597}
+h1{margin:0;font:300 104px/.95 'Fraunces',serif;letter-spacing:-.02em}
+h1 em{color:#e3a75a;font-style:italic}
+.s{font:400 14px/1.9 'Space Mono',monospace;letter-spacing:.14em;color:#aaa0ad}
+.n{font:500 24px/1 'Caveat',cursive;color:#b9c2d3;transform:rotate(-2deg);transform-origin:left}
+</style>
+</head>
+<body>
+<div class="art"></div><div class="frame"></div>
+<div class="w"><div class="e">the aigs pod · a podcast, and a house</div><h1>The AIGS<br><em>Pod</em></h1>
+<div class="s">ai · earth system science<br>one paper at a time, argued over</div><div class="n">press play, the robot already has</div></div>
+</body>
+</html>

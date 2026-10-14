@@ -24,4 +24,9 @@
 #     http://localhost:8765/tools/og/live-og.html
 # /mull/ works the same way: tools/og/mull-og.html -> images/mull-og.png, lifting the desk drawing
 # out of mull/index.html. Same headless command, pointed at tools/og/mull-og.html.
+#
+# The show cover and the front page's card are set over the text-free painting, images/cover-art.png:
+#   tools/og/cover.html    -> images/cover.png     (--window-size=1400,1400; then bump ?v= on cover.png in feed.xml)
+#   tools/og/home-og.html  -> images/home-og.png   (--window-size=1200,630)
+# Chrome isn't always installed; Microsoft Edge takes the same flags.
 echo "See the comments in this file — regenerating the card needs a browser screenshot."

@@ -21,7 +21,7 @@
       <itunes:email>aigroupe3sm@gmail.com</itunes:email>
     </itunes:owner>
     <itunes:explicit>no</itunes:explicit>
-    <itunes:image href="https://aigspod.github.io/images/cover.png"/>
+    <itunes:image href="https://aigspod.github.io/images/cover.png?v=2026-10-14"/>
     <itunes:category text="Science">
       <itunes:category text="Natural Sciences"/>
     </itunes:category>
@@ -30,7 +30,7 @@
     <itunes:type>episodic</itunes:type>
 
     <image>
-      <url>https://aigspod.github.io/images/cover.png</url>
+      <url>https://aigspod.github.io/images/cover.png?v=2026-10-14</url>
       <title>The AIGS Pod</title>
       <link>https://aigspod.github.io</link>
     </image>
