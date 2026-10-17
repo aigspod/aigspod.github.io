@@ -210,6 +210,7 @@ section{margin-top:clamp(64px,10vw,116px);display:grid;gap:22px}
 .bk:not(.pulled) .cover{pointer-events:none;visibility:hidden;transition:visibility 0s .55s}
 .cover b{font:italic 400 .92rem/1.14 var(--serif);overflow-wrap:break-word}
 .cover b::after{content:"";display:block;width:22px;border-top:1px solid color-mix(in srgb,var(--c) 70%,transparent);margin-top:8px}
+.cover i{font:italic 400 .58rem/1.15 var(--serif);color:var(--ink3);margin-top:6px;overflow-wrap:break-word}
 .cover span{font-size:.68rem;line-height:1.25;color:var(--ink2);margin-top:auto}
 .cover small{font:400 8.5px/1 var(--mono);letter-spacing:.08em;color:var(--ink3)}
 /* the books arrive one by one the first time the shelf comes into view */
@@ -474,7 +475,7 @@ const BOOKS = [
   { title: "Klara and the Sun", author: "Kazuo Ishiguro", year: 2021, pages: 307, url: "https://en.wikipedia.org/wiki/Klara_and_the_Sun" },
   { title: "The Revolt Against Humanity: Imagining a Future Without Us", author: "Adam Kirsch", year: 2023, pages: 104, url: "https://globalreports.columbia.edu/books/the-revolt-against-humanity" },
   { title: "We Want to Believe: How Aliens Went Mainstream and Why It Matters", author: "Adam Kirsch", year: 2026, pages: 128, url: "https://globalreports.columbia.edu/books/we-want-to-believe" },
-  { title: "Agency: The Psychological History of Human Progress", author: "Martin Seligman", year: 2026, url: "https://www.simonandschuster.com/books/Agency/Martin-E-P-Seligman/9781982190644" },
+  { title: "Agency: The Psychological History of Human Progress", author: "Martin Seligman", year: 2026, pages: 400, url: "https://www.simonandschuster.com/books/Agency/Martin-E-P-Seligman/9781982190644" },
   { title: "Fake Work: How I Began to Suspect Capitalism Is a Joke", author: "Leigh Claire La Berge", year: 2025, pages: 232, url: "https://www.haymarketbooks.org/books/2534-fake-work" },
   { title: "Language Machines: Cultural AI and the End of Remainder Humanism", author: "Leif Weatherby", year: 2025, pages: 264, url: "https://www.upress.umn.edu/9781517919320/language-machines/" },
   { title: "In the Margins: On the Pleasures of Reading and Writing", author: "Elena Ferrante", year: 2022, pages: 112, url: "https://www.europaeditions.com/book/9781609457372/in-the-margins" },
@@ -494,15 +495,16 @@ const DESKLAMP = '<svg class="bulb desklamp" viewBox="-4 2 26 28" aria-hidden="t
 const SEP = '<li aria-hidden="true" class="sep"><i class="pl"></i></li>';
 
 /* ---------- the shelf ---------- */
-/* a thin spine only has room for one line, so a slim book stands at least as tall as its title is long */
+/* a thin spine only has room for one line, so a slim book stands at least as tall as its title is long;
+   a book with a subtitle stands tall enough for its cover to hold it */
 const books = BOOKS.map((b, i) => {
   const w = Math.max(22, Math.min(64, Math.round(14 + (b.pages || 280) * .095))), slim = w < 34;
   return { ...b, id: 'book-' + (i + 1), c: SPINE_COLORS[hash(b.title) % SPINE_COLORS.length], w, slim,
-    h: Math.max(124 + hash(b.author) % 52, slim ? Math.round(b.title.split(':')[0].length * 6.5 + 30) : 0) }; });
+    h: Math.max(124 + hash(b.author) % 52, slim ? Math.round(b.title.split(':')[0].length * 6.5 + 30) : 0, b.title.includes(':') ? 160 : 0) }; });
 $('spines').innerHTML = books.map((b, i) => `
   <div class="bk${b.slim ? ' slim' : ''}${i === books.length - 1 ? ' lean' : ''}" data-for="${b.id}" style="--c:var(${b.c});--h:${b.h}px;--w:${b.w}px;--i:${i}">
     <button class="spine" type="button" aria-pressed="false" aria-label="Pull out ${esc(b.title)}">${esc(b.title.split(':')[0])}</button>
-    <a class="cover" href="${esc(b.url)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><b>${esc(b.title.split(':')[0])}</b><span>${esc(b.author)}</span><small>${[b.year, b.pages && b.pages + ' pp'].filter(Boolean).join(' · ')}</small></a>
+    <a class="cover" href="${esc(b.url)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><b>${esc(b.title.split(':')[0])}</b>${b.title.includes(':') ? `<i>${esc(b.title.split(':').slice(1).join(':').trim())}</i>` : ''}<span>${esc(b.author)}</span><small>${[b.year, b.pages && b.pages + ' pp'].filter(Boolean).join(' · ')}</small></a>
   </div>`).join('')
   + (NEXT ? `<span class="spine next" title="next">next: ${esc(NEXT)}</span>` : '');
 $('books').innerHTML = books.map(b => { const [t, ...sub] = b.title.split(':'); return `
