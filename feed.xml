@@ -35,6 +35,23 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 24 -->
+    <item>
+      <title>Mapping visual circuits to fix AI</title>
+      <description>Finding that a network encodes something is not the same as knowing how it uses it. Edge-based circuits have been defined for large language models, but work on vision models has so far only used neuron-based circuits, which show what is encoded but not how it is routed. The authors introduce Automatic Visual Circuit Discovery (Vi-CD), which finds sparse, edge-based computational subgraphs in vision transformers. They apply it to class-specific classification circuits, to the circuits behind typographic attacks on CLIP, and to circuits that can be steered to correct harmful behavior: on the RoCOCO benchmark, steering the discovered circuits reduces safety violations more than random ablations while keeping retrieval performance close to baseline. This opens the journal club's circuits series (Oct 21). Paper: https://arxiv.org/abs/2604.14477</description>
+      <enclosure url="https://archive.org/download/mapping-visual-circuits-to-fix-ai/mapping-visual-circuits-to-fix-ai.mp3"
+                 length="22642656"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep024-mapping-visual-circuits-to-fix-ai</guid>
+      <pubDate>Sat, 17 Oct 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep024.png"/>
+      <itunes:duration>23:35</itunes:duration>
+      <itunes:summary>Seeing what a vision model encodes is not the same as seeing how it routes it. Vi-CD finds sparse, edge-based circuits inside vision transformers: the pathways behind a class, behind typographic attacks on CLIP, and ones that can be steered to make the model safer without breaking it.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>24</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 23 -->
     <item>
       <title>How AI weather models reinvented physics</title>
