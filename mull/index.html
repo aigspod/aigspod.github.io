@@ -432,16 +432,18 @@ footer .sleep{width:150px;height:auto}
    link the episode description gives after "Paper:", "Preprint:" or "Link:". An episode with no such
    link is keyed "ep<N>". Anything not listed here still shows up, under its episode title. */
 const FEED = window.MULL_FEED || '../feed.xml';
-/* papers not read yet: { title, authors, venue, year, url, when }. when goes in the tag instead of "next".
-   empty shows a single "next: ??" slot. */
-const UPCOMING = [
-  { when: 'Oct 28', title: 'LAWFUL: Law-Aligned Witness for Faithful Use of Latents', authors: 'Chen, Parker & Arora', venue: 'arXiv', year: 2026, url: 'https://arxiv.org/abs/2607.28672' },
-  { when: 'Nov 4', title: 'Rethinking Circuit Evaluation: Do Circuits Explain Model Errors?', authors: 'Zhang et al.', venue: 'arXiv', year: 2026, url: 'https://arxiv.org/abs/2609.35686' },
-  { when: 'Nov 11', title: 'A Mechanistic Analysis of Transformers for Dynamical Systems', authors: 'Duthé et al.', venue: 'arXiv', year: 2025, url: 'https://arxiv.org/abs/2512.21113' },
-  { when: 'Nov 20', title: 'Hackathon: as much of the four as fits into exege', authors: 'all of us', venue: '', year: '' },
-  { when: 'Dec 2', title: 'Pain and Pen, from In the Margins: On the Pleasures of Reading and Writing', authors: 'Elena Ferrante', venue: 'Europa Editions', year: 2022, url: 'https://www.europaeditions.com/book/9781609457372/in-the-margins' },
-  { when: 'Dec 9', title: 'Beyond stochastic parrots: Lacanian reflections on LLMs as superior masters of the symbolic', authors: 'Magnani', venue: 'Synthese', year: 2026, url: 'https://doi.org/10.1007/s11229-026-05648-0' },
-  { when: 'Dec 16', title: "From 'objectivity' to obedience: LLMs as discourse, discipline, and power", authors: 'Kouros', venue: 'AI & Society', year: 2026, url: 'https://doi.org/10.1007/s00146-026-02994-y' }
+/* the reading list: { when: 'YYYY-MM-DD', title, authors, venue, year, url }. until the day we meet on it is
+   over, a paper sits in its wrapper with its date for a tag; after that it is on the desk with a bulb like the rest,
+   in date order among the episodes. one that becomes an episode (same url) is shown once, as the episode.
+   nothing still to come shows a single "next: ??" slot. */
+const SCHEDULE = [
+  { when: '2026-10-28', title: 'LAWFUL: Law-Aligned Witness for Faithful Use of Latents', authors: 'Chen, Parker & Arora', venue: 'arXiv', year: 2026, url: 'https://arxiv.org/abs/2607.28672' },
+  { when: '2026-11-04', title: 'Rethinking Circuit Evaluation: Do Circuits Explain Model Errors?', authors: 'Zhang et al.', venue: 'arXiv', year: 2026, url: 'https://arxiv.org/abs/2609.35686' },
+  { when: '2026-11-11', title: 'A Mechanistic Analysis of Transformers for Dynamical Systems', authors: 'Duthé et al.', venue: 'arXiv', year: 2025, url: 'https://arxiv.org/abs/2512.21113' },
+  { when: '2026-11-20', title: 'Hackathon: as much of the four as fits into exege', authors: 'all of us', venue: '', year: '' },
+  { when: '2026-12-02', title: 'Pain and Pen, from In the Margins: On the Pleasures of Reading and Writing', authors: 'Elena Ferrante', venue: 'Europa Editions', year: 2022, url: 'https://www.europaeditions.com/book/9781609457372/in-the-margins' },
+  { when: '2026-12-09', title: 'Beyond stochastic parrots: Lacanian reflections on LLMs as superior masters of the symbolic', authors: 'Magnani', venue: 'Synthese', year: 2026, url: 'https://doi.org/10.1007/s11229-026-05648-0' },
+  { when: '2026-12-16', title: "From 'objectivity' to obedience: LLMs as discourse, discipline, and power", authors: 'Kouros', venue: 'AI & Society', year: 2026, url: 'https://doi.org/10.1007/s00146-026-02994-y' }
 ];
 const PAPER_META = {
   'https://doi.org/10.1029/2025GL119740': { title: "Forecasting the Future With Yesterday's Climate: Temperature Bias in AI Weather and Climate Models", authors: 'Landsberg & Barnes', venue: 'Geophysical Research Letters', year: 2026 },
@@ -541,13 +543,17 @@ async function loadPapers(){
   });
   return papers.map((p, i) => {
     const m = PAPER_META[p.key] || {};
-    return { ...p, url: m.url || p.url,
+    return { ...p, url: m.url || p.url, date: p.eps[0].date, n: p.eps[0].n,
       title: m.title || p.eps[0].title, authors: m.authors || '', venue: m.venue || '', year: m.year || '', pile: m.pile || [] };
   });
 }
+/* a scheduled paper counts as read from the morning after we meet on it */
+const day = iso => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d); };
+const readBy = iso => { const d = day(iso); d.setDate(d.getDate() + 1); return d; };
+const shortDate = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 const paperRow = (p, next) => `
       <li class="paper entry${next ? ' next' : ''}" data-find="${esc([p.title, p.authors, p.venue, p.year, next ? 'next up' : '', ...(p.pile || []).map(q => [q.title, q.authors, q.venue, q.year].join(' '))].join(' ').toLowerCase())}">
-        <span class="mark">${next ? `<span class="tag">${esc(p.when || 'next')}</span>` : BULB}</span>
+        <span class="mark">${next ? `<span class="tag">${p.when ? esc(shortDate(day(p.when))) : 'next'}</span>` : BULB}</span>
         <div class="body">
           <h3>${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title)}</h3>
           ${p.authors ? `<p class="by">${esc(p.authors)}${p.venue ? ` · <i>${esc(p.venue)}</i>` : ''} ${esc(p.year)}</p>` : ''}
@@ -555,9 +561,15 @@ const paperRow = (p, next) => `
         </div>
       </li>`;
 function renderDesk(papers){
-  const next = UPCOMING.length ? UPCOMING.map(p => paperRow(p, true)).join(SEP)
+  const now = new Date(), seen = new Set(papers.map(p => p.key));
+  const sched = SCHEDULE.filter(s => !s.url || !seen.has(s.url.replace(/v\d+$/, '')))
+    .map(s => ({ ...s, date: day(s.when), n: 0 }));
+  const newestFirst = (a, b) => b.date - a.date || b.n - a.n;
+  const ahead = sched.filter(s => readBy(s.when) > now).sort(newestFirst);
+  const read = papers.concat(sched.filter(s => readBy(s.when) <= now)).sort(newestFirst);
+  const next = ahead.length ? ahead.map(p => paperRow(p, true)).join(SEP)
     : `<li class="paper next empty-next"><span class="mark"><span class="tag">next</span></span><div class="body"><h3>??</h3><p class="by">she's waiting to hear what's next</p></div></li>`;
-  $('papers').innerHTML = next + SEP + papers.slice().reverse().map(p => paperRow(p, false)).join(SEP);
+  $('papers').innerHTML = next + SEP + read.map(p => paperRow(p, false)).join(SEP);
 }
 
 /* ---------- the lamp follows the reader ---------- */
