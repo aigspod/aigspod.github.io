@@ -163,7 +163,7 @@ section{margin-top:clamp(64px,10vw,116px);display:grid;gap:22px}
 .paper .by{font-size:.9rem;color:var(--ink2)}
 .paper.next .body{border:1px dashed var(--rule);padding:12px 16px;border-radius:2px}
 .paper.next h3{font-style:italic;color:var(--ink2)}
-.paper .tag{display:inline-block;font-family:var(--hand);font-size:1.25rem;line-height:1;color:var(--amber-text);transform:rotate(-8deg)}
+.paper .tag{display:inline-block;white-space:nowrap;font-family:var(--hand);font-size:1.25rem;line-height:1;color:var(--amber-text);transform:rotate(-8deg)}
 @media(max-width:640px){.paper{grid-template-columns:2.4rem minmax(0,1fr);gap:10px}}
 .said{display:grid;gap:3px;margin-top:4px;max-width:62ch}
 .said p{font-family:var(--serif);font-size:1.04rem;line-height:1.5;color:var(--ink)}
@@ -432,8 +432,17 @@ footer .sleep{width:150px;height:auto}
    link the episode description gives after "Paper:", "Preprint:" or "Link:". An episode with no such
    link is keyed "ep<N>". Anything not listed here still shows up, under its episode title. */
 const FEED = window.MULL_FEED || '../feed.xml';
-/* papers not read yet: { title, authors, venue, year, url }. empty shows a single "next: ??" slot. */
-const UPCOMING = [];
+/* papers not read yet: { title, authors, venue, year, url, when }. when goes in the tag instead of "next".
+   empty shows a single "next: ??" slot. */
+const UPCOMING = [
+  { when: 'Oct 28', title: 'LAWFUL: Law-Aligned Witness for Faithful Use of Latents', authors: 'Chen, Parker & Arora', venue: 'arXiv', year: 2026, url: 'https://arxiv.org/abs/2607.28672' },
+  { when: 'Nov 4', title: 'Rethinking Circuit Evaluation: Do Circuits Explain Model Errors?', authors: 'Zhang et al.', venue: 'arXiv', year: 2026, url: 'https://arxiv.org/abs/2609.35686' },
+  { when: 'Nov 11', title: 'A Mechanistic Analysis of Transformers for Dynamical Systems', authors: 'Duthé et al.', venue: 'arXiv', year: 2025, url: 'https://arxiv.org/abs/2512.21113' },
+  { when: 'Nov 20', title: 'Hackathon: as much of the four as fits into exege', authors: 'all of us', venue: '', year: '' },
+  { when: 'Dec 2', title: 'Pain and Pen, from In the Margins: On the Pleasures of Reading and Writing', authors: 'Elena Ferrante', venue: 'Europa Editions', year: 2022, url: 'https://www.europaeditions.com/book/9781609457372/in-the-margins' },
+  { when: 'Dec 9', title: 'Beyond stochastic parrots: Lacanian reflections on LLMs as superior masters of the symbolic', authors: 'Magnani', venue: 'Synthese', year: 2026, url: 'https://doi.org/10.1007/s11229-026-05648-0' },
+  { when: 'Dec 16', title: "From 'objectivity' to obedience: LLMs as discourse, discipline, and power", authors: 'Kouros', venue: 'AI & Society', year: 2026, url: 'https://doi.org/10.1007/s00146-026-02994-y' }
+];
 const PAPER_META = {
   'https://doi.org/10.1029/2025GL119740': { title: "Forecasting the Future With Yesterday's Climate: Temperature Bias in AI Weather and Climate Models", authors: 'Landsberg & Barnes', venue: 'Geophysical Research Letters', year: 2026 },
   'https://arxiv.org/abs/2602.16090': { title: 'Examining Fast Radiatively Driven Responses Using Machine-Learning Weather Emulators', authors: 'Mahesh et al.', venue: 'arXiv', year: 2026 },
@@ -453,7 +462,8 @@ const PAPER_META = {
   'https://arxiv.org/abs/2512.24440': { title: 'Towards mechanistic understanding in a data-driven weather model: internal activations reveal interpretable physical features', authors: 'MacMillan & Ouellette', venue: 'arXiv', year: 2025 },
   'https://arxiv.org/abs/2605.17493': { title: 'Beyond Linear Superposition: Discovering Climate Features in AI Weather Models with KAN-SAE', authors: 'Cheon', venue: 'arXiv', year: 2026 },
   'https://arxiv.org/abs/2604.20467': { title: 'Mechanistic Interpretability Tool for AI Weather Models', authors: 'Tempest et al.', venue: 'arXiv', year: 2026 },
-  'https://arxiv.org/abs/2605.23778': { title: 'The physics of AI weather models', authors: 'Craig et al.', venue: 'arXiv', year: 2026 }
+  'https://arxiv.org/abs/2605.23778': { title: 'The physics of AI weather models', authors: 'Craig et al.', venue: 'arXiv', year: 2026 },
+  'https://arxiv.org/abs/2604.14477': { title: 'Seeing Through Circuits: Faithful Mechanistic Interpretability for Vision Transformers', authors: 'Żukowska et al.', venue: 'arXiv', year: 2026 }
 };
 /* books: in the order they were recommended. year is optional. pages sets how thick the spine is (and shows on the
    cover); without it the book gets a middling thickness. NEXT is the spine-shaped gap for whatever is coming. */
@@ -464,7 +474,9 @@ const BOOKS = [
   { title: "We Want to Believe: How Aliens Went Mainstream and Why It Matters", author: "Adam Kirsch", year: 2026, pages: 128, url: "https://globalreports.columbia.edu/books/we-want-to-believe" },
   { title: "Agency: The Psychological History of Human Progress", author: "Martin Seligman", year: 2026, url: "https://www.simonandschuster.com/books/Agency/Martin-E-P-Seligman/9781982190644" },
   { title: "Fake Work: How I Began to Suspect Capitalism Is a Joke", author: "Leigh Claire La Berge", year: 2025, pages: 232, url: "https://www.haymarketbooks.org/books/2534-fake-work" },
-  { title: "Language Machines: Cultural AI and the End of Remainder Humanism", author: "Leif Weatherby", year: 2025, pages: 264, url: "https://www.upress.umn.edu/9781517919320/language-machines/" }
+  { title: "Language Machines: Cultural AI and the End of Remainder Humanism", author: "Leif Weatherby", year: 2025, pages: 264, url: "https://www.upress.umn.edu/9781517919320/language-machines/" },
+  { title: "In the Margins: On the Pleasures of Reading and Writing", author: "Elena Ferrante", year: 2022, pages: 112, url: "https://www.europaeditions.com/book/9781609457372/in-the-margins" },
+  { title: "The Singularity of Being: Lacan and the Immortal Within", author: "Mari Ruti", year: 2012, pages: 272, url: "https://muse.jhu.edu/book/21218" }
 ];
 const NEXT = "";
 
@@ -535,7 +547,7 @@ async function loadPapers(){
 }
 const paperRow = (p, next) => `
       <li class="paper entry${next ? ' next' : ''}" data-find="${esc([p.title, p.authors, p.venue, p.year, next ? 'next up' : '', ...(p.pile || []).map(q => [q.title, q.authors, q.venue, q.year].join(' '))].join(' ').toLowerCase())}">
-        <span class="mark">${next ? '<span class="tag">next</span>' : BULB}</span>
+        <span class="mark">${next ? `<span class="tag">${esc(p.when || 'next')}</span>` : BULB}</span>
         <div class="body">
           <h3>${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title)}</h3>
           ${p.authors ? `<p class="by">${esc(p.authors)}${p.venue ? ` · <i>${esc(p.venue)}</i>` : ''} ${esc(p.year)}</p>` : ''}
@@ -857,6 +869,12 @@ $('nudge-x').addEventListener('click', () => { $('nudge').hidden = true; });
 "title": "How AI weather models reinvented physics",
 "date": "Tue, 13 Oct 2026 00:00:00 +0000",
 "link": "https://arxiv.org/abs/2605.23778"
+},
+{
+"n": 24,
+"title": "Mapping visual circuits to fix AI",
+"date": "Sat, 17 Oct 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2604.14477"
 }
 ]</script>
 </body>
