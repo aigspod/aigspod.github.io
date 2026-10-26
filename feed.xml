@@ -35,6 +35,40 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 26 -->
+    <item>
+      <title>Proving AI truly understands physics</title>
+      <description>A fast, enthusiastic two-host pass through LAWFUL, the framework that checks a neural network against a known physical law: a transformer that turns motion capture into radar, the Doppler law it was never shown, counterfactual changes in speed, activation patching, and a circuit of temporal attention heads that seems to compare early and late moments. A companion to episode 25, which takes the same paper slowly and more skeptically. Listen critically: this episode swaps the two attention-patching numbers (patching only the attention pattern gives the smaller drop, 0.35; patching only the values gives 1.31), and it presents as proven several things the paper offers as suggestions, including that the model reinvented adaptive differentiation. Good material to argue about at the meeting (Oct 28). Paper: https://arxiv.org/abs/2607.28672</description>
+      <enclosure url="https://archive.org/download/proving-ai-truly-understands-physics/Proving_AI_Truly_Understands_Physics.mp3"
+                 length="32661186"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep026-proving-ai-truly-understands-physics</guid>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep026.png"/>
+      <itunes:duration>22:41</itunes:duration>
+      <itunes:summary>Did a network that turns motion capture into radar learn the Doppler law, or just mimic it? A brisk, upbeat tour of LAWFUL's counterfactual tests and circuit hunt. Pair it with episode 25, and listen for where it claims more than the paper does.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>26</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
+    <!-- Episode 25 -->
+    <item>
+      <title>When a network follows the law, has it learned the physics?</title>
+      <description>A small transformer predicts radar from motion capture, and when the motion is changed in physically controlled ways, it responds the way the Doppler law says it should. LAWFUL (Law-Aligned Witness for Faithful Use of Latents) turns that into a test: it scores how a model's response to counterfactual inputs tracks a known law, then uses activation patching to find the circuit that carries the response. We walk through what its 0.988 consistency score does and doesn't constrain (a network off by a constant factor would still score perfectly), how far the tested range reaches, the circuit and its weak necessity control, the probes, and the idea that attention heads pick which moments to compare. Then we ask what evidence would justify saying a model has learned the physics, including for climate emulators. Narrated by a synthetic voice (Kokoro, "Bella"). This continues the journal club's circuits series (Oct 28). Paper: https://arxiv.org/abs/2607.28672</description>
+      <enclosure url="https://archive.org/download/lawful-pod/LAWFUL_pod.mp3"
+                 length="39653096"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep025-lawful</guid>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep025.png"/>
+      <itunes:duration>27:32</itunes:duration>
+      <itunes:summary>A transformer that predicts radar responds to controlled changes in motion the way the Doppler law says it should. Has it learned the physics? LAWFUL tests the behavior, finds a circuit that carries it, and suggests how it computes velocity; we look at what each step does and doesn't show.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>25</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 24 -->
     <item>
       <title>Mapping visual circuits to fix AI</title>
