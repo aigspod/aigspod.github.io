@@ -435,7 +435,8 @@ footer .sleep{width:150px;height:auto}
 const FEED = window.MULL_FEED || '../feed.xml';
 /* the reading list: { when: 'YYYY-MM-DD', title, authors, venue, year, url }. until the day we meet on it is
    over, a paper sits in its wrapper with its date for a tag; after that it is on the desk with a bulb like the rest,
-   in date order among the episodes. one that becomes an episode (same url) is shown once, as the episode.
+   in date order among the episodes. one that becomes an episode (same url) is shown once: in its wrapper until the
+   day we meet on it is over (even if the episode came out first), then as the episode.
    nothing still to come shows a single "next: ??" slot. */
 const SCHEDULE = [
   { when: '2026-10-28', title: 'LAWFUL: Law-Aligned Witness for Faithful Use of Latents', authors: 'Chen, Parker & Arora', venue: 'arXiv', year: 2026, url: 'https://arxiv.org/abs/2607.28672' },
@@ -564,12 +565,14 @@ const paperRow = (p, next) => `
         </div>
       </li>`;
 function renderDesk(papers){
-  const now = new Date(), seen = new Set(papers.map(p => p.key));
-  const sched = SCHEDULE.filter(s => !s.url || !seen.has(s.url.replace(/v\d+$/, '')))
+  const now = new Date(), seen = new Set(papers.map(p => p.key)), key = u => u.replace(/v\d+$/, '');
+  /* a paper we haven't met on yet stays in its wrapper, even if its episode is already out */
+  const upcoming = new Set(SCHEDULE.filter(s => s.url && readBy(s.when) > now).map(s => key(s.url)));
+  const sched = SCHEDULE.filter(s => !s.url || upcoming.has(key(s.url)) || !seen.has(key(s.url)))
     .map(s => ({ ...s, date: day(s.when), n: 0 }));
   const newestFirst = (a, b) => b.date - a.date || b.n - a.n;
   const ahead = sched.filter(s => readBy(s.when) > now).sort(newestFirst);
-  const read = papers.concat(sched.filter(s => readBy(s.when) <= now)).sort(newestFirst);
+  const read = papers.filter(p => !upcoming.has(p.key)).concat(sched.filter(s => readBy(s.when) <= now)).sort(newestFirst);
   const next = ahead.length ? ahead.map(p => paperRow(p, true)).join(SEP)
     : `<li class="paper next empty-next"><span class="mark"><span class="tag">next</span></span><div class="body"><h3>??</h3><p class="by">she's waiting to hear what's next</p></div></li>`;
   $('papers').innerHTML = next + SEP + read.map(p => paperRow(p, false)).join(SEP);
@@ -902,6 +905,12 @@ $('nudge-x').addEventListener('click', () => { $('nudge').hidden = true; });
 "title": "Proving AI truly understands physics",
 "date": "Mon, 26 Oct 2026 00:00:00 +0000",
 "link": "https://arxiv.org/abs/2607.28672"
+},
+{
+"n": 27,
+"title": "Do circuits explain model errors?",
+"date": "Sun, 01 Nov 2026 00:00:00 +0000",
+"link": "https://arxiv.org/abs/2609.35686"
 }
 ]</script>
 </body>
