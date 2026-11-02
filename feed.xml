@@ -35,6 +35,23 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 27 -->
+    <item>
+      <title>Do circuits explain model errors?</title>
+      <description>A circuit is a small piece of a neural network that is supposed to explain how the whole network does a task. The usual test asks whether the circuit still does the task, on average. This paper asks a sharper question: when the model gets an answer wrong, does the circuit get it wrong in the same way? Mostly, it doesn't. On indirect object identification in GPT-2 small, under mean ablation, the circuits tested agree with the model on 97 to 99.5 percent of the prompts it gets right, but on only 11 to 42 percent of the ones it gets wrong. We walk through the measurement, three attempts to explain the gap away (errors are rare, errors are close calls, the circuit is just too sure), a case study that adds 63 head positions to the classic circuit and reproduces about three quarters of the held-out errors, and the two omitted computations that make the wrong name win. Then we ask what a circuit is an explanation of, and what the same test would mean for climate emulators and their biases (our extrapolation). Narrated by a synthetic voice (Kokoro, "Bella"). This continues the journal club's circuits series (Nov 4). Paper: https://arxiv.org/abs/2609.35686</description>
+      <enclosure url="https://archive.org/download/circuit-errors-pod/Circuit_Errors_pod.mp3"
+                 length="33882055"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep027-circuit-errors</guid>
+      <pubDate>Sun, 01 Nov 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep027.png"/>
+      <itunes:duration>23:31</itunes:duration>
+      <itunes:summary>A circuit can keep 99.5% of a model's right answers and still miss most of its mistakes. We walk through how the paper measures that gap, why it survives the obvious excuses, and the two missing computations that make GPT-2 pick the wrong name.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>27</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 26 -->
     <item>
       <title>Proving AI truly understands physics</title>
