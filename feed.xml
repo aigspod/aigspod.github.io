@@ -35,6 +35,23 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 28 -->
+    <item>
+      <title>What does attention do with a dynamical system?</title>
+      <description>What does a transformer's attention actually do with measurements from a physical system? This paper takes the smallest transformer, one layer and mostly one attention head, and reads it with classical dynamical-systems theory. For a linear system, attention is an autoregressive model whose lag weights come from softmax, so they are positive and add up to one: a single attention-only head can only average its past, and a damped spring that needs weights of opposite sign comes out too smooth. A second head supplies the minus sign. For nonlinear systems seen through a single sensor, attention works like an adaptive delay embedding, in the spirit of Takens' theorem. We walk through the sign problem, how a short history stands in for a missing sensor (on the Van der Pol oscillator, the best transformer's error is more than a thousand times lower than that of an MLP that sees only the present value), why the model needs enough internal dimensions to unfold what it rebuilds (Chafee-Infante), and why flow past a cylinder goes better when the model is told the Reynolds number (without it, rebuilding the velocity field from the model's internal state is about 70 times worse). Then we ask whether good next-step forecasts mean a sound internal state, and what that suggests for machine-learned climate emulators (our extrapolation). Narrated by a synthetic voice (Kokoro, "Bella"). This continues the journal club's interpretability series (Nov 11). Paper: https://arxiv.org/abs/2512.21113</description>
+      <enclosure url="https://archive.org/download/dynamics-pod/Dynamics_pod.mp3"
+                 length="30184564"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep028-dynamics</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep028.png"/>
+      <itunes:duration>20:57</itunes:duration>
+      <itunes:summary>One attention head can only average its past, so it smooths out a spring that needs a minus sign. Through a single sensor it can still rebuild a hidden state from history, if it has room inside to unfold it and is told which regime it is in. And predicting the next step well isn't the same as having an internal state you can read the physics from.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>28</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 27 -->
     <item>
       <title>Do circuits explain model errors?</title>
