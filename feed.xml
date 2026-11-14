@@ -35,6 +35,23 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 29 -->
+    <item>
+      <title>Can computation create information?</title>
+      <description>AlphaZero learns superhuman chess from nothing but the rules, yet by the accounts of Shannon and Kolmogorov it has learned almost nothing: a short program can't create information. This episode follows that puzzle through a 2026 paper that puts the observer's computing budget into the definition of information. We start with Shannon entropy (information as surprise) and Kolmogorov complexity (the shortest program), find the crack in both with pseudorandom generators, and then meet epiplexity: the size of the best model a time-limited observer can find, set against time-bounded entropy, what still looks random to it. We cover how to estimate it from a training run (the area under the loss curve, and a stricter teacher-student code), three puzzles it untangles (computation creating information, order mattering, and models learning more than the process that made their data, with cellular automata, chess, induction and emergence), what it says about text versus images and about choosing training data, and where it is still on shaky ground. An aigs pod extra, not tied to a journal-club meeting, and an unofficial summary, not produced by the authors. Narrated by a synthetic voice (Kokoro, "Bella"). Paper: Finzi, Qiu, Jiang, Izmailov, Kolter and Wilson, "From Entropy to Epiplexity" (2026), https://arxiv.org/abs/2601.03220</description>
+      <enclosure url="https://archive.org/download/epiplexity-pod/Epiplexity_pod.mp3"
+                 length="37003172"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep029-epiplexity</guid>
+      <pubDate>Sat, 14 Nov 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep029.png"/>
+      <itunes:duration>25:42</itunes:duration>
+      <itunes:summary>Shannon and Kolmogorov say a short program can't create information, yet AlphaZero learns chess from the rules alone. Put the observer's compute budget into the definition and information splits into structure a learner can extract (epiplexity) and what still looks random to it, which untangles three puzzles about computation, order and induction.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>29</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 28 -->
     <item>
       <title>What does attention do with a dynamical system?</title>
