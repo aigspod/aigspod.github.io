@@ -35,6 +35,23 @@
       <link>https://aigspod.github.io</link>
     </image>
 
+    <!-- Episode 30 -->
+    <item>
+      <title>Can a weather model learn without an answer key?</title>
+      <description>Every weather forecast starts from a picture of the atmosphere right now, and nobody can see right now: scattered stations, weather balloons twice a day, and satellites that measure light rather than temperature. Building that picture, data assimilation, is one of the most expensive steps in forecasting, and even the celebrated AI forecasters start from it. This episode follows a 2026 paper that trains one model, WeatherDreamer, to learn the whole predict-then-correct loop from raw observations of 18 observing systems, with no reanalysis as an answer key. We cover the classic Kalman-style loop and the learned one, how it is taught, where it already competes near the ground, why it falls short higher up (patches too small for the large, slow circulation, and too little weight on upper-air observations), how to read its scoreboard fairly, what it learned to trust, and why its memory holds the footprints of the satellites that were watching. An aigs pod extra, not tied to a journal-club meeting, and an unofficial summary, not produced by the authors. Narrated by a synthetic voice (Kokoro, "Bella"). Paper: Duffy, Penn, Ballard, Posch and Vandal, "WeatherDreamer: Learning a World Model from Multimodal Earth Observations" (2026), https://arxiv.org/abs/2611.18393</description>
+      <enclosure url="https://archive.org/download/weatherdreamer-pod/WeatherDreamer_pod.mp3"
+                 length="31763746"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">aigspod-ep030-weatherdreamer</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 +0000</pubDate>
+      <itunes:image href="https://aigspod.github.io/images/ep030.png"/>
+      <itunes:duration>22:03</itunes:duration>
+      <itunes:summary>Every forecast starts from a picture of now, built by expensive hand-made machinery. A new model learns that whole predict-then-correct loop from raw observations alone: competitive near the ground, behind higher up, and with a memory that holds the footprints of the satellites that were watching.</itunes:summary>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>30</itunes:episode>
+      <itunes:explicit>no</itunes:explicit>
+    </item>
+
     <!-- Episode 29 -->
     <item>
       <title>Can computation create information?</title>
