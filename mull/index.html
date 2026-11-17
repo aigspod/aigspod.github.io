@@ -433,6 +433,12 @@ footer .sleep{width:150px;height:auto}
    link the episode description gives after "Paper:", "Preprint:" or "Link:". An episode with no such
    link is keyed "ep<N>". Anything not listed here still shows up, under its episode title. */
 const FEED = window.MULL_FEED || '../feed.xml';
+/* aigs pod extras: episodes in the feed that are not journal-club papers stay off the desk, keyed like the desk keys them
+   (an episode whose description doesn't give the link right after "Paper:" is keyed "ep<N>", so list both) */
+const NOT_ON_DESK = new Set([
+  'https://arxiv.org/abs/2601.03220', 'ep29',   /* ep 29, From Entropy to Epiplexity */
+  'https://arxiv.org/abs/2611.18393', 'ep30'    /* ep 30, WeatherDreamer */
+]);
 /* the reading list: { when: 'YYYY-MM-DD', title, authors, venue, year, url }. until the day we meet on it is
    over, a paper sits in its wrapper with its date for a tag; after that it is on the desk with a bulb like the rest,
    in date order among the episodes. one that becomes an episode (same url) is shown once: in its wrapper until the
@@ -539,7 +545,7 @@ async function loadPapers(){
   let raw;
   try { raw = await feedEpisodes(); } catch (err) { raw = snapshotEpisodes(); }
   const eps = raw.map(e => ({ ...e, date: new Date(e.date), key: e.link ? e.link.replace(/v\d+$/, '') : 'ep' + e.n }))
-    .filter(e => e.n && !isNaN(e.date)).sort((a, b) => a.n - b.n);
+    .filter(e => e.n && !isNaN(e.date) && !NOT_ON_DESK.has(e.key)).sort((a, b) => a.n - b.n);
   const papers = [];
   eps.forEach(e => {
     let p = papers.find(q => q.key === e.key);
