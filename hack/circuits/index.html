@@ -81,6 +81,11 @@ h1 span:nth-child(3){color:var(--sun)}
 .pager .brand{display:flex;justify-content:space-between;font:700 11px/1 var(--ui);letter-spacing:.24em;color:#8c939e;margin-bottom:6px}
 .pager .brand i{font-style:normal;color:var(--magenta);animation:blink 1s steps(2) infinite}
 @keyframes blink{50%{opacity:0}}
+.pager.alert{box-shadow:0 0 0 2px var(--live),0 10px 30px rgba(0,0,0,.6)}
+.pager.alert .lcd{animation:lcdflash .45s steps(2) 12}
+@keyframes lcdflash{50%{background:linear-gradient(180deg,#e8ff9e,#c9ec7a)}}
+.btn.livecta{background:var(--live);color:#fff}
+.btn.livecta span::before{content:"● ";animation:blink 1s steps(2) infinite}
 .lcd{position:relative;height:32px;overflow:hidden;border-radius:4px;background:linear-gradient(180deg,#a9c47a,#8fae5e);box-shadow:inset 0 2px 6px rgba(0,0,0,.45)}
 .lcd span{position:absolute;left:0;top:4px;white-space:nowrap;font:400 25px/1 var(--lcdf);color:#18240c;letter-spacing:.04em;padding-left:8px}
 
@@ -214,7 +219,7 @@ footer p{max-width:70ch}
     <h1 aria-label="exege hacks circuits"><span>exege</span><span>hacks</span><span>circuits</span></h1>
     <p class="sub">Open up machine-learned climate models and find the circuits inside. Beginners welcome.</p>
     <div class="ctas">
-      <a class="btn hot" href="#missions"><span>Join a session</span></a>
+      <a class="btn hot" id="heroJoin" href="#missions"><span>Join a session</span></a>
       <button class="btn ghost" id="heroPlay" type="button"><span>▶ Radio</span></button>
     </div>
   </div>
@@ -369,6 +374,9 @@ function tickMissions(){
     else if (now < s.end){ c.className='chip live'; c.textContent = `● Live now · ${dur(s.end-now)} left` }
     else { c.className='chip done'; c.textContent = `Mission ${s.n} · complete` }
   }
+  const live = SESSIONS.find(x => now >= x.start && now < x.end), cta = $('#heroJoin');
+  if (live){ cta.href = live.url; cta.target = '_blank'; cta.rel = 'noopener'; cta.classList.add('livecta'); cta.innerHTML = `<span>Join session ${live.n} now</span>` }
+  else { cta.href = '#missions'; cta.removeAttribute('target'); cta.classList.remove('livecta'); cta.innerHTML = '<span>Join a session</span>' }
   $('#clock').textContent = new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}) + (tz ? ' ' + tz : '');
 }
 tickMissions(); setInterval(tickMissions, 15000);
@@ -559,6 +567,10 @@ const TEXT = {
   ad_null:"Lonely? Try Null Hypothesis Dating. We'll never reject you. We'll just fail to reject you. p < 0.05, or your money back.",
   ad_storage:"Is your home directory full? Try Scratch Space Storage. We keep your checkpoints for ninety days, then delete them without telling you. Back it up.",
   ad_seed42:"And now, this week's seed lottery. The winning seed is... 42. Again. It's always 42.",
+  live_s1:"<b>NEWS DESK:</b> We interrupt this program. Session one of the hackathon is live, right now, on Teams. The link is on the page. Go!",
+  wrap_s1:"<b>NEWS DESK:</b> That's a wrap on session one. Stretch your legs. Session two starts at three o'clock, Eastern. Same page, new link.",
+  live_s2:"<b>NEWS DESK:</b> We interrupt this program. Session two is live, right now, on Teams. Pull up, and bring your checkpoints.",
+  wrap_all:"<b>NEWS DESK:</b> And that's a wrap on the hackathon. Thanks for hacking, Port Samudra. Drive safe, and commit your code.",
   ad_prereg:"Ask your team lead if a preregistration sheet is right for you. Side effects of skipping it may include forking paths, a garden of p-values, and a very long Monday.",
 };
 const LOOP = 150;
@@ -612,6 +624,7 @@ function sfx(kind){
     g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.028, t + 1.4); g.gain.exponentialRampToValueAtTime(0.0001, t + 4.7);
     let node = o.connect(lp).connect(g); if (pan){ pan.pan.setValueAtTime(-0.85, t); pan.pan.linearRampToValueAtTime(0.85, t + 4.7); node = node.connect(pan) }
     node.connect(ctx.destination); o.start(t); o.stop(t + 4.8); return }
+  if (kind === 'news'){ [784, 988, 1175, 1568].forEach((fq, i) => tone('square', fq, t + i*0.11, 0.2, 0.016)); tone('triangle', 392, t + 0.44, 0.7, 0.03); return }
   if (kind === 'win'){ [523.25, 659.25, 783.99, 1046.5].forEach((fq, i) => tone('triangle', fq, t + i*0.07, 0.6 - i*0.06, 0.028)); return }
   tone('sine', 1318.5, t, 0.14, 0.03); tone('sine', 1760, t + 0.06, 0.16, 0.025);   // blip
 }
@@ -910,6 +923,30 @@ function nextPage(){
   span.animate([{transform: `translateX(${lw}px)`}, {transform: `translateX(${-w}px)`}], {duration: (lw + w) / 90 * 1000, easing: 'linear'}).onfinish = nextPage;
 }
 nextPage();
+
+/* ------------------------------------------------------------ on-air moments: the news desk breaks in when a session starts or wraps */
+const MOMENTS = [
+  { at: SESSIONS[0].start, clip: 'live_s1', big: 'Session 1 is live', small: 'Join on Teams', msg: 'SESSION 1 IS LIVE NOW. JOIN ON TEAMS' },
+  { at: SESSIONS[0].end, clip: 'wrap_s1', big: 'Session 1: wrap', small: 'Session 2 at 3 pm ET', msg: 'SESSION 1 IS A WRAP. SESSION 2 AT 3 PM ET' },
+  { at: SESSIONS[1].start, clip: 'live_s2', big: 'Session 2 is live', small: 'Join on Teams', msg: 'SESSION 2 IS LIVE NOW. JOIN ON TEAMS' },
+  { at: SESSIONS[1].end, clip: 'wrap_all', big: "That's a wrap", small: 'Thanks for hacking', msg: "THAT'S A WRAP. THANKS FOR HACKING" },
+];
+const firedMoments = new Set();
+function checkMoments(){
+  const now = Date.now();
+  for (const m of MOMENTS){                 // fire once per browser, within 20 minutes of the moment
+    if (now < m.at || now > m.at + 20*60*1000 || firedMoments.has(m.clip) || store.get('psm' + m.clip)) continue;
+    firedMoments.add(m.clip); store.set('psm' + m.clip, '1'); onAir(m); break;
+  }
+}
+function onAir(m){
+  urgent.unshift(m.msg, m.msg);
+  const pg = $('.pager'); pg.classList.remove('alert'); void pg.offsetWidth; pg.classList.add('alert'); setTimeout(() => pg.classList.remove('alert'), 6000);
+  banner(m.big, m.small); tickMissions();
+  if (playing){ clearTimeout(breakT); voiceEl.pause(); voiceEl.removeAttribute('src'); voiceOn = true; setMusic(); sfx('news'); queue = [m.clip]; setTimeout(playNext, 1300) }
+}
+setTimeout(checkMoments, 1500); setInterval(checkMoments, 5000);
+{ const q = new URLSearchParams(location.search).get('moment'); const m = MOMENTS.find(x => x.clip === q); if (m) setTimeout(() => onAir(m), 8000) }   // preview: ?moment=live_s1
 
 /* ------------------------------------------------------------ keys and cheat codes */
 let buf = '';
