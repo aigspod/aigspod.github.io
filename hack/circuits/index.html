@@ -489,14 +489,19 @@ const STATIONS = [
     tracks:[['Straight to the Output','DJ Identity'],['Full Resolution (Club Edit)','U-Net Boyz'],['Concatenate Me','Skip & The Channels'],['Bottleneck? Never Heard of It','Residual Crew']] },
   { id:'samudra', freq:'94.7', band:'FM', name:'Radio Samudra', tag:'Slow music for a slow ocean', dj:'Nicole', music:'samudra', clips:['samudra_1','samudra_2','samudra_3'],
     tracks:[['Five-Day Window','Mixed Layer'],['Upwelling','The Thermoclines'],['Warm Pool','Nino Three Four'],['Ekman Spiral (Slow Version)','Wind Stress']] },
+  { id:'block', freq:'97.7', band:'FM', name:'The Block', tag:'Hip-hop from the residual stream', dj:'DJ Dropout', music:'block', clips:['block_1','block_2','block_3','block_4','block_verse1','block_verse2'],
+    tracks:[['Straight Outta the Residual Stream','Latent Gs'],['Skip Connection (Remix)','U-Net Boyz'],['Vanishing Act','Lil Gradient'],['Backprop Anthem','MC Backprop'],['Encoder 4 Life','U-Net Boyz'],['Weights Heavy','Latent Gs feat. Big Skip']] },
   { id:'latent', freq:'101.1', band:'FM', name:'Latent FM', tag:'Synthwave from the hidden layers', dj:'Bella', music:'latent', clips:['latent_1','latent_2','latent_3','latent_4'],
     tracks:[['Superposition','The Polysemantics'],['Hidden State of Mind','Residual Stream'],['Night Drive on the Sphere','Spherical Harmonics'],['Sparse Autoencoder Love','Dictionary Learning']] },
   { id:'talk', freq:'1220', band:'AM', name:'Port Samudra Public Radio', tag:'News, traffic, weather and your calls', dj:'George and Michael', music:'samudra', bed:0.12, clips:['talk_news','talk_traffic','talk_weather','talk_call','talk_rules'],
     tracks:[['Morning Edition','Port Samudra Public Radio']] },
+  { id:'bugline', freq:'1500', band:'AM', name:'The Bug Line', tag:'Complaints, bugs and zero patience', dj:'Big Rick', music:'bugline', bed:0.28, open:'bug_open',
+    clips:['bug_1','bug_2','bug_3','bug_4','bug_5','bug_6','bug_7','bug_8','bug_9','bug_file'], tracks:[['Your Call Is Important to Us','Hold Music Orchestra']] },
 ];
+const isTalk = st => st.id === 'talk' || st.id === 'bugline';
 const SECRET = { id:'secret', freq:'108.0', band:'FM', name:'Hidden Layer', tag:'The station between the stations', dj:'Michael, Bella and George', music:'secret', clips:['secret_1','secret_2','secret_3'],
     tracks:[['Package Deal','The Collectors'],['Between the Stations','Off-Dial Orchestra'],['Nobody Reads the Docs','README Ensemble']] };
-const ADS = ['ad_weight','ad_mask','ad_seed','ad_corrector','ad_restate','ad_prereg'];
+const ADS = ['ad_weight','ad_mask','ad_seed','ad_corrector','ad_restate','ad_prereg','ad_clip','ad_lrcars','ad_dropout','ad_attention','ad_null','ad_storage','ad_seed42'];
 const WHO = { latent:'Bella', skip:'Puck', samudra:'Nicole', deep:'Fenrir', ad:'Paid advertisement', talk:'Port Samudra Public Radio' };
 const TEXT = {
   latent_1:"You're locked in to Latent FM, 101.1. All the hits from the hidden layers. Smooth activations, all day long.",
@@ -526,6 +531,30 @@ const TEXT = {
   secret_1:"You found every hidden package. Welcome to Hidden Layer, 108. Nobody else knows about this station. Let's keep it that way.",
   secret_2:"Hidden Layer, 108. The station between the stations. If you can hear this, you looked everywhere.",
   secret_3:"This is Hidden Layer. Tonight's program is brought to you by curiosity, and by nobody reading the documentation.",
+  block_1:"97.7, The Block! Straight outta the residual stream. U-Net Boyz in the building. Latent Gs on deck.",
+  block_2:"This next one goes out to everybody whose loss went flat at epoch three. Keep your head up. Lower your learning rate.",
+  block_3:"You're locked to The Block. Hip-hop for people who read the attention maps.",
+  block_4:"Shout out to session two, three o'clock Eastern. Pull up. Bring your checkpoints.",
+  block_verse1:"<b>LATENT GS:</b> Yo. Started from the bottleneck, now we here. / Skip connection, full resolution, crystal clear. / Gradients flowing, never vanish, never fear. / Latent Gs in the stream, all year.",
+  block_verse2:"<b>U-NET BOYZ:</b> Check it. I patch the edge, then I patch it again. / Area-weighted, masked the land, counted to ten. / One seed's a rumor, five seeds is a trend. / U-Net Boyz, from the encoder to the end.",
+  bug_open:"<b>RICK:</b> You're on the Bug Line! 1500 AM! You got a complaint? I got no patience! Caller, you're on. Make it quick!",
+  bug_1:"<b>CALLER:</b> My job got killed at 39 minutes! The limit was 40! <b>RICK:</b> Did you use caffeinate? <b>CALLER:</b> I used coffee! <b>RICK:</b> Coffee is not caffeinate! Get off my line!",
+  bug_2:"<b>CALLER:</b> My coding agent rewrote my entire repo while I was getting a sandwich! <b>RICK:</b> And who left the agent alone? You did! Commit your code! Next!",
+  bug_3:"<b>CALLER:</b> I've area-weighted, I've masked the land, I've quoted the corrector column, and nobody told me what to do next! <b>RICK:</b> That's called being done! Go to lunch! Next!",
+  bug_4:"<b>CALLER:</b> The radio played the same ad twice! <b>RICK:</b> It's the radio! That's what radio does! Next!",
+  bug_5:"<b>CALLER:</b> CUDA out of memory! Again! <b>RICK:</b> Smaller batch! <b>CALLER:</b> It was batch size one! <b>RICK:</b> Then get a bigger GPU! We'll be right back!",
+  bug_6:"<b>CALLER:</b> There's a pine tree air freshener hanging in my latent space! <b>RICK:</b> Don't touch the car! Nobody touches the car!",
+  bug_7:"<b>CALLER:</b> Is the passcode a lowercase L, or a capital I? <b>RICK:</b> There is a copy button! It is right there! Use the copy button!",
+  bug_8:"<b>CALLER:</b> Why is the speedometer in miles per hour? We're scientists! <b>RICK:</b> Because it's a car! Cars don't do SI units! Next!",
+  bug_9:"<b>CALLER:</b> The police keep following me in the mirror! <b>RICK:</b> Then stop being so curious! Next!",
+  bug_file:"<b>RICK:</b> Found a real bug? Open an issue! With steps to reproduce! Complaints without steps get read on air! Next!",
+  ad_clip:"Exploding gradients? Come on down to the Gradient Clipping Barbershop. We'll take a little off the top. Norm of one, every time. Walk-ins welcome.",
+  ad_lrcars:"Learning Rate Used Cars! Prices slashed on a cosine schedule! No warmup required! Our prices are so low, they're practically 1e-5! We converge, eventually.",
+  ad_dropout:"Memorizing the training set? Doctor Dropout's clinic can help. We randomly forget half of everything, so you don't have to. Generalize responsibly.",
+  ad_attention:"Can't focus? Try Multi-Head, the energy drink with sixteen heads of attention. Side effects may include looking everywhere at once. Pay attention.",
+  ad_null:"Lonely? Try Null Hypothesis Dating. We'll never reject you. We'll just fail to reject you. p < 0.05, or your money back.",
+  ad_storage:"Is your home directory full? Try Scratch Space Storage. We keep your checkpoints for ninety days, then delete them without telling you. Back it up.",
+  ad_seed42:"And now, this week's seed lottery. The winning seed is... 42. Again. It's always 42.",
   ad_prereg:"Ask your team lead if a preregistration sheet is right for you. Side effects of skipping it may include forking paths, a garden of p-values, and a very long Monday.",
 };
 const LOOP = 150;
@@ -537,8 +566,9 @@ const found = new Set(JSON.parse(store.get('pspk') || '[]'));
 if (found.size >= 6){ STATIONS.push(SECRET); if (store.get('psst') === 'secret') cur = STATIONS.length - 1 }
 let ctx, master, musicGain, voiceGain, analyser, staticBuf, engine, engineGain, playing = false, breakT = null, voiceOn = false, trackT = null;
 let trackI = 0, recent = [], talkDeck = [], queue = [];
-const musicEl = new Audio(), voiceEl = new Audio();
-musicEl.preload = 'auto'; voiceEl.preload = 'auto';
+const voiceEl = new Audio(); voiceEl.preload = 'auto';
+const decks = [new Audio(), new Audio()].map(el => { el.preload = 'auto'; return {el, g: null, xf: false, stopT: 0} });
+let deckI = 0;
 
 function initAudio(){
   if (ctx) return;
@@ -546,7 +576,7 @@ function initAudio(){
   master = ctx.createGain(); master.gain.value = +$('#volume').value;
   analyser = ctx.createAnalyser(); analyser.fftSize = 128;
   musicGain = ctx.createGain(); voiceGain = ctx.createGain(); voiceGain.gain.value = 1.15;
-  ctx.createMediaElementSource(musicEl).connect(musicGain).connect(master);
+  musicGain.connect(master); for (const d of decks){ d.g = ctx.createGain(); d.g.gain.value = 0; ctx.createMediaElementSource(d.el).connect(d.g).connect(musicGain) }
   ctx.createMediaElementSource(voiceEl).connect(voiceGain).connect(master);
   master.connect(analyser).connect(ctx.destination);
   const n = ctx.sampleRate * 0.5; staticBuf = ctx.createBuffer(1, n, ctx.sampleRate);
@@ -581,7 +611,8 @@ function sfx(kind){
   if (kind === 'win'){ [523.25, 659.25, 783.99, 1046.5].forEach((fq, i) => tone('triangle', fq, t + i*0.07, 0.6 - i*0.06, 0.028)); return }
   tone('sine', 1318.5, t, 0.14, 0.03); tone('sine', 1760, t + 0.06, 0.16, 0.025);   // blip
 }
-function musicLevel(){ const st = STATIONS[cur]; return (st.bed ?? 1) * (voiceOn ? 0.3 : 1) }
+let curClip = '';
+function musicLevel(){ const st = STATIONS[cur]; return (st.bed ?? 1) * (voiceOn ? (curClip.startsWith('block_verse') ? 0.7 : 0.3) : 1) }
 function setMusic(){ if (musicGain) musicGain.gain.setTargetAtTime(musicLevel(), ctx.currentTime, 0.25) }
 
 function renderStation(){
@@ -595,37 +626,45 @@ function renderStation(){
 function showTrack(){
   if (voiceOn) return;
   const st = STATIONS[cur], [t, a] = st.tracks[(trackI + Math.floor(Date.now()/60000)) % st.tracks.length];
-  $('#now').textContent = playing ? (st.id === 'talk' ? st.tag : `♪ ${t} · ${a}`) : st.tag;
-  $('#mNow').textContent = `${st.freq} ${st.band} · ${playing ? (st.id === 'talk' ? 'news and talk' : t + ' · ' + a) : 'off'}`;
+  $('#now').textContent = playing ? (isTalk(st) ? st.tag : `♪ ${t} · ${a}`) : st.tag;
+  $('#mNow').textContent = `${st.freq} ${st.band} · ${playing ? (isTalk(st) ? st.tag : t + ' · ' + a) : 'off'}`;
 }
 function buildPresets(){ $('#presets').innerHTML = STATIONS.map((s, i) => `<button class="hb" type="button" data-st="${i}" title="${s.name}, ${s.freq} ${s.band}" aria-label="${s.name}">${i + 1}</button>`).join('') }
 buildPresets();
 document.addEventListener('click', e => { const b = e.target.closest('[data-st]'); if (b) tune(+b.dataset.st) });
 
-function startMusic(){
+function ramp(d, v, sec){ const g = d.g.gain, t = ctx.currentTime; g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(v, t + sec) }
+function startMusic(fade){
   const st = STATIONS[cur], list = TRACKS(st), pos = ((Date.now()/1000) + cur*53) % (150*list.length);
-  trackI = Math.floor(pos/150); loadTrack(pos % 150);
+  trackI = Math.floor(pos/150); loadTrack(pos % 150, fade ?? 1.2);
 }
-function loadTrack(offset){
-  const list = TRACKS(STATIONS[cur]); musicEl.src = `audio/music_${list[trackI % list.length]}.m4a`;
-  const seek = () => { try { musicEl.currentTime = offset } catch(e){} musicEl.removeEventListener('loadedmetadata', seek) };
-  if (offset) musicEl.addEventListener('loadedmetadata', seek);
-  musicEl.play().catch(() => {});
+/* each track plays on the free deck and crossfades with the one before: 3 s between tracks, ~1 s between stations */
+function loadTrack(offset, fade){
+  const list = TRACKS(STATIONS[cur]), old = decks[deckI]; deckI ^= 1; const d = decks[deckI];
+  d.xf = false; clearTimeout(d.stopT); d.el.src = `audio/music_${list[trackI % list.length]}.m4a`;
+  const seek = () => { try { d.el.currentTime = offset } catch(e){} d.el.removeEventListener('loadedmetadata', seek) };
+  if (offset) d.el.addEventListener('loadedmetadata', seek);
+  d.el.play().catch(() => {});
+  ramp(d, 1, fade); ramp(old, 0, fade);
+  clearTimeout(old.stopT); old.stopT = setTimeout(() => { if (decks[deckI] !== old) old.el.pause() }, fade*1000 + 200);
 }
-musicEl.addEventListener('ended', () => { if (!playing) return; trackI++; loadTrack(0); showTrack() });
+for (const d of decks) d.el.addEventListener('timeupdate', () => {
+  if (!playing || d !== decks[deckI] || d.xf || !d.el.duration) return;
+  if (d.el.duration - d.el.currentTime < 3.2){ d.xf = true; trackI++; loadTrack(0, 3); showTrack() }
+});
 function tune(i){
   i = (i + STATIONS.length) % STATIONS.length;
   const changed = i !== cur; cur = i; store.set('psst', STATIONS[cur].id);
   if (changed) quest('station' + STATIONS[cur].id);
   stopVoice(); queue = []; renderStation();
-  if (playing){ sfx('static'); startMusic(); setMusic(); scheduleBreak(true) }
+  if (playing){ sfx('static'); startMusic(0.9); setMusic(); scheduleBreak(true) }
 }
 function play(){
   initAudio(); ctx.resume(); playing = true; quest('radio');
   startMusic(); setMusic(); scheduleBreak(true); updatePlay();
   clearInterval(trackT); trackT = setInterval(showTrack, 5000);
 }
-function pause(){ playing = false; musicEl.pause(); stopVoice(); queue = []; clearTimeout(breakT); updatePlay() }
+function pause(){ playing = false; for (const d of decks){ if (d.g) ramp(d, 0, 0.35); clearTimeout(d.stopT); d.stopT = setTimeout(() => { if (!playing) d.el.pause() }, 450) } stopVoice(); queue = []; clearTimeout(breakT); updatePlay() }
 function toggle(){ playing ? pause() : play() }
 function updatePlay(){ for (const b of [$('#play'), $('#mPlay')]){ b.textContent = playing ? '❚❚' : '▶'; b.setAttribute('aria-label', playing ? 'Pause' : 'Play') } showTrack() }
 
@@ -634,14 +673,14 @@ function fresh(pool){ const ok = pool.filter(x => !recent.includes(x)); return p
 function scheduleBreak(first){
   clearTimeout(breakT); if (!playing) return;
   const st = STATIONS[cur];
-  const wait = st.id === 'talk' ? rand(first ? 1.5 : 4, first ? 3 : 9) : (first ? (Math.random() < 0.5 ? rand(4, 8) : rand(25, 45)) : rand(90, 180));
+  const wait = isTalk(st) ? rand(first ? 1.5 : 4, first ? 3 : 9) : (first ? (Math.random() < 0.5 ? rand(4, 8) : rand(25, 45)) : rand(90, 180));
   breakT = setTimeout(() => nextBreak(first), wait*1000);
 }
 function nextBreak(first){
   if (!playing) return; const st = STATIONS[cur];
-  if (st.id === 'talk'){
-    if (!talkDeck.length) talkDeck = [...st.clips].sort(() => Math.random() - 0.5);
-    queue = Math.random() < 0.3 ? [fresh(ADS)] : [talkDeck.pop()];
+  if (isTalk(st)){
+    if (talkDeck.station !== st.id || !talkDeck.length){ talkDeck = [...st.clips].sort(() => Math.random() - 0.5); talkDeck.station = st.id }
+    queue = first && st.open ? [st.open] : Math.random() < 0.3 ? [fresh(ADS)] : [talkDeck.pop()];
   } else if (first) queue = [st.clips[0]];
   else {
     const r = Math.random();
@@ -651,13 +690,13 @@ function nextBreak(first){
 }
 function playNext(){
   const id = queue.shift(); if (!id){ endBreak(); return }
-  recent = [id, ...recent].slice(0, 4);
+  recent = [id, ...recent].slice(0, 4); curClip = id;
   voiceOn = true; setMusic();
   const st = STATIONS[cur], isAd = id.startsWith('ad_');
   $('#onair').classList.add('lit');
   $('#now').textContent = isAd ? 'A word from our sponsors' : `On air: ${st.dj}`;
   $('#mNow').textContent = isAd ? 'Commercial break' : `On air · ${st.dj}`;
-  $('#caption').innerHTML = (isAd ? '<b>AD</b> ' : `<b>${st.dj.split(' ')[0].toUpperCase()}:</b> `) + (TEXT[id] || '');
+  const txt = TEXT[id] || ''; $('#caption').innerHTML = (isAd ? '<b>AD</b> ' : txt.startsWith('<b>') ? '' : `<b>${st.dj.toUpperCase()}:</b> `) + txt;
   voiceEl.src = `audio/${id}.m4a`; voiceEl.play().catch(() => playNext());
 }
 function stopVoice(){ voiceEl.pause(); voiceEl.removeAttribute('src'); voiceOn = false; $('#caption').textContent = ''; $('#onair').classList.remove('lit'); setMusic() }
@@ -840,7 +879,7 @@ document.addEventListener('click', e => {
   const b = e.target.closest('.pkg'); if (!b) return;
   found.add(b.dataset.pkg); store.set('pspk', JSON.stringify([...found])); renderPkgs(); quest('pkg' + b.dataset.pkg); sfx('blip');
   if (found.size >= 6 && !STATIONS.includes(SECRET)){
-    STATIONS.push(SECRET); buildPresets(); banner('All packages found', 'Secret station unlocked: 108.0'); page('SECRET STATION UNLOCKED: PRESET 6, 108.0 FM');
+    STATIONS.push(SECRET); buildPresets(); banner('All packages found', 'Secret station unlocked: 108.0'); page(`SECRET STATION UNLOCKED: PRESET ${STATIONS.length}, 108.0 FM`);
     if (!playing) play(); tune(STATIONS.length - 1);
   } else { toast(`Hidden package ${found.size} of 6`); page(`HIDDEN PACKAGE ${found.size} OF 6 FOUND`) }
 });
@@ -853,7 +892,7 @@ function countdownMsg(){
   if (!s) return 'ALL MISSIONS COMPLETE. THANKS FOR HACKING, SEE YOU NEXT TIME';
   return now < s.start ? `SESSION ${s.n} STARTS IN ${hms(s.start - now)} . NOON ET / 3 PM ET` : `SESSION ${s.n} IS LIVE NOW . JOIN ON TEAMS . MEETING ID ${s.id}`;
 }
-const PAGES = ['BRING A HYPOTHESIS', 'PICK A RIDE: SAMUDRACE OR VIT', 'AREA-WEIGHT YOUR MEANS', 'TUNE TO 1220 AM FOR TRAFFIC ON THE SKIP', () => `HIDDEN PACKAGES FOUND: ${found.size} OF 6`,
+const PAGES = ['BRING A HYPOTHESIS', 'PICK A RIDE: SAMUDRACE OR VIT', 'AREA-WEIGHT YOUR MEANS', 'TUNE TO 1220 AM FOR TRAFFIC ON THE SKIP', 'COMPLAINTS? CALL THE BUG LINE, 1500 AM', 'NEW ON 97.7: THE BLOCK', () => `HIDDEN PACKAGES FOUND: ${found.size} OF 6`,
   'TRY A CHEAT CODE. RUMOR SAYS: SIREN', 'ONE SEED IS AN ANECDOTE', 'HAND YOUR AGENT THE PROMPT IN HACKATHON.MD', 'BEGINNERS WELCOME. ASK ANYTHING'];
 let pageK = 0;
 function page(msg){ urgent.push(msg) }
