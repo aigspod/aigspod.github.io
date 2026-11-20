@@ -5,7 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Port Samudra Hack Day</title>
-<meta name="description" content="exege hacks circuits: the aigs hackathon, Nov 20, 2026. Two sessions, two rides, six radio stations.">
+<meta name="description" content="exege hacks circuits: the aigs hackathon, Friday Nov 20, 2026. Two sessions on Teams (noon and 3 pm ET), two ready-to-drive kits, six radio stations.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aigspod.github.io/hack/circuits/">
+<meta property="og:site_name" content="The AIGS Pod">
+<meta property="og:title" content="exege hacks circuits · the aigs hackathon">
+<meta property="og:description" content="Friday, Nov 20: two sessions on Teams (noon and 3 pm ET), two ready-to-drive kits, six radio stations.">
+<meta property="og:image" content="https://aigspod.github.io/hack/circuits/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="EXEGE HACKS CIRCUITS in big outlined letters over a rainy harbor city at night, with a pager reading NOON &amp; 3 PM ET.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="exege hacks circuits · the aigs hackathon">
+<meta name="twitter:description" content="Friday, Nov 20: two sessions on Teams (noon and 3 pm ET), two ready-to-drive kits, six radio stations.">
+<meta name="twitter:image" content="https://aigspod.github.io/hack/circuits/og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='14' width='56' height='40' rx='3' fill='%23b88447' stroke='%234a2f12' stroke-width='3'/%3E%3Crect x='28' y='14' width='8' height='40' fill='%23e2c88f'/%3E%3Cpath d='M32 2l3.5 7 7.5 1-5.5 5 1.5 7.5L32 19l-7 3.5L26.5 15 21 10l7.5-1z' fill='%23ffb547' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;700&family=Barlow:wght@400;600&family=VT323&family=JetBrains+Mono:wght@500&display=swap">
@@ -95,7 +109,8 @@ kbd{font:500 12px/1 var(--mono);background:#262d3a;border:1px solid #3a4458;bord
 .subs{position:absolute;left:10%;right:10%;bottom:38%;text-align:center;font:600 clamp(15px,1.9vw,21px)/1.35 var(--body);color:#fff;text-shadow:0 0 4px #000,2px 2px 0 #000,-1px -1px 0 #000;pointer-events:none;text-wrap:balance}
 .subs b{color:var(--sun);font-weight:600}
 .pedal{position:absolute;right:2.5%;bottom:4%;width:64px;height:84px;border-radius:10px 10px 6px 6px;border:2px solid #000;cursor:pointer;background:repeating-linear-gradient(0deg,#3a3f48 0 6px,#23272e 6px 10px);color:var(--sand);font:700 14px/1 var(--ui);letter-spacing:.14em;box-shadow:0 6px 0 #000;touch-action:none;user-select:none;-webkit-user-select:none}
-.pedal.down{transform:translateY(5px) scaleY(.94);box-shadow:0 1px 0 #000;color:var(--sun)}
+.pedal{--press:0;transform:translateY(calc(var(--press) * 8px)) scaleY(calc(1 - var(--press) * .1));transform-origin:bottom;box-shadow:0 calc(6px - var(--press) * 5px) 0 #000}
+.pedal.down{color:var(--sun)}
 .carhint{position:absolute;left:2.5%;top:12%;font:700 12px/1.6 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:rgba(241,238,230,.6);text-shadow:1px 1px 0 #000;pointer-events:none}
 .headunit{position:absolute;left:40%;right:12%;bottom:3.5%;background:linear-gradient(180deg,#262a31,#121418);border:1px solid #000;border-radius:10px;padding:10px;box-shadow:0 8px 24px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.1)}
 .screen{position:relative;background:radial-gradient(120% 140% at 30% 0%,#123222,#06120b 70%);border-radius:6px;border:2px solid #000;padding:8px 12px 6px;overflow:hidden;box-shadow:inset 0 0 30px rgba(0,0,0,.6)}
@@ -214,7 +229,7 @@ footer p{max-width:70ch}
   <div class="car">
     <div class="view">
       <canvas id="drive" aria-hidden="true"></canvas>
-      <div class="carhint">Hold <kbd>W</kbd> or the pedal to drive<br><kbd>H</kbd> or click the wheel to honk<br><kbd>←</kbd> <kbd>→</kbd> change station</div>
+      <div class="carhint">You are parked. Hold <kbd>W</kbd> or the pedal to drive<br><kbd>H</kbd> or click the wheel to honk<br><kbd>←</kbd> <kbd>→</kbd> change station</div>
       <div class="subs" id="caption" aria-live="polite"></div>
       <button class="pedal" id="gas" type="button" aria-label="Gas pedal, hold to speed up">GAS</button>
       <button class="pkg" type="button" data-pkg="2" aria-label="Hidden package" style="position:absolute;left:3%;top:3%"></button>
@@ -655,7 +670,8 @@ renderStation();
 
 /* ------------------------------------------------------------ the car */
 const car = $('#drive'), cg = car.getContext('2d');
-let CW = 0, CH = 0, speed = 34, dist = 0, gas = false, wipe = 0, rain = [], oncoming = [], lastT = 0, swing = 0, swingV = 0, carSky = [], carVisible = true, honkT = 0;
+let cop = null, nextCopAt = 20000;
+let CW = 0, CH = 0, speed = 0, throttle = 0, aheadZ = 9, dist = 0, gas = false, wipe = 0, rain = [], oncoming = [], lastT = 0, swing = 0, swingV = 0, carSky = [], carVisible = true, honkT = 0;
 function sizeCar(){
   const r = car.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
   CW = r.width; CH = r.height; car.width = CW*d; car.height = CH*d; cg.setTransform(d,0,0,d,0,0);
@@ -669,9 +685,11 @@ function glow(x, y, r, col){ const g = cg.createRadialGradient(x, y, 0, x, y, r)
 function drawCar(t){
   const dt = Math.min(0.05, Math.max(0, (t - lastT)/1000)); lastT = t;
   const before = speed;
-  speed += ((gas ? 96 : 34) - speed) * (gas ? 0.7 : 0.3) * dt;
+  throttle = Math.max(0, Math.min(1, throttle + (gas ? 0.75 : -2.2) * dt));
+  speed = Math.max(0, speed + (throttle * 34 - 0.0028 * speed * speed - 1.2 - (speed > 0 ? 0.04 * speed : 0)) * dt);
+  $('#gas').style.setProperty('--press', throttle.toFixed(2));
   dist += speed * 0.25 * dt;
-  if (engineGain) engineGain.gain.setTargetAtTime(gas ? 0.05 : 0.0, ctx.currentTime, 0.12), engine.frequency.setTargetAtTime(28 + speed*0.9, ctx.currentTime, 0.1);
+  if (engineGain && revved) engineGain.gain.setTargetAtTime(0.012 + throttle*0.045, ctx.currentTime, 0.12), engine.frequency.setTargetAtTime(26 + speed*0.85 + throttle*14, ctx.currentTime, 0.1);
   const w = CW, h = CH, hy = h*0.40, f = h*0.6, sway = Math.sin(t/2300)*w*0.006, vx = w*0.5 + sway;
   const P = (X, Y, z) => [vx + X*f/z, hy + f*(1 - Y)/z];
   // sky, skyline, ground
@@ -696,7 +714,7 @@ function drawCar(t){
     cg.fillStyle = '#ffe2a8'; cg.fillRect(hx - 0.25*s, hy2, 0.5*s, Math.max(1, 0.08*s));
   }
   // the car ahead
-  const za = 8 + 1.8*Math.sin(t/5000), [ax0, ay0] = P(-0.95, 1.15, za), [ax1, ay1] = P(0.95, 0.15, za), sa = f/za;
+  aheadZ = Math.max(8, Math.min(60, aheadZ + (38 - speed)*0.06*dt)); const za = aheadZ + 0.8*Math.sin(t/5000), [ax0, ay0] = P(-0.95, 1.15, za), [ax1, ay1] = P(0.95, 0.15, za), sa = f/za;
   cg.fillStyle = '#12161d'; cg.fillRect(ax0, ay0, ax1 - ax0, ay1 - ay0);
   const brake = Math.sin(t/3100) > 0.75;
   for (const X of [-0.7, 0.7]){ const [lx, ly] = P(X, 0.72, za); glow(lx, ly, (brake ? 1.1 : 0.6)*sa, brake ? 'rgba(255,40,30,.7)' : 'rgba(255,40,30,.45)'); cg.fillStyle = '#ff4433'; cg.fillRect(lx - 0.16*sa, ly - 0.06*sa, 0.32*sa, 0.12*sa) }
@@ -705,6 +723,25 @@ function drawCar(t){
   for (const o of oncoming){ o.z -= (speed + 45)*0.25*dt; if (o.z < 1.2) continue; const s = f/o.z;
     for (const X of [-3.9, -2.9]){ const [lx, ly] = P(X, 0.65, o.z); glow(lx, ly, Math.min(w*0.25, 1.4*s), 'rgba(255,250,225,.55)'); cg.fillStyle = '#fffbe8'; cg.beginPath(); cg.arc(lx, ly, Math.max(1, 0.12*s), 0, 7); cg.fill() } }
   oncoming = oncoming.filter(o => o.z >= 1.2);
+  // police: from curiosity 3 a cruiser sometimes tails you in the mirror, then flashes past; more often at 4 and 5
+  const lvl = starsOn();
+  if (!cop && lvl >= 3 && speed > 15 && t > nextCopAt){ cop = {phase: 'mirror', start: t}; page(`POLICE IN YOUR MIRROR. CURIOSITY LEVEL ${lvl}`) }
+  if (cop && cop.phase === 'mirror' && t - cop.start > 6500){ cop = {phase: 'pass', z: 0.9}; sfx('siren') }
+  if (cop && cop.phase === 'pass'){
+    cop.z += (Math.max(12, 70 - speed*0.5)*0.25 + 2)*dt;
+    const z = cop.z, s = f/z, on = Math.floor(t/120) % 2;
+    if (z > 1.05){
+      const [bx0, by0] = P(-4.3, 1.25, z), [bx1, by1] = P(-2.5, 0.15, z);
+      cg.fillStyle = '#161b24'; cg.fillRect(bx0, by0, bx1 - bx0, by1 - by0);
+      cg.fillStyle = '#d9dde3'; const [wx0, wy0] = P(-4.3, 0.8, z), [, wy1] = P(-4.3, 0.62, z); cg.fillRect(wx0, wy0, bx1 - bx0, wy1 - wy0);
+      for (const X of [-4.0, -2.8]){ const [lx, ly] = P(X, 0.5, z); cg.fillStyle = '#ff3b30'; cg.fillRect(lx - 0.13*s, ly - 0.05*s, 0.26*s, 0.1*s) }
+      const [rx, ry] = P(-3.75, 1.38, z), [ux, uy] = P(-3.05, 1.38, z);
+      glow(rx, ry, Math.min(w*0.35, 2.2*s), on ? 'rgba(255,40,40,.75)' : 'rgba(255,40,40,.12)');
+      glow(ux, uy, Math.min(w*0.35, 2.2*s), on ? 'rgba(50,110,255,.12)' : 'rgba(50,110,255,.8)');
+      cg.fillStyle = on ? 'rgba(255,40,40,.05)' : 'rgba(50,110,255,.05)'; cg.fillRect(0, 0, w, h);
+    }
+    if (z > 90){ cop = null; nextCopAt = t + rand(lvl >= 5 ? 12 : lvl >= 4 ? 25 : 45, lvl >= 5 ? 30 : 70)*1000 }
+  }
   // haze at the horizon
   g = cg.createLinearGradient(0, hy - h*0.05, 0, hy + h*0.08); g.addColorStop(0, 'rgba(60,55,60,0)'); g.addColorStop(.5, 'rgba(60,55,60,.35)'); g.addColorStop(1, 'rgba(60,55,60,0)'); cg.fillStyle = g; cg.fillRect(0, hy - h*0.05, w, h*0.13);
   // rain on the glass and the wipers
@@ -727,6 +764,16 @@ function drawCar(t){
   if (police > 0){ police -= dt; const on = Math.floor(t/180) % 2; glow(mx - mw*0.2, my, mw*0.45, on ? 'rgba(255,40,40,.9)' : 'rgba(0,0,0,0)'); glow(mx + mw*0.2, my, mw*0.45, on ? 'rgba(0,0,0,0)' : 'rgba(50,110,255,.9)');
     cg.fillStyle = on ? 'rgba(255,40,40,.07)' : 'rgba(50,110,255,.07)'; cg.fillRect(0, 0, w, h); if (police <= 0) $('#stars').classList.remove('siren') }
   else { cg.fillStyle = 'rgba(255,207,122,.5)'; for (let i = 0; i < 9; i++) cg.fillRect(mx - mw/2 + 6 + i*mw/9.5, my + mh*0.1 - (i%3)*3, 2, 2) }
+  if (cop && cop.phase === 'mirror'){
+    const k = Math.min(1, (t - cop.start)/6500), on = Math.floor(t/120) % 2, cw2 = mw*(0.12 + 0.3*k), ch2 = mh*(0.25 + 0.45*k), cx3 = mx + mw*0.08, cy3 = my + mh/2 - 2;
+    cg.save(); cg.beginPath(); cg.rect(mx - mw/2, my - mh/2, mw, mh); cg.clip();
+    glow(cx3 - cw2*0.25, cy3 - ch2, cw2*1.4, on ? 'rgba(255,40,40,.85)' : 'rgba(255,40,40,.15)');
+    glow(cx3 + cw2*0.25, cy3 - ch2, cw2*1.4, on ? 'rgba(50,110,255,.15)' : 'rgba(50,110,255,.85)');
+    cg.fillStyle = '#05070a'; cg.fillRect(cx3 - cw2/2, cy3 - ch2*0.8, cw2, ch2*0.8);
+    cg.fillStyle = '#fffbe8'; for (const d of [-0.32, 0.32]){ cg.beginPath(); cg.arc(cx3 + d*cw2, cy3 - ch2*0.3, Math.max(1, cw2*0.08), 0, 7); cg.fill() }
+    cg.fillStyle = on ? '#ff3b30' : '#3b6bff'; cg.fillRect(cx3 - cw2*0.3, cy3 - ch2*0.95, cw2*0.6, Math.max(2, ch2*0.14));
+    cg.restore();
+  }
   swingV += (-14*Math.sin(swing) - 1.6*swingV + (before - speed)*0.6 + Math.sin(t/900)*0.6) * dt; swing += swingV*dt;
   const sx0 = mx + mw*0.3, sy0 = my + mh/2;
   cg.save(); cg.translate(sx0, sy0); cg.rotate(swing); cg.strokeStyle = '#2a2a2a'; cg.lineWidth = 1; cg.beginPath(); cg.moveTo(0, 0); cg.lineTo(0, h*0.06); cg.stroke();
@@ -741,8 +788,8 @@ function drawCar(t){
   const gx = w*0.22, gy = h*0.82, gr = h*0.085;
   cg.fillStyle = '#121519'; cg.beginPath(); cg.ellipse(gx, gy - gr*0.25, gr*2.1, gr*1.35, 0, Math.PI, 0); cg.fill();
   cg.fillStyle = '#05070a'; cg.beginPath(); cg.arc(gx, gy, gr, 0, 7); cg.fill(); cg.strokeStyle = '#3a404b'; cg.lineWidth = 2; cg.stroke();
-  for (let k = 0; k <= 12; k++){ const a = 0.75*Math.PI + k/12*1.5*Math.PI; cg.strokeStyle = k*10 >= 90 ? '#e0413a' : '#cfd5dd'; cg.lineWidth = k % 2 ? 1 : 2; cg.beginPath(); cg.moveTo(gx + Math.cos(a)*gr*0.78, gy + Math.sin(a)*gr*0.78); cg.lineTo(gx + Math.cos(a)*gr*0.92, gy + Math.sin(a)*gr*0.92); cg.stroke() }
-  const na = 0.75*Math.PI + Math.min(1, speed/120)*1.5*Math.PI + Math.sin(t/90)*0.004;
+  for (let k = 0; k <= 14; k++){ const a = 0.75*Math.PI + k/14*1.5*Math.PI; cg.strokeStyle = k*10 >= 110 ? '#e0413a' : '#cfd5dd'; cg.lineWidth = k % 2 ? 1 : 2; cg.beginPath(); cg.moveTo(gx + Math.cos(a)*gr*0.78, gy + Math.sin(a)*gr*0.78); cg.lineTo(gx + Math.cos(a)*gr*0.92, gy + Math.sin(a)*gr*0.92); cg.stroke() }
+  const na = 0.75*Math.PI + Math.min(1, speed/140)*1.5*Math.PI + Math.sin(t/90)*0.004;
   cg.strokeStyle = '#ff6a3a'; cg.lineWidth = 2.5; cg.beginPath(); cg.moveTo(gx, gy); cg.lineTo(gx + Math.cos(na)*gr*0.85, gy + Math.sin(na)*gr*0.85); cg.stroke();
   cg.fillStyle = '#b8ff9a'; cg.font = `${Math.round(gr*0.42)}px VT323, monospace`; cg.textAlign = 'center'; cg.fillText(String(Math.round(speed)).padStart(2, '0'), gx, gy + gr*0.52);
   cg.fillStyle = '#7d8592'; cg.font = `${Math.round(gr*0.2)}px "Barlow Condensed", sans-serif`; cg.fillText('MPH', gx, gy + gr*0.72);
@@ -760,7 +807,8 @@ sizeCar(); if (REDUCED) drawCar(1000); else requestAnimationFrame(loopCar);
 addEventListener('resize', () => { sizeCar(); if (REDUCED) drawCar(1000) });
 if ('IntersectionObserver' in window){ new IntersectionObserver(es => { carVisible = es[0].isIntersecting }).observe(car) }
 function honk(){ initAudio(); ctx.resume(); sfx('horn'); honkT = performance.now() + 420; quest('honk') }
-function setGas(on){ if (on){ initAudio(); ctx.resume(); quest('gas') } gas = on; $('#gas').classList.toggle('down', on) }
+let revved = false;
+function setGas(on){ if (on){ initAudio(); ctx.resume(); revved = true; quest('gas') } gas = on; $('#gas').classList.toggle('down', on) }
 const pedal = $('#gas');
 pedal.addEventListener('pointerdown', e => { setGas(true); pedal.setPointerCapture(e.pointerId) });
 for (const ev of ['pointerup', 'pointercancel', 'lostpointercapture']) pedal.addEventListener(ev, () => setGas(false));
