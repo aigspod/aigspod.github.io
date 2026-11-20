@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Port Samudra Hack Day</title>
+<meta name="description" content="exege hacks circuits: the aigs hackathon, Nov 20, 2026. Two sessions, six side jobs, five radio stations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,500;0,700;1,700&family=Barlow:wght@400;600&family=Monoton&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a sunset hero over the ocean, then a car stereo, the two missions, side jobs, a city map; a mini radio rides the bottom edge. One deliberate night look. */
+:root{
+  --night:#140a26; --dusk:#24123f; --panel:#1d1233; --line:#3b2560;
+  --sun:#ffc24a; --tangerine:#ff7a3d; --magenta:#ff2e88; --sea:#1fd1c1; --sand:#ffe8c7; --mute:#b9a6d6;
+  --ok:#5df28c; --live:#ff3d5a;
+  --display:"Anton","Impact","Haettenschweiler","Arial Narrow Bold",sans-serif;
+  --ui:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --neon:"Monoton","Barlow Condensed",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;background:var(--night);color:var(--sand);font:16px/1.55 var(--body);overflow-x:hidden;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+a{color:var(--sea)}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+[hidden]{display:none!important}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(20,10,38,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:8px;font:600 15px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase}
+.topbar .where{color:var(--mute)}
+.stars{display:flex;align-items:center;gap:6px}
+.stars span{font-size:12px;color:var(--mute)}
+.stars i{font-style:normal;font-size:20px;color:#4a3570;transition:color .3s,transform .3s}
+.stars i.on{color:var(--sun);transform:scale(1.15);text-shadow:0 0 10px rgba(255,194,74,.7)}
+.clock{font-family:var(--mono);letter-spacing:0;color:var(--sand)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;min-height:480px;display:flex;align-items:flex-end;border-bottom:4px solid var(--magenta)}
+#sky{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform .8s}
+.hero .wrap{position:relative;width:100%;padding-block:48px 40px}
+.kicker{font:700 15px/1 var(--ui);letter-spacing:.3em;text-transform:uppercase;color:var(--sand);text-shadow:0 2px 8px #000}
+h1{margin:.25em 0 .15em;font:400 clamp(64px,13vw,150px)/.86 var(--display);text-transform:uppercase;letter-spacing:.01em;transform:skewX(-8deg);transform-origin:left bottom}
+h1 span{display:block;background:linear-gradient(180deg,var(--sun) 0%,var(--tangerine) 55%,var(--magenta) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(5px 5px 0 #1a0630) drop-shadow(0 0 22px rgba(255,46,136,.35))}
+h1 span:nth-child(2){padding-left:.5em}
+.hero p.sub{max-width:34em;font:600 clamp(17px,2.2vw,21px)/1.4 var(--body);text-shadow:0 2px 10px #000;margin:0 0 22px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;text-decoration:none;font:700 18px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;padding:14px 20px;transform:skewX(-8deg);transition:transform .15s,box-shadow .15s}
+.btn>*{transform:skewX(8deg)}
+.btn:hover{transform:skewX(-8deg) translateY(-2px)}
+.btn.hot{background:var(--magenta);color:#fff;box-shadow:5px 5px 0 #1a0630}
+.btn.cool{background:var(--sea);color:#06232a;box-shadow:5px 5px 0 #1a0630}
+.btn.ghost{background:transparent;color:var(--sand);box-shadow:inset 0 0 0 2px var(--sand)}
+
+section{padding-block:56px 8px;scroll-margin-top:48px}
+h2{font:400 clamp(36px,6vw,58px)/1 var(--display);text-transform:uppercase;margin:0 0 6px;color:var(--sand);transform:skewX(-6deg);text-wrap:balance}
+h2 em{font-style:normal;color:var(--magenta)}
+.lede{color:var(--mute);margin:0 0 24px;max-width:62ch}
+.eyebrow{font:700 14px/1 var(--ui);letter-spacing:.28em;text-transform:uppercase;color:var(--sea);margin-bottom:10px}
+
+/* radio */
+.stereo{background:linear-gradient(180deg,#2a1a47,#170d2b);border:2px solid #4b2f78;border-radius:18px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+.screen{position:relative;background:#07120f;border-radius:10px;border:2px solid #0b2a24;padding:16px 18px;overflow:hidden;min-height:190px;box-shadow:inset 0 0 40px rgba(31,209,193,.12)}
+.screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
+#viz{position:absolute;left:0;right:0;bottom:0;width:100%;height:70px;opacity:.55}
+.freq{font:500 15px/1 var(--mono);color:var(--sea);letter-spacing:.08em}
+.stname{font:400 clamp(26px,5vw,44px)/1.1 var(--neon);color:var(--sun);margin:8px 0 2px;text-shadow:0 0 6px var(--tangerine),0 0 18px var(--magenta);word-break:break-word}
+.sttag{font:600 16px/1.3 var(--ui);letter-spacing:.08em;text-transform:uppercase;color:#9fe9df}
+.now{position:relative;z-index:1;margin-top:14px;font:500 14px/1.4 var(--mono);color:var(--sand);min-height:2.8em}
+.now b{color:var(--magenta);font-weight:500}
+.caption{position:relative;z-index:1;margin-top:6px;font:600 17px/1.35 var(--body);color:#fff;min-height:1.4em}
+.dial{position:relative;margin:16px 4px 6px;height:54px;border-radius:8px;background:linear-gradient(180deg,#120a22,#1b1131);border:1px solid #3a2560;overflow:hidden}
+.dial .ticks{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,232,199,.25) 0 1px,transparent 1px 12px);mask:linear-gradient(180deg,transparent 55%,#000 56%)}
+.dial button{position:absolute;top:6px;transform:translateX(-50%);background:none;border:0;color:var(--mute);font:700 13px/1 var(--ui);letter-spacing:.06em;cursor:pointer;padding:4px 6px;white-space:nowrap}
+.dial button.on{color:var(--sun)}
+.needle{position:absolute;top:0;bottom:0;width:3px;background:var(--live);box-shadow:0 0 10px var(--live);transform:translateX(-50%);transition:left .45s cubic-bezier(.5,1.6,.4,1)}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}
+.knob{width:52px;height:52px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 35% 30%,#5b4290,#2a1a47 70%);color:var(--sand);font-size:20px;box-shadow:0 4px 0 #0e0719,inset 0 1px 0 rgba(255,255,255,.15)}
+.knob.big{width:64px;height:64px;font-size:24px;background:radial-gradient(circle at 35% 30%,#ff5ea4,var(--magenta) 60%,#a3105a)}
+.knob:active{transform:translateY(2px);box-shadow:0 2px 0 #0e0719}
+.vol{display:flex;align-items:center;gap:8px;margin-left:auto;font:700 13px/1 var(--ui);letter-spacing:.15em;color:var(--mute)}
+.vol input{accent-color:var(--magenta);width:130px}
+.presets{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
+.presets button{background:#140b26;border:1px solid #3d2763;color:var(--sand);border-radius:8px;padding:10px 6px;cursor:pointer;font:700 14px/1.15 var(--ui);letter-spacing:.04em;text-transform:uppercase;min-width:0}
+.presets button small{display:block;color:var(--mute);font:500 12px/1.2 var(--mono);margin-top:4px}
+.presets button.on{border-color:var(--sun);box-shadow:0 0 0 1px var(--sun),0 0 16px rgba(255,194,74,.25)}
+.hint{color:var(--mute);font-size:14px;margin-top:10px}
+kbd{font:500 12px/1 var(--mono);background:#2a1a47;border:1px solid #4b2f78;border-bottom-width:3px;border-radius:5px;padding:2px 6px;color:var(--sand)}
+
+/* missions */
+.missions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.mission{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;overflow:hidden}
+.mission::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--sun),var(--magenta))}
+.mission h3{font:400 30px/1.05 var(--display);text-transform:uppercase;margin:6px 0 4px;letter-spacing:.01em}
+.when{font:700 20px/1.2 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--sun)}
+.local{font:500 13px/1.3 var(--mono);color:var(--mute);margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:8px;font:700 14px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;border-radius:3px;background:#2b1b48;color:var(--sand)}
+.chip.live{background:var(--live);color:#fff;animation:pulse 1.4s infinite}
+.chip.done{background:#1b3b2a;color:var(--ok)}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(255,61,90,.25)}}
+.creds{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:16px 0 18px;font:500 15px/1.2 var(--mono)}
+.creds dt{font:700 13px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.creds dd{margin:0;color:var(--sand);user-select:all;min-width:0;overflow-wrap:anywhere}
+.copy{background:none;border:1px solid var(--line);color:var(--sea);font:700 12px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;padding:6px 8px;border-radius:3px;cursor:pointer}
+
+/* jobs */
+.jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.job{background:#190f2d;border:1px solid var(--line);border-radius:4px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.job .tag{display:flex;align-items:center;gap:10px}
+.job .letter{display:grid;place-items:center;width:38px;height:38px;background:var(--sea);color:#06232a;font:400 24px/1 var(--display);transform:skewX(-8deg)}
+.job h3{margin:0;font:700 22px/1.1 var(--ui);text-transform:uppercase;letter-spacing:.04em}
+.job p{margin:0;color:#e9dcf7}
+.job .obj{margin-top:auto;padding-top:8px;border-top:1px dashed var(--line);font-size:14px;color:var(--mute)}
+.job .obj b{font:700 12px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--sun);display:block;margin-bottom:4px}
+.rules{margin-top:18px;color:var(--mute);font-size:15px}
+
+/* map */
+.mapbox{position:relative;width:100%;max-width:100%;aspect-ratio:16/9;border-radius:6px;overflow:hidden;border:2px solid var(--line);background:#0a2b3a}
+#map{position:absolute;inset:0;width:100%;height:100%}
+.pin{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--sand);font:700 13px/1.1 var(--ui);letter-spacing:.08em;text-transform:uppercase;text-align:center}
+.pin .dot{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--magenta);display:grid;place-items:center;box-shadow:0 3px 0 #1a0630;transition:transform .15s}
+.pin .dot b{transform:rotate(45deg);font:400 15px/1 var(--display);color:#fff}
+.pin:hover .dot,.pin:focus-visible .dot{transform:rotate(-45deg) scale(1.2)}
+.pin span{margin-top:6px;background:rgba(20,10,38,.85);padding:3px 6px;border-radius:3px;white-space:nowrap}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;margin:16px 0 0;padding:0;list-style:none}
+.legend li{display:flex;gap:10px;align-items:baseline;min-width:0}
+.legend b{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--magenta);color:#fff;font:400 13px/1 var(--display)}
+.legend a{font-weight:600}
+.legend small{color:var(--mute)}
+
+/* reading list */
+.books{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.book{display:flex;flex-direction:column;gap:6px;background:linear-gradient(160deg,#2c1850,#1a0f2e);border:1px solid var(--line);border-radius:4px;padding:16px;text-decoration:none;color:var(--sand);min-width:0;transition:transform .15s}
+.book:hover{transform:translateY(-3px) rotate(-1deg)}
+.book small{font:700 12px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;color:var(--sea)}
+.book strong{font:700 19px/1.15 var(--ui);text-transform:uppercase;letter-spacing:.03em}
+.book span{color:var(--mute);font-size:14px}
+
+/* tips + cheats */
+.tips{margin-top:40px;background:#0e0820;border-block:1px solid var(--line)}
+.tips .wrap{display:flex;gap:16px;align-items:center;padding-block:16px}
+.tips b{flex:none;font:700 14px/1 var(--ui);letter-spacing:.24em;color:var(--sun)}
+#tip{font:600 17px/1.35 var(--body);transition:opacity .4s;min-width:0}
+.cheat{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.cheat input{background:#0e0820;border:1px solid var(--line);color:var(--sand);font:500 16px/1 var(--mono);padding:10px 12px;border-radius:4px;text-transform:uppercase;width:min(260px,100%)}
+footer{padding-block:32px 24px;color:var(--mute);font-size:14px}
+footer p{max-width:70ch}
+
+/* overlays */
+.banner{position:fixed;inset:0;z-index:50;display:grid;place-items:center;pointer-events:none;text-align:center}
+.banner div{animation:pop 2.6s ease forwards}
+.banner strong{display:block;font:400 clamp(44px,9vw,104px)/.95 var(--display);text-transform:uppercase;color:var(--sun);-webkit-text-stroke:2px #1a0630;text-shadow:6px 6px 0 #1a0630,0 0 30px rgba(255,194,74,.5)}
+.banner span{display:block;margin-top:10px;font:700 clamp(20px,3.5vw,32px)/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;color:#fff;text-shadow:3px 3px 0 #1a0630}
+@keyframes pop{0%{opacity:0;transform:scale(1.4)}12%{opacity:1;transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(.98)}}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;background:var(--sand);color:var(--night);font:700 16px/1.3 var(--ui);letter-spacing:.06em;text-transform:uppercase;padding:12px 16px;border-radius:4px;box-shadow:5px 5px 0 var(--magenta);max-width:calc(100% - 32px);text-align:center}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:45;width:100%;height:100%}
+
+/* mini radio */
+.mini{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(14,8,32,.94);backdrop-filter:blur(8px);border-top:2px solid var(--magenta);padding-bottom:env(safe-area-inset-bottom,0px)}
+.mini .wrap{display:flex;align-items:center;gap:12px;padding-block:10px}
+.mini .knob{width:44px;height:44px;font-size:16px}
+.mini .knob.big{width:48px;height:48px;font-size:18px}
+.mini .meta{min-width:0;flex:1}
+.mini .meta b{display:block;font:400 18px/1.1 var(--neon);color:var(--sun);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini .meta span{display:block;font:500 12px/1.3 var(--mono);color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.onair{flex:none;font:700 12px/1 var(--ui);letter-spacing:.2em;padding:6px 8px;border-radius:3px;background:#2b1b48;color:var(--mute)}
+.onair.lit{background:var(--live);color:#fff}
+
+@media (max-width:860px){.jobs{grid-template-columns:repeat(2,minmax(0,1fr))}.books{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){
+  .missions,.jobs,.legend{grid-template-columns:1fr}
+  .presets{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pin span{display:none}
+  .vol{margin-left:0;width:100%}.vol input{flex:1}
+  .topbar .where{display:none}
+  .dial button{font-size:11px}
+  .creds{grid-template-columns:auto 1fr}.creds .copy{grid-column:2;justify-self:start}
+}
+@media (max-width:420px){.books{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="where">Port Samudra · Fri 20 Nov 2026</div>
+    <div class="stars" aria-label="Curiosity level"><span>Curiosity</span><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></div>
+    <div class="clock" id="clock">--:--</div>
+  </div>
+</header>
+
+<div class="hero">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="kicker">The aigs hackathon · Friday, November 20</div>
+    <h1 aria-label="exege hacks circuits"><span>exege</span><span>hacks</span><span>circuits</span></h1>
+    <p class="sub">Two sessions in one day. We open up a machine-learned climate model and look for the circuits inside. Beginners and climate scientists new to interpretability are welcome.</p>
+    <div class="ctas">
+      <a class="btn hot" href="#missions"><span>See the missions</span></a>
+      <button class="btn cool" id="heroPlay" type="button"><span>▶ Turn on the radio</span></button>
+    </div>
+  </div>
+</div>
+
+<main>
+<section id="missions" class="wrap">
+  <div class="eyebrow">Main missions</div>
+  <h2>Two sessions, <em>one Friday</em></h2>
+  <p class="lede">Both sessions are on Microsoft Teams and open to anyone. Times are in Eastern and Pacific, with your local time underneath.</p>
+  <div class="missions" id="missionList"></div>
+</section>
+
+<section id="radio" class="wrap">
+  <div class="eyebrow">In-car entertainment</div>
+  <h2>Port Samudra <em>radio</em></h2>
+  <p class="lede">Five stations for hacking to. The music is original, made with our own score engine, and the DJs are synthetic Kokoro voices. Stay tuned for the ads.</p>
+  <div class="stereo">
+    <div class="screen">
+      <canvas id="viz" aria-hidden="true"></canvas>
+      <div class="freq" id="freq">101.1 FM</div>
+      <div class="stname" id="stname">Latent FM</div>
+      <div class="sttag" id="sttag">Synthwave from the hidden layers</div>
+      <div class="now" id="now">Press play. The radio picks up where the station is right now.</div>
+      <div class="caption" id="caption" aria-live="polite"></div>
+    </div>
+    <div class="dial" id="dial"><div class="ticks"></div><div class="needle" id="needle"></div></div>
+    <div class="controls">
+      <button class="knob" id="prev" type="button" aria-label="Previous station">⏮</button>
+      <button class="knob big" id="play" type="button" aria-label="Play">▶</button>
+      <button class="knob" id="next" type="button" aria-label="Next station">⏭</button>
+      <button class="knob" id="skipAd" type="button" aria-label="Play a break now" title="Play a break now">📻</button>
+      <label class="vol" for="volume">VOL <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8"></label>
+    </div>
+    <div class="presets" id="presets"></div>
+    <div class="hint">Tune with <kbd>←</kbd> <kbd>→</kbd>, play or pause with <kbd>space</kbd>. Cheat codes work anywhere on the page.</div>
+  </div>
+</section>
+
+<section id="jobs" class="wrap">
+  <div class="eyebrow">Side jobs</div>
+  <h2>Six tracks. <em>Pick one.</em></h2>
+  <p class="lede">From the hackathon plan. One or two people per track. Every job is an open question. Nobody knows the answers yet, which is the point.</p>
+  <div class="jobs" id="jobList"></div>
+  <p class="rules"><b>House rules for every job:</b> area-weight and mask. Report the spread across states and dates, not only the mean. Quote the corrector-in and corrector-out column. Say which of your numbers restate one another.</p>
+</section>
+
+<section id="map-section" class="wrap">
+  <div class="eyebrow">Map</div>
+  <h2>Getting around <em>Port Samudra</em></h2>
+  <p class="lede">Every pin is a link. The map is an illustration; the city is not real, but the links are.</p>
+  <div class="mapbox"><canvas id="map" aria-hidden="true"></canvas><div id="pins"></div></div>
+  <ul class="legend" id="legend"></ul>
+</section>
+
+<section id="reading" class="wrap">
+  <div class="eyebrow">The bookstore</div>
+  <h2>Four papers <em>on the dashboard</em></h2>
+  <p class="lede">The ideas come from four journal-club papers. Each has an aigs pod episode.</p>
+  <div class="books" id="books"></div>
+</section>
+</main>
+
+<div class="tips">
+  <div class="wrap"><b>TIP</b><div id="tip"></div></div>
+</div>
+
+<footer class="wrap">
+  <div class="cheat">
+    <label for="cheatIn"><b>Cheat code:</b></label>
+    <input id="cheatIn" type="text" autocomplete="off" spellcheck="false" placeholder="type one here">
+    <span>Rumored codes: <kbd>AREAWEIGHT</kbd> <kbd>SEEDS</kbd> <kbd>FLUS</kbd> <kbd>SKIP</kbd> <kbd>DEEPPATH</kbd></span>
+  </div>
+  <p>An unofficial, throwaway page for the aigs hackathon, made by the aigs pod. Port Samudra and its radio stations are made up. The music is original and the voices are synthetic. Not affiliated with any game or studio. Questions go to the <a href="https://e3sm.atlassian.net/wiki/spaces/p3ai/pages/6840745985/2026-11-20+ai+group+hackathon+circuits" target="_blank" rel="noopener">hackathon page on Confluence</a>.</p>
+</footer>
+
+<div class="mini" role="region" aria-label="Radio">
+  <div class="wrap">
+    <button class="knob" id="mPrev" type="button" aria-label="Previous station">⏮</button>
+    <button class="knob big" id="mPlay" type="button" aria-label="Play">▶</button>
+    <button class="knob" id="mNext" type="button" aria-label="Next station">⏭</button>
+    <div class="meta"><b id="mName">Latent FM</b><span id="mNow">101.1 FM · off</span></div>
+    <div class="onair" id="onair">ON AIR</div>
+  </div>
+</div>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="banner" id="banner" hidden><div><strong id="bannerBig"></strong><span id="bannerSmall"></span></div></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store = { get(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }, set(k,v){ try{ localStorage.setItem(k,v) }catch(e){} } };
+
+/* ------------------------------------------------------------ missions */
+const CONF = 'https://e3sm.atlassian.net/wiki/spaces/p3ai/pages/6840745985/2026-11-20+ai+group+hackathon+circuits';
+const SESSIONS = [
+  { n:1, title:'exege hacks circuits 1', et:'Noon – 2 pm Eastern', pt:'9 – 11 am Pacific',
+    start:Date.parse('2026-11-20T17:00:00Z'), end:Date.parse('2026-11-20T19:00:00Z'),
+    url:'https://teams.microsoft.com/meet/2426425794587409?p=5L0MVP2hXua8EMVIIa', id:'242 642 579 458 740 9', pc:'Rd9WU6LB' },
+  { n:2, title:'exege hacks circuits 2', et:'3 – 5 pm Eastern', pt:'Noon – 2 pm Pacific',
+    start:Date.parse('2026-11-20T20:00:00Z'), end:Date.parse('2026-11-20T22:00:00Z'),
+    url:'https://teams.microsoft.com/meet/2699307193557133?p=Fu6BlS91lAjgfJ7GRn', id:'269 930 719 355 713 3', pc:'4JR9q2Sh' },
+];
+const fmtT = t => new Date(t).toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+const tz = (() => { try { return new Intl.DateTimeFormat([], {timeZoneName:'short'}).formatToParts(new Date()).find(p => p.type==='timeZoneName').value } catch(e){ return '' } })();
+function dur(ms){ const m = Math.max(0, Math.round(ms/60000)), h = Math.floor(m/60); return h ? `${h}h ${String(m%60).padStart(2,'0')}m` : `${m}m` }
+$('#missionList').innerHTML = SESSIONS.map(s => `
+  <article class="mission">
+    <div class="chip" id="chip${s.n}">Mission ${s.n}</div>
+    <h3>${s.title}</h3>
+    <div class="when">${s.et} · ${s.pt}</div>
+    <div class="local">Your time: ${fmtT(s.start)} – ${fmtT(s.end)} ${tz}</div>
+    <dl class="creds">
+      <dt>Meeting ID</dt><dd>${s.id}</dd><button class="copy" type="button" data-copy="${s.id}">Copy</button>
+      <dt>Passcode</dt><dd>${s.pc}</dd><button class="copy" type="button" data-copy="${s.pc}">Copy</button>
+    </dl>
+    <a class="btn hot" href="${s.url}" target="_blank" rel="noopener" data-quest="join${s.n}"><span>Join on Teams</span></a>
+  </article>`).join('');
+function tickMissions(){
+  const now = Date.now();
+  for (const s of SESSIONS){
+    const c = $('#chip'+s.n);
+    if (now < s.start){ c.className='chip'; c.textContent = `Mission ${s.n} · starts in ${dur(s.start-now)}` }
+    else if (now < s.end){ c.className='chip live'; c.textContent = `● Live now · ${dur(s.end-now)} left` }
+    else { c.className='chip done'; c.textContent = `Mission ${s.n} · complete` }
+  }
+  $('#clock').textContent = new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}) + (tz ? ' ' + tz : '');
+}
+tickMissions(); setInterval(tickMissions, 15000);
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-copy]'); if (!b) return;
+  const done = () => { b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy', 1400) };
+  if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(done, () => selectText(b.previousElementSibling)); else selectText(b.previousElementSibling);
+});
+function selectText(el){ const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r) }
+
+/* ------------------------------------------------------------ jobs, map, books */
+const JOBS = [
+  ['A','Ocean shortcut','Does the ocean read upward longwave as a thermometer instead of a heat loss? Find where in the network that happens.','Narrow the shortcut down, and test whether you can remove it without breaking the other fluxes.'],
+  ['B','Ocean routing','How much of a forcing response takes the full-resolution skip, and how much goes through the deep path? Does that change with lead time?','Deep-path fractions by lead, from the real stepper with the corrector, under two metrics, with spread across dates.'],
+  ['C','Atmosphere CO₂','Which path carries CO₂ through to outgoing longwave: the big skip or the blocks?','Block routing restated with proper noise and random-direction controls, plus shares inside each block.'],
+  ['D','Errors and strata','When an explanation matches the model, does it also match the model’s mistakes?','An agreement split on right and wrong cases, with a scalar-offset control, for at least one real explanation.'],
+  ['E','Dynamics','How does the six-hour step amplify each spherical-harmonic scale?','A gain-versus-degree curve with seed spread, next to persistence and linear baselines.'],
+  ['F','exege integration','Land the day’s tools in exege: the witness and patching modules, record kinds, adapters, docs and tests.','Tests and lint green, pull request drafts ready for review.'],
+];
+$('#jobList').innerHTML = JOBS.map(([l,t,q,o]) => `<article class="job"><div class="tag"><div class="letter">${l}</div><h3>${t}</h3></div><p>${q}</p><div class="obj"><b>Objective</b>${o}</div></article>`).join('');
+
+const PLACES = [
+  { x:.30, y:.36, k:'1', name:'City Hall', label:'Hackathon page', note:'Confluence: times, Teams links', url:CONF },
+  { x:.62, y:.30, k:'2', name:'The Garage', label:'exege on GitHub', note:'the latent-diagnostics toolkit', url:'https://github.com/mahf708/exege' },
+  { x:.47, y:.58, k:'3', name:'The Library', label:'Journal club desk', note:'aigspod.github.io/mull', url:'https://aigspod.github.io/mull/' },
+  { x:.76, y:.62, k:'4', name:'Drive-in', label:'The invite trailer', note:'98 seconds of hype', url:'https://youtu.be/0R4ix18rNB0' },
+  { x:.21, y:.66, k:'5', name:'Jazz club', label:'The calm edition', note:'the invite, jazz version', url:'https://youtu.be/AQ5_Rd7OGuk' },
+  { x:.55, y:.80, k:'6', name:'Radio tower', label:'The aigs pod', note:'every episode', url:'https://aigspod.github.io/' },
+  { x:.86, y:.40, k:'7', name:'Bookstore', label:'Four papers', note:'the reading list below', url:'#reading' },
+];
+$('#pins').innerHTML = PLACES.map(p => `<a class="pin" style="left:${p.x*100}%;top:${p.y*100}%" href="${p.url}" ${p.url[0]==='#'?'':'target="_blank" rel="noopener"'} data-quest="pin${p.k}" aria-label="${p.name}: ${p.label}"><div class="dot"><b>${p.k}</b></div><span>${p.name}</span></a>`).join('');
+$('#legend').innerHTML = PLACES.map(p => `<li><b>${p.k}</b><div><a href="${p.url}" ${p.url[0]==='#'?'':'target="_blank" rel="noopener"'} data-quest="pin${p.k}">${p.name}: ${p.label}</a> <small>${p.note}</small></div></li>`).join('');
+
+const BOOKS = [
+  ['Episode 24','Seeing Through Circuits','Mapping visual circuits, edge by edge','https://arxiv.org/abs/2604.14477'],
+  ['Episodes 25–26','LAWFUL','Scoring a model against a known law','https://arxiv.org/abs/2607.28672'],
+  ['Episode 27','Rethinking Circuit Evaluation','Do circuits explain model errors?','https://arxiv.org/abs/2609.35686'],
+  ['Episode 28','Transformers for Dynamical Systems','What attention does with a dynamical system','https://arxiv.org/abs/2512.21113'],
+];
+$('#books').innerHTML = BOOKS.map(([e,t,s,u]) => `<a class="book" href="${u}" target="_blank" rel="noopener" data-quest="book${t}"><small>${e}</small><strong>${t}</strong><span>${s}</span></a>`).join('');
+
+/* ------------------------------------------------------------ curiosity, banners, toasts */
+const quests = new Set(JSON.parse(store.get('psq') || '[]'));
+function renderStars(){ const n = Math.min(5, Math.floor(quests.size / 2)); document.querySelectorAll('.stars i').forEach((s,i) => s.classList.toggle('on', i < n)) }
+function quest(k){
+  if (quests.has(k)) return; const before = Math.floor(quests.size/2); quests.add(k); store.set('psq', JSON.stringify([...quests])); renderStars();
+  const after = Math.floor(quests.size/2);
+  if (after > before && after <= 5) after === 5 ? banner('Maximum curiosity','You found everything') : toast(`Curiosity level ${after}`);
+}
+renderStars();
+document.addEventListener('click', e => { const q = e.target.closest('[data-quest]'); if (!q) return; quest(q.dataset.quest); if (q.dataset.quest.startsWith('join')) banner('Objective complete','See you on Teams') });
+let bannerT, toastT;
+function banner(big, small){ const b = $('#banner'); $('#bannerBig').textContent = big; $('#bannerSmall').textContent = small; b.hidden = true; void b.offsetWidth; b.hidden = false; clearTimeout(bannerT); bannerT = setTimeout(() => b.hidden = true, 2600); sfx('win') }
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2600) }
+
+const TIPS = [
+  'Area-weight your means. The poles are smaller than they look.',
+  'Mask the land before you average the ocean.',
+  'One trajectory is an anecdote. Two is a start.',
+  'Quote the corrector-in and corrector-out column, every time.',
+  'If two of your numbers are the same number, say so.',
+  'Report the spread across dates, not only the mean.',
+  'A teaser is an open question, never a result.',
+  'Keep long jobs under 40 minutes. Use caffeinate.',
+  'Write the tolerance down before you look at the answer.',
+  'A random direction is the cheapest control you will ever run.',
+];
+let tipI = Math.floor(Math.random()*TIPS.length);
+function nextTip(){ const el = $('#tip'); el.style.opacity = 0; setTimeout(() => { el.textContent = TIPS[tipI++ % TIPS.length]; el.style.opacity = 1 }, REDUCED ? 0 : 400) }
+nextTip(); setInterval(nextTip, 7000);
+
+/* ------------------------------------------------------------ the hero: a sunset over Port Samudra */
+const sky = $('#sky'), sx = sky.getContext('2d');
+function rnd(seed){ return () => (seed = (seed * 16807) % 2147483647) / 2147483647 }
+let W = 0, H = 0, city = [];
+function sizeSky(){
+  const r = sky.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
+  W = r.width; H = r.height; sky.width = W*d; sky.height = H*d; sx.setTransform(d,0,0,d,0,0);
+  const R = rnd(7); city = []; let x = W*0.52;
+  while (x < W + 40){ const w = 24 + R()*46, h = H*(0.08 + R()*0.24); const win = []; for (let i = 0; i < 60; i++) win.push([R(), R(), R() < 0.5]); city.push({x, w, h, win}); x += w + 3 + R()*6 }
+}
+function palm(x, base, h, lean){
+  sx.strokeStyle = '#12061f'; sx.fillStyle = '#12061f'; sx.lineWidth = Math.max(4, h*0.035); sx.lineCap = 'round';
+  const tx = x + lean, ty = base - h;
+  sx.beginPath(); sx.moveTo(x, base); sx.quadraticCurveTo(x + lean*0.2, base - h*0.55, tx, ty); sx.stroke();
+  for (let i = 0; i < 7; i++){
+    const a = -Math.PI + i * (Math.PI/6) + 0.15*Math.sin(t0/1500 + i), L = h*0.42;
+    const ex = tx + Math.cos(a)*L, ey = ty + Math.sin(a)*L*0.6 + L*0.35;
+    sx.lineWidth = Math.max(3, h*0.02); sx.beginPath(); sx.moveTo(tx, ty); sx.quadraticCurveTo(tx + Math.cos(a)*L*0.5, ty - L*0.25, ex, ey); sx.stroke();
+  }
+}
+let t0 = 0;
+function drawSky(t){
+  t0 = t; const hz = H*0.66;
+  let g = sx.createLinearGradient(0, 0, 0, hz);
+  g.addColorStop(0, '#1b0b3a'); g.addColorStop(.45, '#6a1b6b'); g.addColorStop(.78, '#ff2e88'); g.addColorStop(1, '#ff9a3d');
+  sx.fillStyle = g; sx.fillRect(0, 0, W, hz);
+  // stars
+  const R = rnd(3); sx.fillStyle = 'rgba(255,232,199,.8)';
+  for (let i = 0; i < 70; i++){ const x = R()*W, y = R()*hz*0.45, tw = 0.5 + 0.5*Math.sin(t/700 + i); sx.globalAlpha = 0.25 + 0.6*tw*R(); sx.fillRect(x, y, 1.5, 1.5) }
+  sx.globalAlpha = 1;
+  // striped sun
+  const cx = W*(W < 700 ? 0.7 : 0.68), r = Math.min(W, H)*0.3, cy = hz;
+  sx.save(); sx.beginPath(); sx.arc(cx, cy, r, Math.PI, 0); sx.closePath(); sx.clip();
+  g = sx.createLinearGradient(0, cy - r, 0, cy); g.addColorStop(0, '#ffe36e'); g.addColorStop(1, '#ff4f7b'); sx.fillStyle = g; sx.fillRect(cx - r, cy - r, 2*r, r);
+  for (let i = 0; i < 7; i++){ const y = cy - r*0.5 + i*r*0.08 + ((t/90) % (r*0.08)), hgt = 2 + i*1.6; sx.clearRect(cx - r, y, 2*r, hgt) }
+  sx.restore(); sx.globalAlpha = 1;
+  // repaint gaps with the sky so the stripes read as cut-outs
+  sx.save(); sx.globalCompositeOperation = 'destination-over'; g = sx.createLinearGradient(0, 0, 0, hz); g.addColorStop(0, '#1b0b3a'); g.addColorStop(.45, '#6a1b6b'); g.addColorStop(.78, '#ff2e88'); g.addColorStop(1, '#ff9a3d'); sx.fillStyle = g; sx.fillRect(0, 0, W, hz); sx.restore();
+  // skyline with lit windows
+  for (const b of city){
+    sx.fillStyle = '#1a0a2e'; sx.fillRect(b.x, hz - b.h, b.w, b.h);
+    sx.fillStyle = '#ffc24a';
+    for (const [u, v, on] of b.win){ const flick = on ^ (Math.sin(t/2000 + u*40) > 0.97); if (!flick) continue; sx.globalAlpha = 0.75; sx.fillRect(b.x + 3 + u*(b.w - 8), hz - b.h + 6 + v*(b.h - 12), 3, 4) }
+    sx.globalAlpha = 1;
+  }
+  // ocean
+  g = sx.createLinearGradient(0, hz, 0, H); g.addColorStop(0, '#2a1250'); g.addColorStop(1, '#071a2b'); sx.fillStyle = g; sx.fillRect(0, hz, W, H - hz);
+  for (let i = 0; i < 26; i++){
+    const y = hz + 4 + Math.pow(i/26, 1.6)*(H - hz), w = r*(1.1 - i/30)*(0.6 + 0.4*Math.sin(t/900 + i*1.7));
+    sx.fillStyle = i % 3 ? 'rgba(255,120,150,.55)' : 'rgba(255,214,110,.6)'; sx.fillRect(cx - w/2 + 8*Math.sin(t/1300 + i), y, w, 2);
+  }
+  for (let i = 0; i < 18; i++){ const y = hz + 10 + i*(H - hz)/18, x = (i*137 + t/40) % (W + 200) - 100; sx.fillStyle = 'rgba(31,209,193,.25)'; sx.fillRect(x, y, 60 + i*4, 1.5) }
+  // palms
+  palm(W*0.06, H, H*0.62, 40); palm(W*0.14, H, H*0.44, -26); palm(W*0.93, H, H*0.5, -34);
+}
+let flipped = false;
+function loopSky(t){ drawSky(t || 0); if (!REDUCED) requestAnimationFrame(loopSky) }
+sizeSky(); loopSky(0); addEventListener('resize', () => { sizeSky(); if (REDUCED) drawSky(0); drawMap() });
+
+/* ------------------------------------------------------------ the map */
+function drawMap(){
+  const c = $('#map'), m = c.getContext('2d'), r = c.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
+  const w = r.width, h = r.height; c.width = w*d; c.height = h*d; m.setTransform(d,0,0,d,0,0);
+  m.fillStyle = '#0b3445'; m.fillRect(0, 0, w, h);
+  m.strokeStyle = 'rgba(31,209,193,.12)'; m.lineWidth = 1;
+  for (let i = 0; i < 40; i++){ m.beginPath(); for (let x = 0; x <= w; x += 20) m.lineTo(x, (i/40)*h + 4*Math.sin(x/40 + i)); m.stroke() }
+  const R = rnd(11), pts = [];
+  for (let i = 0; i < 64; i++){ const a = i/64*Math.PI*2, rr = 0.36 + 0.06*Math.sin(a*3 + 1) + 0.03*Math.sin(a*7) + 0.02*R(); pts.push([w*(0.52 + rr*Math.cos(a)*1.05), h*(0.52 + rr*Math.sin(a)*1.25)]) }
+  m.beginPath(); pts.forEach(([x, y], i) => i ? m.lineTo(x, y) : m.moveTo(x, y)); m.closePath();
+  m.fillStyle = '#f2c98f'; m.fill(); m.lineWidth = 10; m.strokeStyle = 'rgba(255,232,199,.25)'; m.stroke();
+  m.save(); m.clip();
+  m.fillStyle = '#4a2a6e'; m.fillRect(0, 0, w, h); m.globalAlpha = 1;
+  m.fillStyle = '#2f8f6a'; for (let i = 0; i < 9; i++){ m.beginPath(); m.ellipse(w*(0.15 + R()*0.75), h*(0.15 + R()*0.75), 30 + R()*60, 20 + R()*40, R()*3, 0, 7); m.fill() }
+  m.strokeStyle = '#ffe8c7'; m.lineWidth = 6; m.lineCap = 'round';
+  for (let i = 0; i < 6; i++){ m.beginPath(); m.moveTo(0, h*(0.2 + i*0.13)); m.bezierCurveTo(w*0.3, h*(0.1 + R()*0.8), w*0.6, h*(0.1 + R()*0.8), w, h*(0.15 + i*0.14)); m.stroke() }
+  m.lineWidth = 2; m.strokeStyle = 'rgba(255,46,136,.7)'; m.setLineDash([6, 6]);
+  m.beginPath(); PLACES.forEach((p, i) => i ? m.lineTo(p.x*w, p.y*h - 4) : m.moveTo(p.x*w, p.y*h - 4)); m.stroke(); m.setLineDash([]);
+  m.restore();
+  m.fillStyle = 'rgba(255,232,199,.85)'; m.font = '700 14px "Barlow Condensed", sans-serif'; m.textAlign = 'left';
+  m.fillText('PORT SAMUDRA', 14, 24); m.fillStyle = 'rgba(31,209,193,.8)'; m.fillText('THE WARM POOL', w - 120, h - 16);
+  m.font = '500 11px "JetBrains Mono", monospace'; m.fillStyle = 'rgba(255,232,199,.6)'; m.fillText('illustration', 14, h - 14);
+}
+drawMap(); document.fonts && document.fonts.ready.then(drawMap);
+
+/* ------------------------------------------------------------ radio */
+const STATIONS = [
+  { id:'deep', freq:'66.6', band:'FM', name:'Deep Path Radio', tag:'Dark ambient from below the bottleneck', dj:'Fenrir', music:'deep', clips:['deep_1','deep_2','deep_3'],
+    tracks:[['Vanishing','The Gradients'],['Below the Bottleneck','Encoder Ensemble'],['Jacobian Dreams','Spectral Radius'],['Long Way Around','The Deep Path']] },
+  { id:'skip', freq:'88.5', band:'FM', name:'The Skip', tag:'Full-resolution house, no bottleneck', dj:'Puck', music:'skip', clips:['skip_1','skip_2','skip_3','skip_4'],
+    tracks:[['Straight to the Output','DJ Identity'],['Full Resolution (Club Edit)','U-Net Boyz'],['Concatenate Me','Skip & The Channels'],['Bottleneck? Never Heard of It','Residual Crew']] },
+  { id:'samudra', freq:'94.7', band:'FM', name:'Radio Samudra', tag:'Slow music for a slow ocean', dj:'Nicole', music:'samudra', clips:['samudra_1','samudra_2','samudra_3'],
+    tracks:[['Five-Day Window','Mixed Layer'],['Upwelling','The Thermoclines'],['Warm Pool','Nino Three Four'],['Ekman Spiral (Slow Version)','Wind Stress']] },
+  { id:'latent', freq:'101.1', band:'FM', name:'Latent FM', tag:'Synthwave from the hidden layers', dj:'Bella', music:'latent', clips:['latent_1','latent_2','latent_3','latent_4'],
+    tracks:[['Superposition','The Polysemantics'],['Hidden State of Mind','Residual Stream'],['Night Drive on the Sphere','Spherical Harmonics'],['Sparse Autoencoder Love','Dictionary Learning']] },
+  { id:'talk', freq:'1220', band:'AM', name:'Port Samudra Public Radio', tag:'News, traffic, weather and your calls', dj:'George and Michael', music:'samudra', bed:0.12, clips:['talk_news','talk_traffic','talk_weather','talk_call','talk_rules'],
+    tracks:[['Morning Edition','Port Samudra Public Radio']] },
+];
+const ADS = ['ad_weight','ad_mask','ad_seed','ad_corrector','ad_restate','ad_prereg'];
+const WHO = { latent:'Bella', skip:'Puck', samudra:'Nicole', deep:'Fenrir', ad:'Paid advertisement', talk:'Port Samudra Public Radio' };
+const TEXT = {
+  latent_1:"You're locked in to Latent FM, 101.1. All the hits from the hidden layers. Smooth activations, all day long.",
+  latent_2:"That one goes out to everybody in session one. Noon to two, Eastern. Grab a coffee, open a notebook, and find me a circuit.",
+  latent_3:"Latent FM. Where every feature has a story. And some of them even mean just one thing.",
+  latent_4:"If you're just tuning in, session two starts at three, Eastern. Bring a friend. Bring a hypothesis.",
+  skip_1:"88.5, The Skip! Why go deep, when you can go straight to the output?",
+  skip_2:"This is The Skip, and we are running at full resolution all day long! No bottleneck! No regrets!",
+  skip_3:"Hackathon people, make some noise! Session two, three o'clock Eastern! Let's patch some paths!",
+  skip_4:"Big skip, little skip, we play them all. You're listening to The Skip!",
+  samudra_1:"Radio Samudra, 94.7. Waves, warm water, and a five-day window. Breathe in. Breathe out.",
+  samudra_2:"Sea surface temperature is steady. The mixed layer is deep. The ocean is thinking. Probably.",
+  samudra_3:"A gentle reminder from Radio Samudra. Area-weight your means. The poles are smaller than they look.",
+  deep_1:"Deep Path Radio. For the signals that go all the way down. Through the bottleneck. And back again.",
+  deep_2:"Some forcing takes the shortcut. Some takes the long way around. Tonight, we take the long way.",
+  deep_3:"You are still listening to Deep Path Radio. Somewhere below you, a gradient is vanishing.",
+  talk_news:"Good morning. This is Port Samudra Public Radio. In today's headlines: a team of climate scientists has gathered to open up a machine-learned climate model and look at what's inside. Sessions run from noon to two, and from three to five, Eastern time.",
+  talk_traffic:"Now, the traffic. Heavy congestion on the full-resolution skip this morning. The deep path is moving freely, if you don't mind the bottleneck. And expect delays at the physics corrector.",
+  talk_weather:"And the weather. A coupled forecast today, with the ocean and the atmosphere checking in every few hours. Clear skies in the latent space, with a good chance of interpretability by late afternoon.",
+  talk_call:"Caller, you're on the air. “My probe says the ocean is reading the thermometer upside down. Is that normal?” Great question. Nobody knows yet. That's what today is for. … “How many seeds is enough?” More than one. Always more than one.",
+  talk_rules:"A public service announcement. Report the spread, not just the mean. Quote the corrector column. And if two of your numbers are the same number, say so.",
+  ad_weight:"Feeling heavy at the poles? Try Area Weight Watchers! We weight every grid cell by its true size, so the Arctic stops hogging your mean.",
+  ad_mask:"Mask Depot! Land masks. Ice masks. Masks for the grid cells you'd rather not talk about. If it isn't ocean, it isn't in your mean.",
+  ad_seed:"At Seed Spread Savings, we never bank on a single seed. Five seeds, error bars, and a spread for every date. Your mean deserves company.",
+  ad_corrector:"Did your result survive the physics corrector? With Corrector Insurance, you'll always know. Corrector in. Corrector out. Both columns, every time.",
+  ad_restate:"Restatement Realty. Is that a second finding, or the same number in a new outfit? We'll tell you, before your reviewers do.",
+  ad_prereg:"Ask your team lead if a preregistration sheet is right for you. Side effects of skipping it may include forking paths, a garden of p-values, and a very long Monday.",
+};
+const LOOP = 150;
+
+let cur = Math.max(0, STATIONS.findIndex(s => s.id === (store.get('psst') || 'latent')));
+let ctx, master, musicGain, voiceGain, analyser, staticBuf, playing = false, breakT = null, talkI = 0, talkSeg = 0, lastClip = '', voiceOn = false, trackT = null;
+const musicEl = new Audio(), voiceEl = new Audio();
+musicEl.loop = true; musicEl.preload = 'auto'; voiceEl.preload = 'auto';
+
+function initAudio(){
+  if (ctx) return;
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  master = ctx.createGain(); master.gain.value = +$('#volume').value;
+  analyser = ctx.createAnalyser(); analyser.fftSize = 128;
+  musicGain = ctx.createGain(); voiceGain = ctx.createGain(); voiceGain.gain.value = 1.15;
+  ctx.createMediaElementSource(musicEl).connect(musicGain).connect(master);
+  ctx.createMediaElementSource(voiceEl).connect(voiceGain).connect(master);
+  master.connect(analyser).connect(ctx.destination);
+  const n = ctx.sampleRate * 0.5; staticBuf = ctx.createBuffer(1, n, ctx.sampleRate);
+  const d = staticBuf.getChannelData(0); for (let i = 0; i < n; i++) d[i] = (Math.random()*2 - 1) * (1 - i/n);
+  drawViz();
+}
+function sfx(kind){
+  if (!ctx) return; const t = ctx.currentTime;
+  if (kind === 'static'){ const s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain(); s.buffer = staticBuf; f.type = 'bandpass'; f.frequency.value = 1800; f.Q.value = 0.6; g.gain.value = 0.35; s.connect(f).connect(g).connect(master); s.start(t); return }
+  const notes = kind === 'win' ? [523, 659, 784, 1046] : [880, 1320];
+  notes.forEach((fq, i) => { const o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'square'; o.frequency.value = fq; g.gain.setValueAtTime(0, t + i*0.09); g.gain.linearRampToValueAtTime(0.06, t + i*0.09 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + i*0.09 + 0.25); o.connect(g).connect(master); o.start(t + i*0.09); o.stop(t + i*0.09 + 0.3) });
+}
+function musicLevel(){ const st = STATIONS[cur]; return (st.bed ?? 1) * (voiceOn ? 0.22 : 1) }
+function setMusic(){ if (musicGain) musicGain.gain.setTargetAtTime(musicLevel(), ctx.currentTime, 0.18) }
+
+function renderStation(){
+  const st = STATIONS[cur];
+  $('#freq').textContent = `${st.freq} ${st.band} · DJ ${st.dj}`;
+  $('#stname').textContent = st.name; $('#sttag').textContent = st.tag;
+  $('#mName').textContent = st.name;
+  document.querySelectorAll('#presets button').forEach((b, i) => b.classList.toggle('on', i === cur));
+  document.querySelectorAll('#dial button').forEach((b, i) => b.classList.toggle('on', i === cur));
+  $('#needle').style.left = dialX(cur) + '%';
+  showTrack();
+}
+function dialX(i){ return 8 + i * (84 / (STATIONS.length - 1)) }
+function showTrack(){
+  const st = STATIONS[cur], now = Date.now()/1000, k = Math.floor(now / 40) % st.tracks.length, [t, a] = st.tracks[k];
+  if (voiceOn) return;
+  $('#now').innerHTML = playing ? `<b>NOW PLAYING</b> · ${t} · ${a}` : 'Off. Press play. The radio picks up wherever the station is right now.';
+  $('#mNow').textContent = `${st.freq} ${st.band} · ${playing ? t + ' · ' + a : 'off'}`;
+}
+$('#presets').innerHTML = STATIONS.map((s, i) => `<button type="button" data-st="${i}">${s.name}<small>${s.freq} ${s.band}</small></button>`).join('');
+$('#dial').insertAdjacentHTML('beforeend', STATIONS.map((s, i) => `<button type="button" data-st="${i}" style="left:${dialX(i)}%">${s.freq}</button>`).join(''));
+document.addEventListener('click', e => { const b = e.target.closest('[data-st]'); if (b) tune(+b.dataset.st) });
+
+function startMusic(){
+  const st = STATIONS[cur];
+  musicEl.src = `audio/music_${st.music}.m4a`;
+  const seek = () => { try { musicEl.currentTime = ((Date.now()/1000) + cur*37) % LOOP } catch(e){} musicEl.removeEventListener('loadedmetadata', seek) };
+  musicEl.addEventListener('loadedmetadata', seek);
+  musicEl.play().catch(() => {});
+}
+function tune(i){
+  i = (i + STATIONS.length) % STATIONS.length;
+  const changed = i !== cur; cur = i; store.set('psst', STATIONS[cur].id);
+  if (changed) quest('station' + STATIONS[cur].id);
+  stopVoice(); renderStation();
+  if (playing){ sfx('static'); startMusic(); setMusic(); scheduleBreak(true) }
+}
+function play(){
+  initAudio(); ctx.resume(); playing = true; quest('radio');
+  startMusic(); setMusic(); scheduleBreak(true); updatePlay();
+  clearInterval(trackT); trackT = setInterval(showTrack, 5000);
+}
+function pause(){ playing = false; musicEl.pause(); stopVoice(); clearTimeout(breakT); updatePlay() }
+function toggle(){ playing ? pause() : play() }
+function updatePlay(){ for (const b of [$('#play'), $('#mPlay')]){ b.textContent = playing ? '❚❚' : '▶'; b.setAttribute('aria-label', playing ? 'Pause' : 'Play') } showTrack() }
+
+function scheduleBreak(first){
+  clearTimeout(breakT); if (!playing) return;
+  const st = STATIONS[cur];
+  const wait = st.id === 'talk' ? (first ? 1200 : 1600) : (first ? 3500 : 32000 + Math.random()*28000);
+  breakT = setTimeout(() => nextBreak(first), wait);
+}
+function nextBreak(first){
+  if (!playing) return; const st = STATIONS[cur]; let id;
+  if (st.id === 'talk'){ id = (talkI % 3 === 2) ? pick(ADS) : st.clips[talkSeg++ % st.clips.length]; talkI++ }
+  else if (first) id = st.clips[0];
+  else id = Math.random() < 0.6 ? pick(st.clips) : pick(ADS);
+  playVoice(id);
+}
+function pick(a){ let x; do { x = a[Math.floor(Math.random()*a.length)] } while (a.length > 1 && x === lastClip); return x }
+function playVoice(id){
+  lastClip = id; voiceOn = true; setMusic();
+  const st = STATIONS[cur], isAd = id.startsWith('ad_');
+  $('#onair').classList.add('lit');
+  $('#now').innerHTML = `<b>${isAd ? 'A WORD FROM OUR SPONSORS' : 'ON AIR'}</b> · ${isAd ? WHO.ad : st.dj}`;
+  $('#mNow').textContent = isAd ? 'Commercial break' : `On air · ${st.dj}`;
+  $('#caption').textContent = TEXT[id] || '';
+  voiceEl.src = `audio/${id}.m4a`; voiceEl.play().catch(() => endVoice());
+}
+function stopVoice(){ voiceEl.pause(); voiceEl.removeAttribute('src'); voiceOn = false; $('#caption').textContent = ''; $('#onair').classList.remove('lit'); setMusic() }
+function endVoice(){ voiceOn = false; $('#caption').textContent = ''; $('#onair').classList.remove('lit'); setMusic(); showTrack(); scheduleBreak(false) }
+voiceEl.addEventListener('ended', endVoice);
+
+$('#play').onclick = toggle; $('#mPlay').onclick = toggle; $('#heroPlay').onclick = () => { if (!playing) play(); $('#radio').scrollIntoView({behavior: REDUCED ? 'auto' : 'smooth'}) };
+$('#prev').onclick = $('#mPrev').onclick = () => tune(cur - 1);
+$('#next').onclick = $('#mNext').onclick = () => tune(cur + 1);
+$('#skipAd').onclick = () => { if (!playing) play(); clearTimeout(breakT); stopVoice(); playVoice(pick(ADS)); quest('ad') };
+$('#volume').oninput = e => { if (master) master.gain.value = +e.target.value };
+
+function drawViz(){
+  const c = $('#viz'), g = c.getContext('2d'), data = new Uint8Array(analyser.frequencyBinCount);
+  (function frame(){
+    const w = c.clientWidth, h = c.clientHeight; if (c.width !== w) { c.width = w; c.height = h }
+    analyser.getByteFrequencyData(data); g.clearRect(0, 0, w, h);
+    const n = 40, bw = w / n;
+    for (let i = 0; i < n; i++){ const v = data[Math.floor(i * data.length / n * 0.8)] / 255, bh = Math.max(2, v * h);
+      const gr = g.createLinearGradient(0, h - bh, 0, h); gr.addColorStop(0, '#ff2e88'); gr.addColorStop(1, '#1fd1c1'); g.fillStyle = gr; g.fillRect(i*bw + 1, h - bh, bw - 3, bh) }
+    if (!REDUCED) requestAnimationFrame(frame);
+  })();
+}
+renderStation();
+
+/* ------------------------------------------------------------ keys and cheat codes */
+let buf = '';
+const CHEATS = {
+  AREAWEIGHT(){ const h = $('h1'); h.animate([{transform:'skewX(-8deg) scaleY(1)'},{transform:'skewX(-8deg) scaleY(.55)'},{transform:'skewX(-8deg) scaleY(1)'}], {duration:1600, easing:'ease-in-out'}); toast('Cosine latitude applied. The poles feel lighter.') },
+  SEEDS(){ confetti(); toast('Five seeds planted. Error bars sprouting.') },
+  FLUS(){ flipped = !flipped; sky.style.transform = flipped ? 'rotate(180deg)' : ''; toast(flipped ? 'Thermometer flipped. Is that normal?' : 'Thermometer restored. Nobody knows yet.') },
+  SKIP(){ if (!playing) play(); tune(STATIONS.findIndex(s => s.id === 'skip')); toast('Taking the full-resolution skip.') },
+  DEEPPATH(){ if (!playing) play(); tune(STATIONS.findIndex(s => s.id === 'deep')); toast('Going down through the bottleneck.') },
+  RESPECT(){ banner('Objective complete', 'Respect for the controls') },
+};
+function tryCheat(s){
+  for (const k of Object.keys(CHEATS)) if (s.endsWith(k)){ CHEATS[k](); quest('cheat' + k); banner('Cheat activated', k); return true }
+  return false;
+}
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === 'ArrowRight'){ tune(cur + 1); e.preventDefault(); return }
+  if (e.key === 'ArrowLeft'){ tune(cur - 1); e.preventDefault(); return }
+  if (e.key === ' ' && !e.target.closest('button, a')){ toggle(); e.preventDefault(); return }
+  if (/^[a-z]$/i.test(e.key)){ buf = (buf + e.key.toUpperCase()).slice(-12); if (tryCheat(buf)) buf = '' }
+});
+$('#cheatIn').addEventListener('keydown', e => { if (e.key === 'Enter'){ const v = e.target.value.toUpperCase().replace(/[^A-Z]/g, ''); if (!tryCheat(v)) toast('Nothing happened. Try another code.'); e.target.value = '' } });
+
+/* ------------------------------------------------------------ confetti */
+const fx = $('#fx'), fg = fx.getContext('2d');
+function confetti(){
+  if (REDUCED) return;
+  fx.width = innerWidth; fx.height = innerHeight;
+  const cols = ['#ffc24a','#ff7a3d','#ff2e88','#1fd1c1','#ffe8c7'], ps = [];
+  for (let i = 0; i < 160; i++) ps.push({ x: innerWidth/2, y: innerHeight*0.4, vx: (Math.random() - 0.5)*14, vy: -Math.random()*14 - 4, c: cols[i % 5], r: Math.random()*6, s: 4 + Math.random()*6 });
+  let n = 0;
+  (function f(){ fg.clearRect(0, 0, fx.width, fx.height);
+    for (const p of ps){ p.vy += 0.35; p.x += p.vx; p.y += p.vy; p.r += 0.1; fg.save(); fg.translate(p.x, p.y); fg.rotate(p.r); fg.fillStyle = p.c; fg.fillRect(-p.s/2, -p.s/4, p.s, p.s/2); fg.restore() }
+    if (++n < 140) requestAnimationFrame(f); else fg.clearRect(0, 0, fx.width, fx.height) })();
+}
+</script>
+</body>
+</html>
